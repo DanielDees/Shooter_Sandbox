@@ -18,17 +18,17 @@ Model.prototype.draw = function(){
 };
 
 Model.prototype.move = function(keyboard) {
-	if (keyboard.getKey() == keyboard.W) {
+	if (keyboard.keys.w) {
 		this.y = Math.max(this.getY() - this.speed, 0);
 	}
-	if (keyboard.getKey() == keyboard.S) {
-		this.y = Math.min(this.getY() + this.speed, window.innerHeight - this.h);
+	if (keyboard.keys.s) {
+		this.y = Math.min(this.getY() + this.speed, window.innerHeight - this.height);
 	}
-	if (keyboard.getKey() == keyboard.A) {
-		this.x = Math.max(this.x - this.speed, 0);
+	if (keyboard.keys.a) {
+		this.x = Math.max(this.getX() - this.speed, 0);
 	}
-	if (keyboard.getKey() == keyboard.D) {
-		this.x = Math.min(this.x + this.speed, window.innerWidth - this.w);
+	if (keyboard.keys.d) {
+		this.x = Math.min(this.getX() + this.speed, window.innerWidth - this.width);
 	}
 };
 
