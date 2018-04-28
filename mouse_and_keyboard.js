@@ -13,7 +13,7 @@ function getKeyUp (e) {
   var xLower = x.toLowerCase();
   var xUpper = x.toUpperCase();
 
-  console.log("Release: " + x + " | " + x.toUpperCase());
+  //console.log("Release: " + x + " | " + x.toUpperCase());
 
   delete keys[x];
   delete keys[xLower];
@@ -23,7 +23,7 @@ function getKeyUp (e) {
 function keyClick (e) {
   keys[e.key] = true;
   e.preventDefault();
-  console.log("Pressed: " + e.key);
+  //console.log("Pressed: " + e.key);
 }
 
 //END MOUSE AND KEYBOARD =========
