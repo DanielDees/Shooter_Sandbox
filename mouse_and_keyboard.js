@@ -22,7 +22,7 @@ function getKeyUp (e) {
 
 function keyClick (e) {
   keys[e.key] = true;
-  e.preventDefault();
+  //e.preventDefault();
   //console.log("Pressed: " + e.key);
 }
 

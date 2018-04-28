@@ -1,6 +1,15 @@
 ;"use strict";
 
 var canvas = document.getElementById("myCanvas");
+
+function resizeCanvas() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+
+window.onload = resizeCanvas;
+window.onresize = resizeCanvas;
+
 var ctx = canvas.getContext("2d");
 var FPS = 60;
 
@@ -11,22 +20,21 @@ function Box() {
 	this.w = 20;
 	this.h = 20;
 
-	this.spd = 4;
+	this.spd = 12;
 
 	this.move = function() {
 		if (keys.w) {
-			this.y -= this.spd;
+			this.y = Math.max(this.y - this.spd, 0);
 		}
 		if (keys.s) {
-			this.y += this.spd;
+			this.y = Math.min(this.y + this.spd, window.innerHeight - this.h);
 		}
 		if (keys.a) {
-			this.x -= this.spd;
+			this.x = Math.max(this.x - this.spd, 0);
 		}
 		if (keys.d) {
-			this.x += this.spd;
+			this.x = Math.min(this.x + this.spd, window.innerWidth - this.w);
 		}
-		console.log("Here!");
 	}
 
 	this.draw = function() {
