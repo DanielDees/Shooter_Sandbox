@@ -53,6 +53,10 @@ function gameLoop() {
 	box.move();
 	box.draw();
 
+	ctx.font = "30px Courier New";
+	ctx.fillText("Mouse X: " + mouse.x, 40, 40);
+	ctx.fillText("Mouse Y: " + mouse.y, 40, 70);
+
 }
 
 //Run game

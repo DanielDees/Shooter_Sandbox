@@ -3,6 +3,26 @@ document.onkeypress = keyClick;
 document.onkeydown = keyClick;
 document.onkeyup = getKeyUp; 
 
+//Mouse Events ==================
+document.onmousemove = mousePos;
+document.onmousedown = function() { mouse.clicked = true; };
+document.onmouseup = function() { mouse.clicked = false; };
+
+
+//MOUSE 
+var mouse = {
+
+  x: 0,
+  y: 0,
+
+  clicked: false,
+}
+
+function mousePos (e) {
+    mouse.x = e.pageX - canvas.offsetLeft;
+    mouse.y = e.pageY - canvas.offsetTop;
+}
+
 //Keys Pressed ================
 var keys = {};
 
