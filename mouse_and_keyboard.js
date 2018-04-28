@@ -15,8 +15,8 @@ var mouse = {
   x: 0,
   y: 0,
 
-  clicked: false,
-}
+  clicked: false
+};
 
 function mousePos (e) {
     mouse.x = e.pageX - canvas.offsetLeft;
