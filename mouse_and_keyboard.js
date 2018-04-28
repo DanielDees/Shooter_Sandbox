@@ -1,7 +1,7 @@
 //Keyboard Events ===============
-document.onkeypress = keyClick;
-document.onkeydown = keyClick;
-document.onkeyup = getKeyUp; 
+document.onkeypress = Keyboard.keyClick;
+document.onkeydown = Keyboard.keyClick;
+document.onkeyup = Keyboard.keyRelease; 
 
 //Mouse Events ==================
 document.onmousemove = mousePos;
@@ -23,27 +23,32 @@ function mousePos (e) {
     mouse.y = e.pageY - canvas.offsetTop;
 }
 
-//Keys Pressed ================
-var keys = {};
+var keyboard = new Keyboard();
 
-//Still need to handle issues with capitalization
-function getKeyUp (e) {
+function Keyboard() {
 
-  var x = e.key;
-  var xLower = x.toLowerCase();
-  var xUpper = x.toUpperCase();
+  this.keys = {};
 
-  //console.log("Release: " + x + " | " + x.toUpperCase());
+  //Still need to handle issues with capitalization
+  this.keyRelease = function(e) {
 
-  delete keys[x];
-  delete keys[xLower];
-  delete keys[xUpper];
+    var x = e.key;
+    var xLower = x.toLowerCase();
+    var xUpper = x.toUpperCase();
+
+    //console.log("Release: " + x + " | " + x.toUpperCase());
+
+    delete this.keys[x];
+    delete this.keys[xLower];
+    delete this.keys[xUpper];
+  }
+
+  this.keyClick = function(e) {
+
+    this.keys[e.key] = true;
+
+    //e.preventDefault();
+    //console.log("Pressed: " + e.key);
+    
+  }
 }
-
-function keyClick (e) {
-  keys[e.key] = true;
-  //e.preventDefault();
-  //console.log("Pressed: " + e.key);
-}
-
-//END MOUSE AND KEYBOARD =========
