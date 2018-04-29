@@ -14,8 +14,8 @@ function Projectile(data) {
 
 	//x and y speeds are adjusted for angle fired
 	this.speed = {
-		x: (10 * Math.cos(data.angle)), 
-		y: (10 * Math.sin(data.angle))
+		x: (8 * Math.cos(data.angle)), 
+		y: (8 * Math.sin(data.angle))
 	};
 
 	this.angle = data.angle;

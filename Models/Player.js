@@ -9,7 +9,7 @@ function Player() {
 	this.width = 20;
 	this.height = 20;
 
-	this.speed = 10;
+	this.speed = 7;
 }
 
 Player.prototype = Object.create(Model.prototype);
@@ -38,6 +38,7 @@ Player.prototype.move = function(keyboard) {
 	}
 };
 
+//Fire single projectile
 Player.prototype.shoot = function(type) {
 	if (mouse.clicked) {
 		  //Get center of player.
@@ -54,6 +55,35 @@ Player.prototype.shoot = function(type) {
 		  //Debug. Remove later.
 		  if (projectileList.length >= 500) { 
 		  	projectileList.shift(); 
+		  }
+	}
+}
+
+//Fire twin projectiles in V formation
+Player.prototype.shoot2 = function(type) {
+	if (mouse.clicked) {
+		  //Get center of player.
+		  var angle = toolbox.getAngleBetween(this, mouse, "radians") - 0.15;
+		  var angle2 = angle + 0.3;
+
+		  var data = {
+		  	x: this.x,
+		  	y: this.y,
+		  	angle: angle
+		  };
+		  var data2 = {
+		  	x: this.x,
+		  	y: this.y,
+		  	angle: angle2
+		  };
+		  
+		  projectileList.push(new Projectile(data));
+		  projectileList.push(new Projectile(data2));
+
+		  //Debug. Remove later.
+		  if (projectileList.length >= 800) { 
+		  	projectileList.shift(); 
+		  	projectileList.shift();
 		  }
 	}
 }
