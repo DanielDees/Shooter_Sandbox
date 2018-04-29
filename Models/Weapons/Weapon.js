@@ -30,7 +30,7 @@ function Weapon()
 	this.reloading = false;
 
 	//Frames since we started last action
-	this.waitFrames = 0;
+	this.reloadingFrames = 0;
 }
 
 Weapon.prototype = Object.create(Model.prototype);
@@ -40,12 +40,6 @@ Weapon.prototype = Object.create(Model.prototype);
  */
 Weapon.prototype.pullTrigger = function(){
 	this.triggerPulled = true;
-
-	//Reloading
-	if(!this.reloading && this.magazine.length == 0 && this.automaticReloading)
-	{
-		this.beginReloading();
-	}
 };
 
 /*
@@ -62,7 +56,7 @@ Weapon.prototype.beginReloading = function(){
 	if(!this.reloading)
 	{
 		this.reloading = true;
-		this.waitFrames = 0;
+		this.reloadingFrames = 0;
 	}
 };
 
@@ -72,4 +66,29 @@ Weapon.prototype.beginReloading = function(){
 Weapon.prototype.reload = function(){
 	this.magazine = [];
 	this.magazine.fill(true, 0, this.magazineSize);
+};
+
+/*
+ * Keeps track of timing for getting rounds and reloading
+ */
+Weapon.prototype.frame = function(game){
+	//Finish reloading
+	if(this.reloading)
+	{
+		this.reloadingFrames++;
+
+		var timeReloading = this.reloadingFrames / game.FPS;
+
+		if(timeReloading > this.reloadTime)
+		{
+			this.reloadingFrames = 0;
+			this.reload();
+		}
+	}
+
+	//Start reloading automatically
+	if(!this.reloading && this.magazine.length == 0 && this.automaticReloading)
+	{
+		this.beginReloading();
+	}
 };
