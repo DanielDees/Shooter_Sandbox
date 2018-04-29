@@ -2,7 +2,9 @@
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-var GAME_FPS = 60;
+
+var game = {};
+game.FPS = 60;
 
 window.onload = resizeCanvas;
 window.onresize = resizeCanvas;
@@ -15,7 +17,7 @@ function resizeCanvas() {
 //Game objects
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
-var player = new Player();
+var player = new Player(game);
 
 var projectileList = [];
 
@@ -36,4 +38,4 @@ function gameLoop() {
 }
 
 //Run game
-setInterval(gameLoop, (1000 / GAME_FPS));
+setInterval(gameLoop, (1000 / game.FPS));

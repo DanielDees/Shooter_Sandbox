@@ -14,6 +14,13 @@ function Model()
 	this.speed = 0;
 }
 
+/*
+ * Called every frame of the game.
+ */
+Model.prototype.frame = function(){
+	//implement me
+};
+
 Model.prototype.draw = function(){
 	//implement me
 };
