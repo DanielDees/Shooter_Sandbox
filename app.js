@@ -17,7 +17,8 @@ function resizeCanvas() {
 //Game objects
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
-var player = new Player(game);
+var player = new Player();
+var weapon = new Weapon();
 
 var projectileList = [];
 
@@ -25,9 +26,26 @@ function gameLoop() {
 	//Clear screen
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
+	if(keyboard.keys.r)
+	{
+		weapon.beginReloading();
+	}
+
 	player.move(keyboard);
 	player.draw(ctx);
-	player.shoot2(9, 90);
+
+	weapon.frame(game);
+
+	//Handle firing
+	if(mouse.clicked) {
+		if(weapon.pullTrigger(game)) {
+			player.shoot2(10, 0);
+		}
+	}
+
+	else {
+		weapon.releaseTrigger();
+	}
 
 	for (var i = 0; i < projectileList.length; i++) {
 		projectileList[i].bouncy();

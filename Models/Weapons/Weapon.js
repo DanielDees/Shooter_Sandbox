@@ -9,19 +9,22 @@ function Weapon()
 	 * Rounders per second.
 	 * 0 = single action
 	 */
-	this.roundsPerSecond = 0.0;
+	this.roundsPerSecond = 2;
+
+	//Number of frames since firing last
+	this.firingFrames = 0;
 
 	//Automatic reloading
-	this.automaticReloading = false;
+	this.automaticReloading = true;
 
 	//Reload time
-	this.reloadTime = 0.0;
+	this.reloadTime = 2.0;
 
 	//Clip with ammo
-	this.magazine = [];
+	this.magazine = 10;
 
 	//Clip size
-	this.magazineSize = 0;
+	this.magazineSize = 10;
 
 	//Specifies whether the trigger has been pulled
 	this.triggerPulled = false;
@@ -38,8 +41,25 @@ Weapon.prototype = Object.create(Model.prototype);
 /*
  * Lets the weapon know that we're attempting to fire.
  */
-Weapon.prototype.pullTrigger = function(){
+Weapon.prototype.pullTrigger = function(game){
 	this.triggerPulled = true;
+
+	if(this.magazine <= 0 || this.reloading) {
+		return false;
+	}
+
+	var secondsSinceFiring = this.firingFrames / game.FPS;
+
+	if(secondsSinceFiring * this.roundsPerSecond >= 1)
+	{
+		//Reset and return true
+		this.firingFrames = 0;
+		this.magazine--;
+
+		return true;
+	}
+
+	return false;
 };
 
 /*
@@ -53,6 +73,7 @@ Weapon.prototype.releaseTrigger = function(){
  * Begin reloading.
  */
 Weapon.prototype.beginReloading = function(){
+	console.log("Begin reloading.");
 	if(!this.reloading)
 	{
 		this.reloading = true;
@@ -64,14 +85,16 @@ Weapon.prototype.beginReloading = function(){
  * Reloads the weapon.
  */
 Weapon.prototype.reload = function(){
-	this.magazine = [];
-	this.magazine.fill(true, 0, this.magazineSize);
+	this.magazine = 0;
+	this.magazine = this.magazineSize;
 };
 
 /*
  * Keeps track of timing for getting rounds and reloading
  */
 Weapon.prototype.frame = function(game){
+	this.firingFrames++;
+
 	//Finish reloading
 	if(this.reloading)
 	{
@@ -81,13 +104,15 @@ Weapon.prototype.frame = function(game){
 
 		if(timeReloading > this.reloadTime)
 		{
+			console.log("Reloading");
 			this.reloadingFrames = 0;
+			this.reloading = false;
 			this.reload();
 		}
 	}
 
 	//Start reloading automatically
-	if(!this.reloading && this.magazine.length == 0 && this.automaticReloading)
+	if(!this.reloading && this.magazine == 0 && this.automaticReloading)
 	{
 		this.beginReloading();
 	}
