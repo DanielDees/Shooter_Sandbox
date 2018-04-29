@@ -9,7 +9,7 @@ function Player() {
 	this.width = 20;
 	this.height = 20;
 
-	this.speed = 10;
+	this.speed = 6;
 }
 
 Player.prototype = Object.create(Model.prototype);
@@ -38,6 +38,7 @@ Player.prototype.move = function(keyboard) {
 	}
 };
 
+//Fire single projectile
 Player.prototype.shoot = function(type) {
 	if (mouse.clicked) {
 		  //Get center of player.
@@ -52,8 +53,54 @@ Player.prototype.shoot = function(type) {
 		  projectileList.push(new Projectile(data));
 
 		  //Debug. Remove later.
-		  if (projectileList.length >= 500) { 
+		  if (projectileList.length >= 5000) { 
 		  	projectileList.shift(); 
 		  }
+	}
+}
+
+//Fire twin projectiles in V formation
+//Spread is defined in degrees, not radians
+Player.prototype.shoot2 = function(rounds, spread) {
+	if (mouse.clicked) {
+
+		  //Get center of player.
+		  var angle = toolbox.getAngleBetween(this, mouse, "radians");
+
+		  //Convert to radians
+		  spread *= (Math.PI / 180);
+
+		  //Get difference in angle between any two rounds
+		  var roundSpread = (spread / rounds);
+
+		  //Get angle to be subtracted to center shot spread on mouse
+		  var splitAt = 0;
+
+		  //Get spread for odd numbers
+		  if (rounds % 2 == 1) {
+		  	splitAt = roundSpread * Math.floor((rounds / 2));
+		  }
+		  //Get spraed for even numbers
+		  if (rounds % 2 == 0) {
+			splitAt = roundSpread * ((rounds / 2) - 0.5);
+		  }
+
+		  for (var i = 0; i < rounds; i++) {
+		  	
+		  	var firingAngle = angle - splitAt + (roundSpread * i);
+
+		  	var data = {
+		  		x: this.x + (this.width / 2),
+		  		y: this.y + (this.height / 2),
+		  		angle: firingAngle
+		  	};
+
+		  	projectileList.push(new Projectile(data));
+
+		  	//Debug. Remove later.
+		  	if (projectileList.length >= 4000) { 
+		  		projectileList.shift(); 
+		  	}
+		}
 	}
 }
