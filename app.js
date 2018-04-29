@@ -39,7 +39,7 @@ function gameLoop() {
 	//Handle firing
 	if(mouse.clicked) {
 		if(weapon.pullTrigger(game)) {
-			player.shoot2(10, 0);
+			player.shoot2(10, 20);
 		}
 	}
 

@@ -36,6 +36,12 @@ Toolbox.prototype.drawDebug = function() {
 	ctx.fillText("Mouse Y: " + mouse.y, x, 60);
 	ctx.fillText("Clicked: " + mouse.clicked, x, 80);
 	ctx.fillText("Degrees: " + toolbox.getAngleBetween(player, mouse).toFixed(0), x, 100);
-	ctx.fillText("Radians: " + toolbox.getAngleBetween(player, mouse, "radians").toFixed(1), x, 120);
+	//ctx.fillText("Radians: " + toolbox.getAngleBetween(player, mouse, "radians").toFixed(1), x, 120);
+	ctx.fillText("Reload: " + weapon.reloading, x, 140);
+	ctx.fillText("Reload: " + weapon.reloadingFrames, x, 160);
+	ctx.fillText("Clip: " + weapon.magazine, x, 180);
+	ctx.fillText("Firing: " + weapon.firingFrames, x, 200);
+	//ctx.fillText("???: " + mouse.clicked, x, 220);
+	//ctx.fillText("???: " + mouse.clicked, x, 240);
 	
 }
