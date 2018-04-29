@@ -25,7 +25,7 @@ function gameLoop() {
 
 	player.move(keyboard);
 	player.draw(ctx);
-	player.shoot2();
+	player.shoot2(10, 36);
 
 	for (var i = 0; i < projectileList.length; i++) {
 		projectileList[i].bouncy();

@@ -19,7 +19,7 @@ Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
 	//Make angle positive on 360 degree values
 	angle += 180;
 
-	//Convert to degrees in Radians if necessary
+	//Convert from degrees to Radians if necessary
 	if (radians) { angle *= (Math.PI / 180); }
 
 	//Return angle in Degrees

@@ -9,13 +9,13 @@ function Projectile(data) {
 	this.x = data.x;
 	this.y = data.y;
 
-	this.width = 20;
-	this.height = 20;
+	this.width = 5;
+	this.height = 5;
 
 	//x and y speeds are adjusted for angle fired
 	this.speed = {
-		x: (5 * Math.cos(data.angle)), 
-		y: (5 * Math.sin(data.angle))
+		x: (3 * Math.cos(data.angle)), 
+		y: (3 * Math.sin(data.angle))
 	};
 
 	this.angle = data.angle;
@@ -25,7 +25,7 @@ Projectile.prototype = Object.create(Model.prototype);
 
 Projectile.prototype.draw = function(ctx) {
 	ctx.fillStyle = "green";
-	ctx.fillRect(this.getX(), this.getY(), this.width, this.height);
+	ctx.fillRect(this.getX() - (this.width / 2), this.getY() - (this.height / 2), this.width, this.height);
 };
 
 Projectile.prototype.normal = function() {

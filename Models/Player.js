@@ -53,37 +53,42 @@ Player.prototype.shoot = function(type) {
 		  projectileList.push(new Projectile(data));
 
 		  //Debug. Remove later.
-		  if (projectileList.length >= 500) { 
+		  if (projectileList.length >= 5000) { 
 		  	projectileList.shift(); 
 		  }
 	}
 }
 
 //Fire twin projectiles in V formation
-Player.prototype.shoot2 = function(type) {
+//Spread is defined in degrees, not radians
+Player.prototype.shoot2 = function(rounds, spread) {
 	if (mouse.clicked) {
+
 		  //Get center of player.
-		  var angle = toolbox.getAngleBetween(this, mouse, "radians") - 0.15;
-		  var angle2 = angle + 0.3;
+		  var angle = toolbox.getAngleBetween(this, mouse, "radians");
 
-		  var data = {
-		  	x: this.x,
-		  	y: this.y,
-		  	angle: angle
-		  };
-		  var data2 = {
-		  	x: this.x,
-		  	y: this.y,
-		  	angle: angle2
-		  };
-		  
-		  projectileList.push(new Projectile(data));
-		  projectileList.push(new Projectile(data2));
+		  //Convert to radians
+		  spread *= (Math.PI / 180);
 
-		  //Debug. Remove later.
-		  if (projectileList.length >= 400) { 
-		  	projectileList.shift(); 
-		  	projectileList.shift();
-		  }
+		  //Get difference in angle between any two rounds
+		  var roundSpread = (spread / rounds);
+
+		  for (var i = 0; i < rounds; i++) {
+		  	
+		  	var firingAngle = angle - (spread / 2) + (roundSpread * i);
+
+		  	var data = {
+		  		x: this.x + (this.width / 2),
+		  		y: this.y + (this.height / 2),
+		  		angle: firingAngle
+		  	};
+
+		  	projectileList.push(new Projectile(data));
+
+		  	//Debug. Remove later.
+		  	if (projectileList.length >= 4000) { 
+		  		projectileList.shift(); 
+		  	}
+		}
 	}
 }
