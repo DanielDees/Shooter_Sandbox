@@ -1,20 +1,23 @@
 ;"use strict";
 
 var canvas = document.getElementById("myCanvas");
-var keyboard = new Keyboard();
+var ctx = canvas.getContext("2d");
+var GAME_FPS = 60;
+
+window.onload = resizeCanvas;
+window.onresize = resizeCanvas;
 
 function resizeCanvas() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 }
 
-window.onload = resizeCanvas;
-window.onresize = resizeCanvas;
-
-var ctx = canvas.getContext("2d");
-var FPS = 60;
-
+//Game objects
+var keyboard = new Keyboard();
+var toolbox = new Toolbox();
 var player = new Player();
+
+var projectileList = [];
 
 function gameLoop() {
 	//Clear screen
@@ -22,12 +25,15 @@ function gameLoop() {
 
 	player.move(keyboard);
 	player.draw(ctx);
+	player.shoot();
 
-	ctx.font = "30px Courier New";
-	ctx.fillText("Mouse X: " + mouse.x, 40, 40);
-	ctx.fillText("Mouse Y: " + mouse.y, 40, 70);
-	ctx.fillText("Clicked: " + mouse.clicked, 40, 100);
+	for (var i = 0; i < projectileList.length; i++) {
+		projectileList[i].move();
+		projectileList[i].draw(ctx);
+	}
+
+	toolbox.drawDebug();
 }
 
 //Run game
-var app = setInterval(gameLoop, (1000 / FPS));
+setInterval(gameLoop, (1000 / GAME_FPS));
