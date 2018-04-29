@@ -20,15 +20,19 @@ Player.prototype.draw = function(ctx) {
 };
 
 Player.prototype.move = function(keyboard) {
+	//Collision with top of screen
 	if (keyboard.keys.w) {
 		this.y = Math.max(this.getY() - this.speed, 0);
 	}
+	//Collision with bottom of screen
 	if (keyboard.keys.s) {
 		this.y = Math.min(this.getY() + this.speed, window.innerHeight - this.height);
 	}
+	//Collision with left of screen
 	if (keyboard.keys.a) {
 		this.x = Math.max(this.getX() - this.speed, 0);
 	}
+	//Collision with right of screen
 	if (keyboard.keys.d) {
 		this.x = Math.min(this.getX() + this.speed, window.innerWidth - this.width);
 	}

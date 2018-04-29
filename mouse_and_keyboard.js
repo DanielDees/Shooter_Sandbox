@@ -3,7 +3,6 @@ document.onmousemove = mousePos;
 document.onmousedown = function() { mouse.clicked = true; };
 document.onmouseup = function() { mouse.clicked = false; };
 
-
 //MOUSE 
 var mouse = {
   x: 0,
