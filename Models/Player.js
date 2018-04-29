@@ -9,7 +9,7 @@ function Player() {
 	this.width = 20;
 	this.height = 20;
 
-	this.speed = 7;
+	this.speed = 6;
 }
 
 Player.prototype = Object.create(Model.prototype);
@@ -81,7 +81,7 @@ Player.prototype.shoot2 = function(type) {
 		  projectileList.push(new Projectile(data2));
 
 		  //Debug. Remove later.
-		  if (projectileList.length >= 800) { 
+		  if (projectileList.length >= 400) { 
 		  	projectileList.shift(); 
 		  	projectileList.shift();
 		  }
