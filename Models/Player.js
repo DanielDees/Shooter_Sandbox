@@ -73,9 +73,21 @@ Player.prototype.shoot2 = function(rounds, spread) {
 		  //Get difference in angle between any two rounds
 		  var roundSpread = (spread / rounds);
 
+		  //Get angle to be subtracted to center shot spread on mouse
+		  var splitAt = 0;
+
+		  //Get spread for odd numbers
+		  if (rounds % 2 == 1) {
+		  	splitAt = roundSpread * Math.floor((rounds / 2));
+		  }
+		  //Get spraed for even numbers
+		  if (rounds % 2 == 0) {
+			splitAt = roundSpread * ((rounds / 2) - 0.5);
+		  }
+
 		  for (var i = 0; i < rounds; i++) {
 		  	
-		  	var firingAngle = angle - (spread / 2) + (roundSpread * i);
+		  	var firingAngle = angle - splitAt + (roundSpread * i);
 
 		  	var data = {
 		  		x: this.x + (this.width / 2),
