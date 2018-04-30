@@ -80,7 +80,6 @@ function gameLoop() {
 		for (var i = 0; i < weaponsList.length; i++) {
 			//Switch to next weapon in list if there is one
 			if (weaponsList[i].name == player.getWeapon().name && i < weaponsList.length - 1) {
-				console.log(1);
 				player.setWeapon(weaponsList[i + 1]);
 				keyboard.keys.x = false;
 				break;
