@@ -9,16 +9,16 @@ function Weapon()
 	 * Rounders per second.
 	 * 0 = single action
 	 */
-	this.roundsPerSecond = 2;
+	this.roundsPerSecond = 5;
 
 	//Number of frames since firing last
-	this.firingFrames = 0;
+	this.firingFrame = 0;
 
 	//Automatic reloading
-	this.automaticReloading = true;
+	this.autoReload = true;
 
 	//Reload time
-	this.reloadTime = 2.0;
+	this.reloadTime = 1;
 
 	//Clip with ammo
 	this.magazine = 10;
@@ -33,7 +33,7 @@ function Weapon()
 	this.reloading = false;
 
 	//Frames since we started last action
-	this.reloadingFrames = 0;
+	this.reloadFrame = 0;
 }
 
 Weapon.prototype = Object.create(Model.prototype);
@@ -42,18 +42,16 @@ Weapon.prototype = Object.create(Model.prototype);
  * Lets the weapon know that we're attempting to fire.
  */
 Weapon.prototype.pullTrigger = function(game){
+
 	this.triggerPulled = true;
 
-	if(this.magazine <= 0 || this.reloading) {
+	if (this.magazine <= 0 || this.reloading) {
 		return false;
 	}
 
-	var secondsSinceFiring = this.firingFrames / game.FPS;
-
-	if(secondsSinceFiring * this.roundsPerSecond >= 1)
-	{
+	if (this.firingFrame > game.FPS / this.roundsPerSecond) {
 		//Reset and return true
-		this.firingFrames = 0;
+		this.firingFrame = 0;
 		this.magazine--;
 
 		return true;
@@ -69,51 +67,107 @@ Weapon.prototype.releaseTrigger = function(){
 	this.triggerPulled = false;
 };
 
-/*
- * Begin reloading.
+/* 
+ * Begin reloading the weapon.
  */
-Weapon.prototype.beginReloading = function(){
-	console.log("Begin reloading.");
-	if(!this.reloading)
-	{
-		this.reloading = true;
-		this.reloadingFrames = 0;
-	}
-};
+ Weapon.prototype.beginReloading = function() {
+ 	if (!this.reloading) {
+ 		this.reloading = true;
+ 		this.reloadFrame = 0;
+ 	}
+ }
 
 /*
  * Reloads the weapon.
  */
-Weapon.prototype.reload = function(){
-	this.magazine = 0;
+Weapon.prototype.reload = function() {
 	this.magazine = this.magazineSize;
+	this.reloadFrame = 0;
+	this.reloading = false;
 };
 
 /*
  * Keeps track of timing for getting rounds and reloading
  */
-Weapon.prototype.frame = function(game){
-	this.firingFrames++;
+Weapon.prototype.frame = function(game) {
+
+	this.firingFrame++;
+
+	//Start reloading automatically
+	if (!this.reloading && this.magazine == 0 && this.autoReload) {
+		this.beginReloading();
+	}
 
 	//Finish reloading
-	if(this.reloading)
-	{
-		this.reloadingFrames++;
+	if (this.reloading) {
 
-		var timeReloading = this.reloadingFrames / game.FPS;
+		this.reloadFrame++;
 
-		if(timeReloading > this.reloadTime)
-		{
-			console.log("Reloading");
-			this.reloadingFrames = 0;
-			this.reloading = false;
+		if (this.reloadFrame > this.reloadTime * game.FPS) {
 			this.reload();
 		}
 	}
-
-	//Start reloading automatically
-	if(!this.reloading && this.magazine == 0 && this.automaticReloading)
-	{
-		this.beginReloading();
-	}
 };
+
+//Fire single projectile
+Weapon.prototype.shoot = function(type) {
+	if (mouse.clicked) {
+		  //Get center of player.
+		  var angle = toolbox.getAngleBetween(this, mouse, "radians");
+
+		  var data = {
+		  	x: this.x,
+		  	y: this.y,
+		  	angle: angle
+		  };
+		  
+		  projectileList.push(new Projectile(data));
+
+		  //Debug. Remove later.
+		  if (projectileList.length >= 5000) { 
+		  	projectileList.shift(); 
+		  }
+	}
+}
+
+//Fire any number of rounds in desired spread
+//Spread is defined in degrees, not radians
+Weapon.prototype.shoot2 = function(rounds, spread) {
+	if (mouse.clicked) {
+
+		  //Get center of player.
+		  var angle = toolbox.getAngleBetween(player, mouse, "radians");
+
+		  //Convert to radians
+		  spread *= (Math.PI / 180);
+
+		  //Get difference in angle between any two rounds
+		  var roundSpread = (spread / rounds);
+
+		  //Get angle to be subtracted to center shot spread on mouse
+		  var splitAt = 0;
+
+		  //Get spread for odd numbers
+		  if (rounds % 2 == 1) {
+		  	splitAt = roundSpread * Math.floor((rounds / 2));
+		  }
+		  //Get spread for even numbers
+		  if (rounds % 2 == 0) {
+			splitAt = roundSpread * ((rounds / 2) - 0.5);
+		  }
+
+		  //Fire all rounds
+		  for (var i = 0; i < rounds; i++) {
+		  	
+		  	var firingAngle = angle - splitAt + (roundSpread * i);
+
+		  	var data = {
+		  		x: player.x + (player.width / 2),
+		  		y: player.y + (player.height / 2),
+		  		angle: firingAngle
+		  	};
+
+		  	projectileList.push(new Projectile(data));
+		}
+	}
+}

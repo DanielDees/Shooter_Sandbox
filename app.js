@@ -26,8 +26,7 @@ function gameLoop() {
 	//Clear screen
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
-	if(keyboard.keys.r)
-	{
+	if (keyboard.keys.r && weapon.magazine < weapon.magazineSize) {
 		weapon.beginReloading();
 	}
 
@@ -37,12 +36,11 @@ function gameLoop() {
 	weapon.frame(game);
 
 	//Handle firing
-	if(mouse.clicked) {
-		if(weapon.pullTrigger(game)) {
-			player.shoot2(10, 20);
+	if (mouse.clicked) {
+		if (weapon.pullTrigger(game)) {
+			weapon.shoot2(10, 20);
 		}
 	}
-
 	else {
 		weapon.releaseTrigger();
 	}
