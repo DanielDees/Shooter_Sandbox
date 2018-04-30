@@ -39,7 +39,10 @@ function Weapon()
 	this.range = 600;
 
 	//Speed projectile moves at
-	this.projectileSpeed = 12;
+	this.roundSpeed = 12;
+
+	//Projectile move type
+	this.roundMoveType = "bouncy";
 
 	//Shot spread in Radians: degrees * (Math.PI / 180)
 	this.spread = 0;
@@ -134,16 +137,8 @@ Weapon.prototype.shoot = function(type) {
 	if (mouse.clicked) {
 		//Get center of player.
 		var angle = toolbox.getAngleBetween(this, mouse, "radians");
-
-		var data = {
-			x: this.x,
-			y: this.y,
-			angle: angle,
-			range: this.range,
-			speed: this.projectileSpeed
-		};
 		  
-		projectileList.push(new Projectile(data));
+		projectileList.push(new Projectile(this.getProjectileData(player, angle)));
 	}
 };
 
@@ -173,20 +168,26 @@ Weapon.prototype.shoot2 = function() {
 		//Fire all rounds
 		for (var i = 0; i < this.rounds; i++) {
 			
-			var firingAngle = angle - splitAt + (roundSpread * i);
+			var roundAngle = angle - splitAt + (roundSpread * i);
 
-			var data = {
-				x: player.x + (player.width / 2),
-				y: player.y + (player.height / 2),
-				angle: firingAngle,
-				range: this.range,
-				speed: this.projectileSpeed
-			};
-
-			projectileList.push(new Projectile(data));
+			projectileList.push(new Projectile(this.getProjectileData(player, roundAngle)));
 		}
 	}
 };
+
+Weapon.prototype.getProjectileData = function(entity, angle) {
+	
+	var data = {
+		x: entity.x + (entity.width / 2),
+		y: entity.y + (entity.height / 2),
+		angle: angle,
+		range: this.range,
+		speed: this.roundSpeed,
+		moveType: this.roundMoveType
+	};
+
+	return data;
+}
 
 Weapon.prototype.setRoundsPerSecond = function(x) {
 	this.roundsPerSecond = x;
@@ -227,5 +228,10 @@ Weapon.prototype.setSpread = function(x) {
 
 Weapon.prototype.setProjectileSpeed = function(x) {
 	this.projectileSpeed = x;
+	return this;
+};
+
+Weapon.prototype.setProjectileMoveType = function(x) {
+	this.projectileMoveType = x;
 	return this;
 };

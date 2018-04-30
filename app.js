@@ -20,6 +20,7 @@ var toolbox = new Toolbox();
 var player = new Player();
 
 var shotgun = new Weapon();
+var nuke = new Weapon();
 
 //Initialize shotgun settings
 shotgun.setRounds(12).
@@ -28,7 +29,20 @@ shotgun.setRounds(12).
 		setReloadTime(1).
 		setRoundsPerSecond(50).
 		setRange(600).
-		setAutoReload(true);
+		setAutoReload(true).
+		setProjectileSpeed(14).
+		setProjectileMoveType("bouncy");
+
+//Initialize nuke settings
+nuke.setRounds(1000).
+		setSpread(360).
+		setMagazineSize(1).
+		setReloadTime(3).
+		setRoundsPerSecond(1).
+		setRange(2000).
+		setAutoReload(true).
+		setProjectileSpeed(8).
+		setProjectileMoveType("normal");
 
 player.setWeapon(shotgun);
 
@@ -44,6 +58,15 @@ function gameLoop() {
 
 	player.move(keyboard);
 	player.draw(ctx);
+
+	if (keyboard.keys.x && player.weapon == shotgun) {
+		player.setWeapon(nuke);
+		keyboard.keys.x = false;
+	}
+	else if (keyboard.keys.x && player.weapon == nuke) {
+		player.setWeapon(shotgun);
+		keyboard.keys.x = false;
+	}
 
 	player.weapon.frame(game);
 
