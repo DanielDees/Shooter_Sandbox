@@ -30,18 +30,24 @@ Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
 Toolbox.prototype.drawDebug = function() {
 
 	var x = 30;
+	var y = parseInt(ctx.font);
+
 	ctx.fillStyle = "blue";
 	ctx.font = "24px Courier New";
-	ctx.fillText("Mouse X: " + mouse.x, x, 40);
-	ctx.fillText("Mouse Y: " + mouse.y, x, 60);
-	ctx.fillText("Clicked: " + mouse.clicked, x, 80);
-	ctx.fillText("Degrees: " + toolbox.getAngleBetween(player, mouse).toFixed(0), x, 100);
-	//ctx.fillText("Radians: " + toolbox.getAngleBetween(player, mouse, "radians").toFixed(1), x, 120);
-	ctx.fillText("Reload: " + weapon.reloading, x, 140);
-	ctx.fillText("Reload: " + (weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + weapon.reloadTime + "s", x, 160);
-	ctx.fillText("Clip: " + weapon.magazine, x, 180);
-	ctx.fillText("Firing: " + weapon.firingFrame, x, 200);
-	//ctx.fillText("???: " + mouse.clicked, x, 220);
-	//ctx.fillText("???: " + mouse.clicked, x, 240);
+
+	var debugInfo = [
+		//["Mouse X", mouse.x],
+		//["Mouse Y", mouse.y],
+		//["Clicked", mouse.clicked],
+		//["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(0)],
+		//["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
+		//["Reload", weapon.reloading],
+		["Reload", (weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + weapon.reloadTime + "s"],
+		["Clip", weapon.magazine],
+		["Firing", weapon.firingFrame]
+	];
 	
+	for (var i = 0; i < debugInfo.length; i++) {
+		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 40 + y * i);
+	}	
 }
