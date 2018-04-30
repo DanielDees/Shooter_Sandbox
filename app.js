@@ -22,12 +22,12 @@ var player = new Player();
 var shotgun = new Weapon();
 
 //Initialize shotgun settings
-shotgun.setRounds(10).
-		setSpread(90).
+shotgun.setRounds(12).
+		setSpread(35).
 		setMagazineSize(50).
 		setReloadTime(1).
-		setRoundsPerSecond(5).
-		setRange(500).
+		setRoundsPerSecond(50).
+		setRange(600).
 		setAutoReload(true);
 
 player.setWeapon(shotgun);
@@ -46,16 +46,6 @@ function gameLoop() {
 	player.draw(ctx);
 
 	player.weapon.frame(game);
-
-	//Handle firing
-	if (mouse.clicked) {
-		if (player.weapon.pullTrigger(game)) {
-			player.weapon.shoot2(10, 20);
-		}
-	}
-	else {
-		player.weapon.releaseTrigger();
-	}
 
 	for (var i = 0; i < projectileList.length; i++) {
 

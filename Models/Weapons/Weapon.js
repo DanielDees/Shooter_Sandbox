@@ -61,7 +61,7 @@ Weapon.prototype.pullTrigger = function(game){
 		return false;
 	}
 
-	if (this.firingFrame > game.FPS / this.roundsPerSecond) {
+	if (this.firingFrame >= game.FPS / this.roundsPerSecond) {
 		//Reset and return true
 		this.firingFrame = 0;
 		this.magazine--;
@@ -82,12 +82,12 @@ Weapon.prototype.releaseTrigger = function(){
 /* 
  * Begin reloading the weapon.
  */
- Weapon.prototype.beginReloading = function() {
+Weapon.prototype.beginReloading = function() {
 	if (!this.reloading) {
 		this.reloading = true;
 		this.reloadFrame = 0;
 	}
- }
+};
 
 /*
  * Reloads the weapon.
@@ -104,6 +104,14 @@ Weapon.prototype.reload = function() {
 Weapon.prototype.frame = function(game) {
 
 	this.firingFrame++;
+
+	//Handle firing
+	if (mouse.clicked && this.pullTrigger(game)) {
+		this.shoot2();
+	}
+	else {
+		this.releaseTrigger();
+	}
 
 	//Start reloading automatically
 	if (!this.reloading && this.magazine == 0 && this.autoReload) {
@@ -137,7 +145,7 @@ Weapon.prototype.shoot = function(type) {
 		  
 		projectileList.push(new Projectile(data));
 	}
-}
+};
 
 //Fire any number of rounds in desired spread
 //Spread is defined in degrees, not radians
@@ -178,7 +186,7 @@ Weapon.prototype.shoot2 = function() {
 			projectileList.push(new Projectile(data));
 		}
 	}
-}
+};
 
 Weapon.prototype.setRoundsPerSecond = function(x) {
 	this.roundsPerSecond = x;

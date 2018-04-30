@@ -43,7 +43,7 @@ Toolbox.prototype.drawDebug = function() {
 		//["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
 		//["Reload", player.weapon.reloading],
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
-		["Clip", player.weapon.magazine],
+		["Clip", player.weapon.magazine + " / " + player.weapon.magazineSize],
 		["Firing", player.weapon.firingFrame]
 	];
 	
