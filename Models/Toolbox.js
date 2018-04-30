@@ -41,10 +41,10 @@ Toolbox.prototype.drawDebug = function() {
 		//["Clicked", mouse.clicked],
 		//["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(0)],
 		//["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
-		//["Reload", weapon.reloading],
-		["Reload", (weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + weapon.reloadTime + "s"],
-		["Clip", weapon.magazine],
-		["Firing", weapon.firingFrame]
+		//["Reload", player.weapon.reloading],
+		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
+		["Clip", player.weapon.magazine],
+		["Firing", player.weapon.firingFrame]
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {

@@ -10,6 +10,8 @@ function Player() {
 	this.height = 20;
 
 	this.speed = 6;
+
+	this.weapon = new Weapon();
 }
 
 Player.prototype = Object.create(Model.prototype);
@@ -37,3 +39,7 @@ Player.prototype.move = function(keyboard) {
 		this.x = Math.min(this.getX() + this.speed, window.innerWidth - this.width);
 	}
 };
+
+Player.prototype.setWeapon = function(weapon) {
+	this.weapon = weapon;
+}
