@@ -43,3 +43,7 @@ Player.prototype.move = function(keyboard) {
 Player.prototype.setWeapon = function(weapon) {
 	this.weapon = weapon;
 }
+
+Player.prototype.getWeapon = function() {
+	return this.weapon;
+}

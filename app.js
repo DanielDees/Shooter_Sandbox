@@ -21,9 +21,25 @@ var player = new Player();
 
 var shotgun = new Weapon();
 var nuke = new Weapon();
+var laser = new Weapon();
+
+var weaponsList = [shotgun, nuke, laser];
 
 //Initialize shotgun settings
-shotgun.setRounds(12).
+laser.setName("laser").
+		setRounds(1).
+		setSpread(0).
+		setMagazineSize(2000).
+		setReloadTime(2).
+		setRoundsPerSecond(60).
+		setRange(4000).
+		setAutoReload(true).
+		setRoundSpeed(16).
+		setRoundMoveType("bouncy");
+
+//Initialize shotgun settings
+shotgun.setName("shotgun").
+		setRounds(12).
 		setSpread(35).
 		setMagazineSize(50).
 		setReloadTime(1).
@@ -34,7 +50,8 @@ shotgun.setRounds(12).
 		setRoundMoveType("bouncy");
 
 //Initialize nuke settings
-nuke.setRounds(1000).
+nuke.setName("nuke").
+		setRounds(1000).
 		setSpread(360).
 		setMagazineSize(1).
 		setReloadTime(3).
@@ -59,13 +76,22 @@ function gameLoop() {
 	player.move(keyboard);
 	player.draw(ctx);
 
-	if (keyboard.keys.x && player.weapon == shotgun) {
-		player.setWeapon(nuke);
-		keyboard.keys.x = false;
-	}
-	else if (keyboard.keys.x && player.weapon == nuke) {
-		player.setWeapon(shotgun);
-		keyboard.keys.x = false;
+	if (keyboard.keys.x) {
+		for (var i = 0; i < weaponsList.length; i++) {
+			//Switch to next weapon in list if there is one
+			if (weaponsList[i].name == player.getWeapon().name && i < weaponsList.length - 1) {
+				console.log(1);
+				player.setWeapon(weaponsList[i + 1]);
+				keyboard.keys.x = false;
+				break;
+			}
+			//If using last weapon, switch to first one.
+			else if (weaponsList[i].name == player.getWeapon().name && i == weaponsList.length - 1) {
+				player.setWeapon(weaponsList[0]);
+				keyboard.keys.x = false;
+				break;
+			}
+		}
 	}
 
 	player.weapon.frame(game);

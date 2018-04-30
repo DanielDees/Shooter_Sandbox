@@ -5,6 +5,9 @@ function Weapon()
 {
 	Model.call(this);
 
+	//Weapon name
+	this.name = "Unknown Weapon Name!";
+
 	/*
 	 * Rounds fired per second.
 	 * 0 = single action
@@ -187,6 +190,11 @@ Weapon.prototype.getProjectileData = function(entity, angle) {
 	};
 
 	return data;
+}
+
+Weapon.prototype.setName = function(x) {
+	this.name = x;
+	return this;
 }
 
 Weapon.prototype.setRoundsPerSecond = function(x) {
