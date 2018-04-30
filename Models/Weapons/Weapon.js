@@ -226,12 +226,12 @@ Weapon.prototype.setSpread = function(x) {
 	return this;
 };
 
-Weapon.prototype.setProjectileSpeed = function(x) {
+Weapon.prototype.setRoundSpeed = function(x) {
 	this.projectileSpeed = x;
 	return this;
 };
 
-Weapon.prototype.setProjectileMoveType = function(x) {
-	this.projectileMoveType = x;
+Weapon.prototype.setRoundMoveType = function(x) {
+	this.roundMoveType = x;
 	return this;
 };

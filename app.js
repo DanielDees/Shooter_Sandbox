@@ -30,8 +30,8 @@ shotgun.setRounds(12).
 		setRoundsPerSecond(50).
 		setRange(600).
 		setAutoReload(true).
-		setProjectileSpeed(14).
-		setProjectileMoveType("bouncy");
+		setRoundSpeed(14).
+		setRoundMoveType("bouncy");
 
 //Initialize nuke settings
 nuke.setRounds(1000).
@@ -41,8 +41,8 @@ nuke.setRounds(1000).
 		setRoundsPerSecond(1).
 		setRange(2000).
 		setAutoReload(true).
-		setProjectileSpeed(8).
-		setProjectileMoveType("normal");
+		setRoundSpeed(8).
+		setRoundMoveType("normal");
 
 player.setWeapon(shotgun);
 
