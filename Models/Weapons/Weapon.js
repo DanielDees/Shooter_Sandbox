@@ -6,7 +6,7 @@ function Weapon()
 	Model.call(this);
 
 	/*
-	 * Rounders per second.
+	 * Rounds fired per second.
 	 * 0 = single action
 	 */
 	this.roundsPerSecond = 5;
@@ -34,6 +34,18 @@ function Weapon()
 
 	//Frames since we started last action
 	this.reloadFrame = 0;
+
+	//Distance projectile can travel before disappearing
+	this.range = 600;
+
+	//Speed projectile moves at
+	this.projectileSpeed = 12;
+
+	//Shot spread in Radians: degrees * (Math.PI / 180)
+	this.spread = 0;
+
+	//Projectiles weapon shoots with each round
+	this.rounds = 1;
 }
 
 Weapon.prototype = Object.create(Model.prototype);
@@ -71,10 +83,10 @@ Weapon.prototype.releaseTrigger = function(){
  * Begin reloading the weapon.
  */
  Weapon.prototype.beginReloading = function() {
- 	if (!this.reloading) {
- 		this.reloading = true;
- 		this.reloadFrame = 0;
- 	}
+	if (!this.reloading) {
+		this.reloading = true;
+		this.reloadFrame = 0;
+	}
  }
 
 /*
@@ -112,62 +124,100 @@ Weapon.prototype.frame = function(game) {
 //Fire single projectile
 Weapon.prototype.shoot = function(type) {
 	if (mouse.clicked) {
-		  //Get center of player.
-		  var angle = toolbox.getAngleBetween(this, mouse, "radians");
+		//Get center of player.
+		var angle = toolbox.getAngleBetween(this, mouse, "radians");
 
-		  var data = {
-		  	x: this.x,
-		  	y: this.y,
-		  	angle: angle
-		  };
+		var data = {
+			x: this.x,
+			y: this.y,
+			angle: angle,
+			range: this.range,
+			speed: this.projectileSpeed
+		};
 		  
-		  projectileList.push(new Projectile(data));
-
-		  //Debug. Remove later.
-		  if (projectileList.length >= 5000) { 
-		  	projectileList.shift(); 
-		  }
+		projectileList.push(new Projectile(data));
 	}
 }
 
 //Fire any number of rounds in desired spread
 //Spread is defined in degrees, not radians
-Weapon.prototype.shoot2 = function(rounds, spread) {
+Weapon.prototype.shoot2 = function() {
 	if (mouse.clicked) {
 
-		  //Get center of player.
-		  var angle = toolbox.getAngleBetween(player, mouse, "radians");
+		//Get center of player.
+		var angle = toolbox.getAngleBetween(player, mouse, "radians");
 
-		  //Convert to radians
-		  spread *= (Math.PI / 180);
+		//Get difference in angle between any two shots
+		var roundSpread = (this.spread / this.rounds);
 
-		  //Get difference in angle between any two rounds
-		  var roundSpread = (spread / rounds);
+		//Get angle to be subtracted to center shot spread on mouse
+		var splitAt = 0;
 
-		  //Get angle to be subtracted to center shot spread on mouse
-		  var splitAt = 0;
+		//Get spread for odd numbers
+		if (this.rounds % 2 == 1) {
+			splitAt = roundSpread * Math.floor((this.rounds / 2));
+		}
+		//Get spread for even numbers
+		if (this.rounds % 2 == 0) {
+			splitAt = roundSpread * ((this.rounds / 2) - 0.5);
+		}
 
-		  //Get spread for odd numbers
-		  if (rounds % 2 == 1) {
-		  	splitAt = roundSpread * Math.floor((rounds / 2));
-		  }
-		  //Get spread for even numbers
-		  if (rounds % 2 == 0) {
-			splitAt = roundSpread * ((rounds / 2) - 0.5);
-		  }
+		//Fire all rounds
+		for (var i = 0; i < this.rounds; i++) {
+			
+			var firingAngle = angle - splitAt + (roundSpread * i);
 
-		  //Fire all rounds
-		  for (var i = 0; i < rounds; i++) {
-		  	
-		  	var firingAngle = angle - splitAt + (roundSpread * i);
+			var data = {
+				x: player.x + (player.width / 2),
+				y: player.y + (player.height / 2),
+				angle: firingAngle,
+				range: this.range,
+				speed: this.projectileSpeed
+			};
 
-		  	var data = {
-		  		x: player.x + (player.width / 2),
-		  		y: player.y + (player.height / 2),
-		  		angle: firingAngle
-		  	};
-
-		  	projectileList.push(new Projectile(data));
+			projectileList.push(new Projectile(data));
 		}
 	}
 }
+
+Weapon.prototype.setRoundsPerSecond = function(x) {
+	this.roundsPerSecond = x;
+	return this;
+};
+
+Weapon.prototype.setAutoReload = function(x) {
+	this.autoReload = x;
+	return this;
+};
+
+Weapon.prototype.setMagazineSize = function(x) {
+	this.magazineSize = x;
+	this.magazine = x;
+	return this;
+};
+
+Weapon.prototype.setReloadTime = function(x) {
+	this.reloadTime = x;
+	return this;
+};
+
+Weapon.prototype.setRange = function(x) {
+	this.range = x;
+	return this;
+};
+
+Weapon.prototype.setRounds = function(x) {
+	this.rounds = x;
+	return this;
+};
+	
+//Accepts spread in degrees and converts to Radians
+Weapon.prototype.setSpread = function(x) {
+	this.spread = x * (Math.PI / 180);
+	return this;
+};
+
+Weapon.prototype.setProjectileSpeed = function(x) {
+	this.projectileSpeed = x;
+	return this;
+};
