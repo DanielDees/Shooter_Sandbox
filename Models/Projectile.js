@@ -9,8 +9,8 @@ function Projectile(data) {
 	this.x = data.x;
 	this.y = data.y;
 
-	this.width = 5;
-	this.height = 5;
+	this.width = data.roundWidth || 5;
+	this.height = data.roundHeight || 5;
 
 	//x and y speeds are adjusted for angle fired
 	this.speed = {
@@ -24,10 +24,15 @@ function Projectile(data) {
 	//Distance projectile can travel before disappearing
 	this.range = data.range || 300;
 
+	//Base projectile damage
+	this.damage = data.damage || 0;
+
 	//Distance projectile has moved since creation
 	this.rangeTraveled = 0;
 
 	this.moveType = data.moveType || "bouncy";
+
+	this.color = data.color || 'black';
 }
 
 Projectile.prototype = Object.create(Model.prototype);
@@ -66,8 +71,24 @@ Projectile.prototype.delete = function(i) {
 
 //Renders projectile to screen
 Projectile.prototype.draw = function(ctx) {
-	ctx.fillStyle = "green";
-	ctx.fillRect(this.getX() - (this.width / 2), this.getY() - (this.height / 2), this.width, this.height);
+
+	//Set color
+	ctx.fillStyle = this.getColor();
+
+	//Save current angle of canvas
+	ctx.save();
+
+	//Center canvas on projectile
+	ctx.translate(this.getX(), this.getY());
+
+	//Rotate canvas to match angle fired at
+	ctx.rotate(this.angle);
+
+	//Draw projectile
+	ctx.fillRect(0, 0, this.width, this.height);
+
+	//Restore original angle of canvas
+	ctx.restore();
 };
 
 //Linear movement
@@ -117,3 +138,9 @@ Projectile.prototype.update = function(data) {
 
 	return false;
 }
+
+//Color of the projectile
+Projectile.prototype.getColor = function() {
+	return this.color;
+}
+

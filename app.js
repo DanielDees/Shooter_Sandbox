@@ -25,20 +25,23 @@ var laser = new Weapon();
 
 var weaponsList = [shotgun, nuke, laser];
 
-//Initialize shotgun settings
-laser.setName("laser").
+//Initialize laser settings
+laser.setName("Laser").
 		setRounds(1).
 		setSpread(0).
-		setMagazineSize(2000).
+		setMagazineSize(500).
 		setReloadTime(2).
 		setRoundsPerSecond(60).
-		setRange(4000).
+		setRange(3000).
 		setAutoReload(true).
 		setRoundSpeed(16).
+		setRoundWidth(20).
+		setRoundHeight(3).
+		setRoundColor('red').
 		setRoundMoveType("bouncy");
 
 //Initialize shotgun settings
-shotgun.setName("shotgun").
+shotgun.setName("Shotgun").
 		setRounds(12).
 		setSpread(35).
 		setMagazineSize(50).
@@ -47,10 +50,13 @@ shotgun.setName("shotgun").
 		setRange(600).
 		setAutoReload(true).
 		setRoundSpeed(14).
+		setRoundWidth(15).
+		setRoundHeight(5).
+		setRoundColor('yellow').
 		setRoundMoveType("bouncy");
 
 //Initialize nuke settings
-nuke.setName("nuke").
+nuke.setName("Nuke").
 		setRounds(1000).
 		setSpread(360).
 		setMagazineSize(1).
@@ -59,9 +65,12 @@ nuke.setName("nuke").
 		setRange(2000).
 		setAutoReload(true).
 		setRoundSpeed(8).
+		setRoundWidth(15).
+		setRoundHeight(15).
+		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(shotgun);
+player.setWeapon(laser);
 
 var projectileList = [];
 
@@ -78,19 +87,21 @@ function gameLoop() {
 
 	if (keyboard.keys.x) {
 		for (var i = 0; i < weaponsList.length; i++) {
-			//Switch to next weapon in list if there is one
-			if (weaponsList[i].name == player.getWeapon().name && i < weaponsList.length - 1) {
-				player.setWeapon(weaponsList[i + 1]);
-				keyboard.keys.x = false;
-				break;
-			}
-			//If using last weapon, switch to first one.
-			else if (weaponsList[i].name == player.getWeapon().name && i == weaponsList.length - 1) {
-				player.setWeapon(weaponsList[0]);
-				keyboard.keys.x = false;
-				break;
+			if (weaponsList[i].name == player.getWeapon().name) {
+				//If using last weapon, switch to first one.
+				if (i == weaponsList.length - 1) {
+					player.setWeapon(weaponsList[0]);
+					break;
+				}
+				//Switch to next weapon in list if there is one
+				if (i < weaponsList.length - 1) {
+					player.setWeapon(weaponsList[i + 1]);
+					break;
+				}
 			}
 		}
+
+		keyboard.keys.x = false;
 	}
 
 	player.weapon.frame(game);

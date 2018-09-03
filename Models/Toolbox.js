@@ -6,6 +6,7 @@
 function Toolbox() {}
 
 Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
+	
 	//Calculate center of player.
 	var dx = entityFrom.x + (entityFrom.width / 2) - entityTo.x;
 	var dy = entityFrom.y + (entityFrom.height / 2) - entityTo.y;
@@ -41,10 +42,12 @@ Toolbox.prototype.drawDebug = function() {
 		//["Clicked", mouse.clicked],
 		//["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(0)],
 		//["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
-		//["Reload", player.weapon.reloading],
+		//["Reloading", player.weapon.reloading],
+		["Weapon", player.weapon.name],
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
-		["Clip", player.weapon.magazine + " / " + player.weapon.magazineSize],
-		["Firing", player.weapon.firingFrame]
+		["Clip  ", player.weapon.magazine + " / " + player.weapon.magazineSize],
+		["Damage", player.weapon.damage],
+		//["Firing", player.weapon.firingFrame]
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {

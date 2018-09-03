@@ -17,30 +17,30 @@ function Model()
 /*
  * Called every frame of the game.
  */
-Model.prototype.frame = function(){
+Model.prototype.frame = function() {
 	//implement me
 };
 
-Model.prototype.draw = function(){
+Model.prototype.draw = function() {
 	//implement me
 };
 
-Model.prototype.move = function(){
+Model.prototype.move = function() {
 	//implement me
 }
 
-Model.prototype.getX = function(){
+Model.prototype.getX = function() {
 	return this.x;
 };
 
-Model.prototype.getY = function(){
+Model.prototype.getY = function() {
 	return this.y;
 };
 
-Model.prototype.setX = function(x){
+Model.prototype.setX = function(x) {
 	this.x = x;
 };
 
-Model.prototype.setY = function(y){
+Model.prototype.setY = function(y) {
 	this.y = y;
 };

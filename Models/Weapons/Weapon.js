@@ -11,7 +11,7 @@ function Weapon()
 	/*
 	 * Rounds fired per second.
 	 * 0 = single action
-	 */
+	*/
 	this.roundsPerSecond = 5;
 
 	//Number of frames since firing last
@@ -44,6 +44,13 @@ function Weapon()
 	//Speed projectile moves at
 	this.roundSpeed = 12;
 
+	//Color of the projectile
+	this.roundColor = 'green';
+
+	//Dimensions of the projectile
+	this.roundWidth = 5;
+	this.roundHeight = 5;
+
 	//Projectile move type
 	this.roundMoveType = "bouncy";
 
@@ -52,6 +59,9 @@ function Weapon()
 
 	//Projectiles weapon shoots with each round
 	this.rounds = 1;
+
+	//Damage each projectile deals
+	this.damage = 100;
 }
 
 Weapon.prototype = Object.create(Model.prototype);
@@ -68,6 +78,7 @@ Weapon.prototype.pullTrigger = function(game){
 	}
 
 	if (this.firingFrame >= game.FPS / this.roundsPerSecond) {
+		
 		//Reset and return true
 		this.firingFrame = 0;
 		this.magazine--;
@@ -81,13 +92,13 @@ Weapon.prototype.pullTrigger = function(game){
 /*
  * Lets the weapon know that the trigger has been released.
  */
-Weapon.prototype.releaseTrigger = function(){
+Weapon.prototype.releaseTrigger = function() {
 	this.triggerPulled = false;
 };
 
 /* 
  * Begin reloading the weapon.
- */
+*/
 Weapon.prototype.beginReloading = function() {
 	if (!this.reloading) {
 		this.reloading = true;
@@ -97,7 +108,7 @@ Weapon.prototype.beginReloading = function() {
 
 /*
  * Reloads the weapon.
- */
+*/
 Weapon.prototype.reload = function() {
 	this.magazine = this.magazineSize;
 	this.reloadFrame = 0;
@@ -106,7 +117,7 @@ Weapon.prototype.reload = function() {
 
 /*
  * Keeps track of timing for getting rounds and reloading
- */
+*/
 Weapon.prototype.frame = function(game) {
 
 	this.firingFrame++;
@@ -137,44 +148,41 @@ Weapon.prototype.frame = function(game) {
 
 //Fire single projectile
 Weapon.prototype.shoot = function(type) {
-	if (mouse.clicked) {
-		//Get center of player.
-		var angle = toolbox.getAngleBetween(this, mouse, "radians");
-		  
-		projectileList.push(new Projectile(this.getProjectileData(player, angle)));
-	}
+
+	//Get center of player.
+	var angle = toolbox.getAngleBetween(this, mouse, "radians");
+	  
+	projectileList.push(new Projectile(this.getProjectileData(player, angle)));
 };
 
 //Fire any number of rounds in desired spread
 //Spread is defined in degrees, not radians
 Weapon.prototype.shoot2 = function() {
-	if (mouse.clicked) {
 
-		//Get center of player.
-		var angle = toolbox.getAngleBetween(player, mouse, "radians");
+	//Get center of player.
+	var angle = toolbox.getAngleBetween(player, mouse, "radians");
 
-		//Get difference in angle between any two shots
-		var roundSpread = (this.spread / this.rounds);
+	//Get difference in angle between any two shots
+	var roundSpread = (this.spread / this.rounds);
 
-		//Get angle to be subtracted to center shot spread on mouse
-		var splitAt = 0;
+	//Get angle to be subtracted to center shot spread on mouse
+	var splitAt = 0;
 
-		//Get spread for odd numbers
-		if (this.rounds % 2 == 1) {
-			splitAt = roundSpread * Math.floor((this.rounds / 2));
-		}
-		//Get spread for even numbers
-		if (this.rounds % 2 == 0) {
-			splitAt = roundSpread * ((this.rounds / 2) - 0.5);
-		}
+	//Get spread for odd numbers
+	if (this.rounds % 2 == 1) {
+		splitAt = roundSpread * Math.floor((this.rounds / 2));
+	}
+	//Get spread for even numbers
+	if (this.rounds % 2 == 0) {
+		splitAt = roundSpread * ((this.rounds / 2) - 0.5);
+	}
 
-		//Fire all rounds
-		for (var i = 0; i < this.rounds; i++) {
-			
-			var roundAngle = angle - splitAt + (roundSpread * i);
+	//Fire all rounds
+	for (var i = 0; i < this.rounds; i++) {
+		
+		var roundAngle = angle - splitAt + (roundSpread * i);
 
-			projectileList.push(new Projectile(this.getProjectileData(player, roundAngle)));
-		}
+		projectileList.push(new Projectile(this.getProjectileData(player, roundAngle)));
 	}
 };
 
@@ -186,7 +194,11 @@ Weapon.prototype.getProjectileData = function(entity, angle) {
 		angle: angle,
 		range: this.range,
 		speed: this.roundSpeed,
-		moveType: this.roundMoveType
+		damage: this.damage,
+		color: this.roundColor,
+		roundWidth: this.roundWidth,
+		roundHeight: this.roundHeight,
+		moveType: this.roundMoveType,
 	};
 
 	return data;
@@ -235,11 +247,31 @@ Weapon.prototype.setSpread = function(x) {
 };
 
 Weapon.prototype.setRoundSpeed = function(x) {
-	this.projectileSpeed = x;
+	this.roundSpeed = x;
+	return this;
+};
+
+Weapon.prototype.setRoundColor = function(x) {
+	this.roundColor = x;
+	return this;
+};
+
+Weapon.prototype.setRoundWidth = function(x) {
+	this.roundWidth = x;
+	return this;
+};
+
+Weapon.prototype.setRoundHeight = function(x) {
+	this.roundHeight = x;
 	return this;
 };
 
 Weapon.prototype.setRoundMoveType = function(x) {
 	this.roundMoveType = x;
+	return this;
+};
+
+Weapon.prototype.setDamage = function(x) {
+	this.damage = x;
 	return this;
 };
