@@ -6,8 +6,8 @@ function Player() {
 	//Call the parent to construct.
 	Model.call(this);
 
-	this.width = 20;
-	this.height = 20;
+	this.width = 30;
+	this.height = 30;
 
 	this.speed = 6;
 
@@ -42,6 +42,7 @@ Player.prototype.move = function(keyboard) {
 
 Player.prototype.setWeapon = function(weapon) {
 	this.weapon = weapon;
+	return this;
 }
 
 Player.prototype.getWeapon = function() {

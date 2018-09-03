@@ -51,7 +51,7 @@ Projectile.prototype.move = function() {
 			this.normal();
 	}
 
-	//Distance formula
+	//Distance formula = sqrt(x^2 + y^2)
 	var x = Math.pow(this.speed.x, 2);
 	var y = Math.pow(this.speed.y, 2);
 	var distance = Math.sqrt(x + y);
@@ -60,9 +60,13 @@ Projectile.prototype.move = function() {
 }
 
 //Deletes self from projectileList
-Projectile.prototype.delete = function(i) {
+Projectile.prototype.delete = function(toolbox, player) {
+
 	if (this.rangeTraveled > this.range) {
-		projectileList.splice(i, 1);
+		return true;
+	}
+
+	if (toolbox.collision(this, player)) {
 		return true;
 	}
 
@@ -129,7 +133,8 @@ Projectile.prototype.bouncy = function() {
 Projectile.prototype.update = function(data) {
 
 	//If the projectile doesn't self delete
-	if (!this.delete(data.index)) {
+	if (!this.delete(data.toolbox, data.player)) {
+
 		this.move();
 		this.draw(data.context);
 

@@ -12,6 +12,8 @@ function Model()
 	this.height = 0;
 
 	this.speed = 0;
+
+	this.collidable = true;
 }
 
 /*
@@ -37,10 +39,37 @@ Model.prototype.getY = function() {
 	return this.y;
 };
 
+Model.prototype.getCollision = function() {
+	return this.collidable;
+}
+
+Model.prototype.getTop = function() {
+	return this.y;
+};
+
+Model.prototype.getBottom = function() {
+	return this.y + this.height;
+};
+
+Model.prototype.getLeft = function() {
+	return this.x;
+};
+
+Model.prototype.getRight = function() {
+	return this.x + this.width;
+};
+
 Model.prototype.setX = function(x) {
 	this.x = x;
+	return this;
 };
 
 Model.prototype.setY = function(y) {
 	this.y = y;
+	return this;
 };
+
+Model.prototype.setCollision = function(collidable) {
+	this.collidable = collidable;
+	return this;
+}

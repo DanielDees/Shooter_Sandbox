@@ -29,13 +29,13 @@ var weaponsList = [shotgun, nuke, laser];
 laser.setName("Laser").
 		setRounds(1).
 		setSpread(0).
-		setMagazineSize(500).
+		setMagazineSize(1000).
 		setReloadTime(2).
 		setRoundsPerSecond(60).
 		setRange(3000).
 		setAutoReload(true).
-		setRoundSpeed(16).
-		setRoundWidth(20).
+		setRoundSpeed(30).
+		setRoundWidth(30).
 		setRoundHeight(3).
 		setRoundColor('red').
 		setRoundMoveType("bouncy");
@@ -59,8 +59,8 @@ shotgun.setName("Shotgun").
 nuke.setName("Nuke").
 		setRounds(1000).
 		setSpread(360).
-		setMagazineSize(1).
-		setReloadTime(3).
+		setMagazineSize(10).
+		setReloadTime(1).
 		setRoundsPerSecond(1).
 		setRange(2000).
 		setAutoReload(true).
@@ -70,7 +70,8 @@ nuke.setName("Nuke").
 		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(laser);
+player.setWeapon(laser).
+		setCollision(false);
 
 var projectileList = [];
 
@@ -109,12 +110,14 @@ function gameLoop() {
 	for (var i = 0; i < projectileList.length; i++) {
 
 		var data = {
-			index: i,
-			context: ctx
-		}
+			context: ctx,
+			player: player,
+			toolbox: toolbox,
+		};
 
 		//If the projectile self deletes, stay on current index
 		if (!projectileList[i].update(data)) {
+			projectileList.splice(i, 1);
 			i--;
 		}
 	}

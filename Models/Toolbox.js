@@ -40,8 +40,8 @@ Toolbox.prototype.drawDebug = function() {
 		//["Mouse X", mouse.x],
 		//["Mouse Y", mouse.y],
 		//["Clicked", mouse.clicked],
-		//["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(0)],
-		//["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
+		["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
+		["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
 		//["Reloading", player.weapon.reloading],
 		["Weapon", player.weapon.name],
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
@@ -53,4 +53,20 @@ Toolbox.prototype.drawDebug = function() {
 	for (var i = 0; i < debugInfo.length; i++) {
 		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 40 + y * i);
 	}	
+}
+
+Toolbox.prototype.collision = function (a, b) {
+
+	if (!a.getCollision() || !b.getCollision()) {
+		return false;
+	}
+
+	if (b.getRight() < a.getLeft() ||
+		a.getRight() < b.getLeft() || 
+		b.getBottom() < a.getTop() ||
+		a.getBottom() < b.getTop()) {
+		return false;
+	}
+
+	return true;
 }
