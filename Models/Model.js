@@ -39,6 +39,14 @@ Model.prototype.getY = function() {
 	return this.y;
 };
 
+Model.prototype.getWidth = function() {
+	return this.width;
+};
+
+Model.prototype.getHeight = function() {
+	return this.height;
+};
+
 Model.prototype.getCollision = function() {
 	return this.collidable;
 }
@@ -66,6 +74,16 @@ Model.prototype.setX = function(x) {
 
 Model.prototype.setY = function(y) {
 	this.y = y;
+	return this;
+};
+
+Model.prototype.setWidth = function(width) {
+	this.width = width;
+	return this;
+};
+
+Model.prototype.setHeight = function(height) {
+	this.height = height;
 	return this;
 };
 

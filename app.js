@@ -18,6 +18,7 @@ function resizeCanvas() {
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
 var player = new Player();
+var obstacle = new Obstacle();
 
 var shotgun = new Weapon();
 var nuke = new Weapon();
@@ -33,6 +34,7 @@ laser.setName("Laser").
 		setReloadTime(2).
 		setRoundsPerSecond(60).
 		setRange(3000).
+		setDamage(5).
 		setAutoReload(true).
 		setRoundSpeed(30).
 		setRoundWidth(30).
@@ -48,6 +50,7 @@ shotgun.setName("Shotgun").
 		setReloadTime(1).
 		setRoundsPerSecond(50).
 		setRange(600).
+		setDamage(75).
 		setAutoReload(true).
 		setRoundSpeed(14).
 		setRoundWidth(15).
@@ -59,10 +62,11 @@ shotgun.setName("Shotgun").
 nuke.setName("Nuke").
 		setRounds(1000).
 		setSpread(360).
-		setMagazineSize(10).
+		setMagazineSize(1).
 		setReloadTime(1).
 		setRoundsPerSecond(1).
 		setRange(2000).
+		setDamage(1000).
 		setAutoReload(true).
 		setRoundSpeed(8).
 		setRoundWidth(15).
@@ -72,6 +76,14 @@ nuke.setName("Nuke").
 
 player.setWeapon(laser).
 		setCollision(false);
+
+
+obstacle.setWidth(100).
+	setHeight(100).
+	setX(500).
+	setY(500).
+	setColor('grey');
+
 
 var projectileList = [];
 
