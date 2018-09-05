@@ -7,7 +7,7 @@ function Obstacle() {
 	Model.call(this);
 }
 
-Obstacle.prototype = Objcet.create(Model.prototype);
+Obstacle.prototype = Object.create(Model.prototype);
 
 Obstacle.prototype.getColor = function() {
 	return this.color;
