@@ -12,6 +12,7 @@ function Model()
 	this.height = 0;
 
 	this.speed = 0;
+	this.angle = 0;
 
 	this.collidable = true;
 
@@ -54,6 +55,10 @@ Model.prototype.getCollision = function() {
 	return this.collidable;
 }
 
+Model.prototype.getAngle = function() {
+	return this.angle;
+}
+
 Model.prototype.getTop = function() {
 	return this.y;
 };
@@ -80,6 +85,26 @@ Model.prototype.setY = function(y) {
 	return this;
 };
 
+Model.prototype.setTop = function(y) {
+	this.y = y;
+	return this;
+};
+
+Model.prototype.setBottom = function(y) {
+	this.y = y - this.height;
+	return this;
+};
+
+Model.prototype.setLeft = function(x) {
+	this.x = x;
+	return this;
+};
+
+Model.prototype.setRight = function(x) {
+	this.x = x - this.width;
+	return this;
+};
+
 Model.prototype.setWidth = function(width) {
 	this.width = width;
 	return this;
@@ -92,5 +117,10 @@ Model.prototype.setHeight = function(height) {
 
 Model.prototype.setCollision = function(collidable) {
 	this.collidable = collidable;
+	return this;
+}
+
+Model.prototype.setAngle = function(angle) {
+	this.angle = angle;
 	return this;
 }

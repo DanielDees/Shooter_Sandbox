@@ -68,5 +68,7 @@ Toolbox.prototype.collision = function (a, b) {
 		return false;
 	}
 
+	//Perhaps return object with collision info?
+	//X/Y of collision, which side, etc?
 	return true;
 }

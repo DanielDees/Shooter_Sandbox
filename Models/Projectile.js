@@ -68,12 +68,24 @@ Projectile.prototype.delete = function(toolbox, entities) {
 
 	var that = this;
 
-	//Can probably be pulled out of the projectile class to save memory.
-	for (var i = 0; i < entities.length; i++) {
-		if (toolbox.collision(that, entities[i])) {
-			return true;
+	if (this.moveType != 'bouncy') {
+		//Can probably be pulled out of the projectile class to save memory.
+		for (var i = 0; i < entities.length; i++) {
+			if (toolbox.collision(that, entities[i])) {
+				return true;
+			}
 		}
 	}
+
+	if (this.moveType == 'bouncy') {
+		//Can probably be pulled out of the projectile class to save memory.
+		for (var i = 0; i < entities.length; i++) {
+			if (toolbox.collision(that, entities[i])) {
+				that.bouncy(entities[i]);
+			}
+		}
+	}
+
 
 	return false;
 }
@@ -107,42 +119,84 @@ Projectile.prototype.normal = function() {
 };
 
 //Bouncy movement
-Projectile.prototype.bouncy = function() {
+Projectile.prototype.bouncy = function(entity) {
+
+	//Rotating hitboxes based on angle of projectile 
+	//will be needed for better accuracy
+	//Collision has alreay been detected
+	if (entity) {
+		//Collision with top of entity
+		if (this.getTop() < entity.getTop()) {
+			// this.setBottom(entity.getTop());
+			this.speed.y = -Math.abs(this.speed.y);
+			console.log('top');
+		}
+		//Collision with bottom of entity
+		else if (this.getBottom() > entity.getBottom()) {
+			// this.setTop(entity.getBottom());
+			this.speed.y = Math.abs(this.speed.y);
+			console.log('bottom');
+		}
+		//Collision with left of entity
+		else if (this.getLeft() < entity.getLeft()) {
+			// this.setRight(entity.getLeft());
+			this.speed.x = -Math.abs(this.speed.x);
+			console.log('left');
+		}
+		//Collision with right of entity
+		else if (this.getRight() > entity.getRight()) {
+			// this.setLeft(entity.getRight());
+			this.speed.x = Math.abs(this.speed.x);
+			console.log('right');
+		}
+
+		this.angle = (Math.PI * 2) - this.angle;
+		return true;
+	}
 
 	//x and y speeds are adjusted for angle fired
 	this.x += this.speed.x;
 	this.y += this.speed.y;
 
 	//Collision with top of screen
-	if (Math.max(this.getY() + this.speed.y, 0) == 0) {
-		this.y = 0;
-		this.speed.y = -this.speed.y;
+	if (this.getTop() < 0) {
+
+		//Adjust by amoun needed to have bottom where the top collided
+		// this.x = 0;
+		// this.y = 0;
+		
+		this.speed.y = Math.abs(this.speed.y);
+		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with bottom of screen
-	if (Math.min(this.getY() + this.speed.y, window.innerHeight - this.height) == window.innerHeight - this.height) {
-		this.y = window.innerHeight - this.height;
-		this.speed.y = -this.speed.y;
+	if (this.getBottom() > window.innerHeight - this.height) {
+		// this.y = window.innerHeight - this.height;
+		this.speed.y = -Math.abs(this.speed.y);
+		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with left of screen
-	if (Math.max(this.getX() + this.speed.x, 0) == 0) {
-		this.x = 0;
-		this.speed.x = -this.speed.x;
+	if (this.getLeft() < 0) {
+		// this.x = 0;
+		this.speed.x = Math.abs(this.speed.x);
+		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with right of screen
-	if (Math.min(this.getX() + this.speed.x, window.innerWidth - this.width) == window.innerWidth - this.width) {
-		this.x = window.innerWidth - this.width;
-		this.speed.x = -this.speed.x;
+	if (this.getRight() > window.innerWidth - this.width) {
+		// this.x = window.innerWidth - this.width;
+		this.speed.x = -Math.abs(this.speed.x);
+		this.angle = (Math.PI * 2) - this.angle;
 	}
 }
 
 Projectile.prototype.update = function(data) {
 
+	this.move();
+	this.draw(data.context);
+	
 	//If the projectile doesn't self delete
 	if (!this.delete(data.toolbox, data.entities)) {
 
-		this.move();
-		this.draw(data.context);
-
+		
 		return true;
 	}
 

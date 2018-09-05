@@ -33,7 +33,7 @@ laser.setName("Laser").
 		setMagazineSize(1000).
 		setReloadTime(2).
 		setRoundsPerSecond(60).
-		setRange(3000).
+		setRange(6000).
 		setDamage(5).
 		setAutoReload(true).
 		setRoundSpeed(30).
