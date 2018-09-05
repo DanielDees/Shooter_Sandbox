@@ -31,16 +31,16 @@ laser.setName("Laser").
 		setRounds(1).
 		setSpread(0).
 		setMagazineSize(1000).
-		setReloadTime(2).
-		setRoundsPerSecond(60).
-		setRange(6000).
+		setReloadTime(0).
+		setRoundsPerSecond(3).
+		setRange(50).
 		setDamage(5).
 		setAutoReload(true).
-		setRoundSpeed(30).
-		setRoundWidth(30).
-		setRoundHeight(3).
+		setRoundSpeed(0).
+		setRoundWidth(150).
+		setRoundHeight(50).
 		setRoundColor('red').
-		setRoundMoveType("bouncy");
+		setRoundMoveType("spin");
 
 //Initialize shotgun settings
 shotgun.setName("Shotgun").
@@ -78,11 +78,11 @@ player.setWeapon(laser).
 		setCollision(false);
 
 //Test object.
-obstacle.setWidth(100).
-	setHeight(100).
-	setX(window.innerWidth / 2 - 50).
-	setY(window.innerHeight / 2 - 50).
-	setColor('grey');
+obstacle.setWidth(0).
+	setHeight(0);
+	// setX(window.innerWidth / 2 - 50).
+	// setY(window.innerHeight / 2 - 50).
+	// setColor('grey');
 
 
 var projectileList = [];

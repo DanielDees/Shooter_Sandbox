@@ -40,6 +40,9 @@ Projectile.prototype.moveSpecial = function() {
 	if (this.moveType == 'bouncy') {
 		this.bounce();
 	}
+	if (this.moveType == 'spin') {
+		this.spin();
+	}
 }
 
 //Deletes self from projectileList
@@ -93,6 +96,16 @@ Projectile.prototype.draw = function(ctx) {
 	//Restore original angle of canvas
 	ctx.restore();
 };
+
+Projectile.prototype.spin = function() {
+
+	this.angle += 0.5 / (180 / Math.PI);
+
+	//Reset to 0 every rotation
+	if (this.angle >= Math.PI * 2) { 
+		this.angle -= Math.PI * 2; 
+	}
+}
 
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {

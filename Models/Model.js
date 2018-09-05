@@ -34,14 +34,65 @@ Model.prototype.draw = function() {
 };
 
 Model.prototype.drawDebug = function() {
-	ctx.fillStyle = 'red';
+
+	//console.log("Radians: " + this.angle.toFixed(2) + " | Degrees: " + (this.angle * (180 / Math.PI)).toFixed(1));
+	console.log('Left:' + (this.getLeft() - this.x));
+
+
+	var x = 30;
+	var y = parseInt(ctx.font);
+
+	ctx.fillStyle = "blue";
+	ctx.font = "24px Courier New";
+
+	var left = (this.getLeft() - this.x);
+	var right = (this.getRight() - this.x);
+	var bottom = (this.getBottom() - this.y);
+	var top = (this.getTop() - this.y);
+
+	var debugInfo = [
+		["Left", (left).toFixed(0)],
+		["Right", (right).toFixed(0)],
+		["Bottom", (bottom).toFixed(0)],
+		["Top", (top).toFixed(0)],
+	];
+	
+	for (var i = 0; i < debugInfo.length; i++) {
+		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 400 + y * i);
+	}	
+	
+	ctx.lineWidth = 3;	
+
+	//Left
+	ctx.strokeStyle = 'green';
 	ctx.beginPath();
 	ctx.moveTo(this.getLeft(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getBottom());
+	ctx.stroke();
+	
+	//Bottom
+	ctx.strokeStyle = 'brown';
+	ctx.beginPath();
+	ctx.moveTo(this.getLeft(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getBottom());
+	ctx.stroke();
+	
+	//Right
+	ctx.strokeStyle = 'red';
+	ctx.beginPath();
+	ctx.moveTo(this.getRight(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getTop());
+	ctx.stroke();
+
+	//Top
+	ctx.strokeStyle = 'teal';
+	ctx.beginPath();
+	ctx.moveTo(this.getRight(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getTop());
 	ctx.stroke();
+
+	ctx.strokeStyle = 'black';
+	ctx.strokeRect(this.x, this.y, this.width, this.height);
 }
 
 Model.prototype.move = function() {
@@ -82,19 +133,54 @@ Model.prototype.getAngle = function() {
 }
 
 Model.prototype.getTop = function() {
-	return this.y;
+
+	var top = this.y + (this.width * Math.sin(this.angle));
+	var bottom = this.y + (this.height * Math.cos(this.angle));
+
+	//Leftmost point
+	var min = Math.min(top, bottom);
+
+	return min;
+
+	//Old
+	// return this.y + (this.width * Math.sin(this.angle));
 };
 
 Model.prototype.getBottom = function() {
-	return this.y + this.height;
+
+	var top = this.y + (this.width * Math.sin(this.angle));
+	var bottom = this.y + (this.height * Math.cos(this.angle));
+
+	//Leftmost point
+	var max = Math.max(top, bottom);
+
+	return max;
+
+	return this.y + (this.height * Math.cos(this.angle));
 };
 
 Model.prototype.getLeft = function() {
-	return this.x;
+
+	var left = this.x - this.height * Math.sin(this.angle);
+	var right = this.x + this.width * Math.cos(this.angle);
+
+	//Leftmost point
+	return Math.min(left, right);
+
+	//Old
+	//return this.x - (this.height * Math.sin(this.angle));
 };
 
 Model.prototype.getRight = function() {
-	return this.x + this.width;
+
+	var left = this.x - this.height * Math.sin(this.angle);
+	var right = this.x + this.width * Math.cos(this.angle);
+
+	//Rightmost point
+	return Math.max(left, right);
+
+	//Old
+	//return this.x + (this.width * Math.cos(this.angle));
 };
 
 Model.prototype.setX = function(x) {
