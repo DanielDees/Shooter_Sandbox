@@ -78,7 +78,7 @@ Projectile.prototype.delete = function(toolbox, entities) {
 }
 
 //Renders projectile to screen
-Projectile.prototype.draw = function(ctx) {
+Projectile.prototype.draw = function() {
 
 	//Set color
 	ctx.fillStyle = this.getColor();
@@ -156,24 +156,25 @@ Projectile.prototype.bounce = function(entity) {
 
 		this.speed.y = Math.abs(this.speed.y);
 		this.angle = (Math.PI * 2) - this.angle;
+		this.setTop(1);
 	}
 	//Collision with bottom of screen
-	if (this.getBottom() > window.innerHeight - 0) {
-		// this.y = window.innerHeight - this.height;
+	else if (this.getBottom() > window.innerHeight) {
 		this.speed.y = -Math.abs(this.speed.y);
 		this.angle = (Math.PI * 2) - this.angle;
+		this.setBottom(window.innerHeight - 1);
 	}
 	//Collision with left of screen
 	if (this.getLeft() < 0) {
-		// this.x = 0;
 		this.speed.x = Math.abs(this.speed.x);
 		this.angle = (Math.PI * 2) - this.angle;
+		this.setLeft(1);
 	}
 	//Collision with right of screen
-	if (this.getRight() > window.innerWidth - 0) {
-		// this.x = window.innerWidth - this.width;
+	else if (this.getRight() > window.innerWidth) {
 		this.speed.x = -Math.abs(this.speed.x);
 		this.angle = (Math.PI * 2) - this.angle;
+		this.setRight(window.innerWidth - 1);
 	}
 
 	// this.angle = (Math.PI * 2) - this.angle;
@@ -183,7 +184,7 @@ Projectile.prototype.update = function(data) {
 
 	this.move();
 	this.moveSpecial();
-	this.draw(data.context);
+	this.draw();
 	
 	//If the projectile doesn't self delete
 	if (!this.delete(data.toolbox, data.entities)) {

@@ -143,7 +143,6 @@ function gameLoop() {
 	for (var i = 0; i < projectileList.length; i++) {
 
 		var data = {
-			context: ctx,
 			entities: obstacleList,
 			toolbox: toolbox,
 		};
