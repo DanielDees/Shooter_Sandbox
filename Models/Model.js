@@ -14,6 +14,8 @@ function Model()
 	this.speed = 0;
 
 	this.collidable = true;
+
+	this.color = 'black';
 }
 
 /*
@@ -24,7 +26,8 @@ Model.prototype.frame = function() {
 };
 
 Model.prototype.draw = function() {
-	//implement me
+	ctx.fillStyle = this.color;
+	ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
 Model.prototype.move = function() {

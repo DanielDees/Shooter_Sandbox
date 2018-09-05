@@ -77,15 +77,16 @@ nuke.setName("Nuke").
 player.setWeapon(laser).
 		setCollision(false);
 
-
+//Test object.
 obstacle.setWidth(100).
 	setHeight(100).
-	setX(500).
-	setY(500).
+	setX(window.innerWidth / 2 - 50).
+	setY(window.innerHeight / 2 - 50).
 	setColor('grey');
 
 
 var projectileList = [];
+var obstacleList = [obstacle];
 
 function gameLoop() {
 	//Clear screen
@@ -97,6 +98,8 @@ function gameLoop() {
 
 	player.move(keyboard);
 	player.draw(ctx);
+
+	obstacle.draw();
 
 	if (keyboard.keys.x) {
 		for (var i = 0; i < weaponsList.length; i++) {
@@ -123,7 +126,7 @@ function gameLoop() {
 
 		var data = {
 			context: ctx,
-			player: player,
+			entities: obstacleList,
 			toolbox: toolbox,
 		};
 

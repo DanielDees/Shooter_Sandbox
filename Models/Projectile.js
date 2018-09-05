@@ -60,14 +60,19 @@ Projectile.prototype.move = function() {
 }
 
 //Deletes self from projectileList
-Projectile.prototype.delete = function(toolbox, player) {
+Projectile.prototype.delete = function(toolbox, entities) {
 
 	if (this.rangeTraveled > this.range) {
 		return true;
 	}
 
-	if (toolbox.collision(this, player)) {
-		return true;
+	var that = this;
+
+	//Can probably be pulled out of the projectile class to save memory.
+	for (var i = 0; i < entities.length; i++) {
+		if (toolbox.collision(that, entities[i])) {
+			return true;
+		}
 	}
 
 	return false;
@@ -133,7 +138,7 @@ Projectile.prototype.bouncy = function() {
 Projectile.prototype.update = function(data) {
 
 	//If the projectile doesn't self delete
-	if (!this.delete(data.toolbox, data.player)) {
+	if (!this.delete(data.toolbox, data.entities)) {
 
 		this.move();
 		this.draw(data.context);
