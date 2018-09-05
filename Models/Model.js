@@ -16,6 +16,8 @@ function Model()
 
 	this.collidable = true;
 
+	this.distanceTraveled = 0;
+
 	this.color = 'black';
 }
 
@@ -31,8 +33,28 @@ Model.prototype.draw = function() {
 	ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
+Model.prototype.drawDebug = function() {
+	ctx.fillStyle = 'red';
+	ctx.beginPath();
+	ctx.moveTo(this.getLeft(), this.getTop());
+	ctx.lineTo(this.getLeft(), this.getBottom());
+	ctx.lineTo(this.getRight(), this.getBottom());
+	ctx.lineTo(this.getRight(), this.getTop());
+	ctx.lineTo(this.getLeft(), this.getTop());
+	ctx.stroke();
+}
+
 Model.prototype.move = function() {
-	//implement me
+
+	this.x += this.speed.x;
+	this.y += this.speed.y;
+
+	//Distance formula = sqrt(x^2 + y^2)
+	var x = Math.pow(this.speed.x, 2);
+	var y = Math.pow(this.speed.y, 2);
+	var distance = Math.sqrt(x + y);
+
+	this.distanceTraveled += distance;
 }
 
 Model.prototype.getX = function() {
