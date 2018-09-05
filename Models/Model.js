@@ -51,6 +51,7 @@ Model.prototype.drawDebug = function() {
 	var top = (this.getTop() - this.y);
 
 	var debugInfo = [
+		["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
 		["Left", (left).toFixed(0)],
 		["Right", (right).toFixed(0)],
 		["Bottom", (bottom).toFixed(0)],
@@ -61,7 +62,12 @@ Model.prototype.drawDebug = function() {
 		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 400 + y * i);
 	}	
 	
-	ctx.lineWidth = 3;	
+	ctx.lineWidth = 3;
+
+	//Left/Right text position
+	var mid_height = this.getTop() + ((this.getBottom() - this.getTop())  / 2);
+	//Top/Bottom text position
+	var mid_width = this.getLeft() + ((this.getRight() - this.getLeft())  / 4);
 
 	//Left
 	ctx.strokeStyle = 'green';
@@ -69,6 +75,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getLeft(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getBottom());
 	ctx.stroke();
+	ctx.fillText('Left', this.getLeft() - 60, mid_height);
 	
 	//Bottom
 	ctx.strokeStyle = 'brown';
@@ -76,6 +83,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getLeft(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getBottom());
 	ctx.stroke();
+	ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
 	
 	//Right
 	ctx.strokeStyle = 'red';
@@ -83,6 +91,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getRight(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getTop());
 	ctx.stroke();
+	ctx.fillText('Right', this.getRight() + 5, mid_height);
 
 	//Top
 	ctx.strokeStyle = 'teal';
@@ -90,9 +99,10 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getRight(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getTop());
 	ctx.stroke();
+	ctx.fillText('Top', mid_width, this.getTop() - 10);
 
 	ctx.strokeStyle = 'black';
-	ctx.strokeRect(this.x, this.y, this.width, this.height);
+	//ctx.strokeRect(this.x, this.y, this.width, this.height);
 }
 
 Model.prototype.move = function() {
@@ -156,7 +166,8 @@ Model.prototype.getBottom = function() {
 
 	return max;
 
-	return this.y + (this.height * Math.cos(this.angle));
+	//Old
+	// return this.y + (this.height * Math.cos(this.angle));
 };
 
 Model.prototype.getLeft = function() {
