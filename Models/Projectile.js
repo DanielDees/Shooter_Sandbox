@@ -6,6 +6,8 @@ function Projectile(data) {
 	//Call the parent to construct.
 	Model.call(this);
 
+	this.debug = data.debug || false;
+
 	this.x = data.x;
 	this.y = data.y;
 
@@ -95,6 +97,10 @@ Projectile.prototype.draw = function(ctx) {
 
 	//Restore original angle of canvas
 	ctx.restore();
+
+	if (this.debug) {
+		this.drawDebug();
+	}
 };
 
 Projectile.prototype.spin = function() {
@@ -110,33 +116,31 @@ Projectile.prototype.spin = function() {
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
-	//Rotating hitboxes based on angle of projectile 
-	//will be needed for better accuracy
 	//Collision has already been detected
 	if (entity) {
 		//Collision with top of entity
 		if (this.getTop() < entity.getTop()) {
+			// console.log('top');
 			// this.setBottom(entity.getTop());
 			this.speed.y = -Math.abs(this.speed.y);
-			// console.log('top');
 		}
 		//Collision with bottom of entity
 		else if (this.getBottom() > entity.getBottom()) {
+			// console.log('bottom');
 			// this.setTop(entity.getBottom());
 			this.speed.y = Math.abs(this.speed.y);
-			// console.log('bottom');
 		}
 		//Collision with left of entity
 		else if (this.getLeft() < entity.getLeft()) {
+			// console.log('left');
 			// this.setRight(entity.getLeft());
 			this.speed.x = -Math.abs(this.speed.x);
-			// console.log('left');
 		}
 		//Collision with right of entity
 		else if (this.getRight() > entity.getRight()) {
+			// console.log('right');
 			// this.setLeft(entity.getRight());
 			this.speed.x = Math.abs(this.speed.x);
-			// console.log('right');
 		}
 
 		this.angle = (Math.PI * 2) - this.angle;
@@ -144,7 +148,7 @@ Projectile.prototype.bounce = function(entity) {
 	}
 
 	//Collision with top of screen
-	if (this.getTop() < 30) {
+	if (this.getTop() < 0) {
 
 		//Adjust by amoun needed to have bottom where the top collided
 		// this.x = 0;
@@ -154,19 +158,19 @@ Projectile.prototype.bounce = function(entity) {
 		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with bottom of screen
-	if (this.getBottom() > window.innerHeight - 30) {
+	if (this.getBottom() > window.innerHeight - 0) {
 		// this.y = window.innerHeight - this.height;
 		this.speed.y = -Math.abs(this.speed.y);
 		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with left of screen
-	if (this.getLeft() < 30) {
+	if (this.getLeft() < 0) {
 		// this.x = 0;
 		this.speed.x = Math.abs(this.speed.x);
 		this.angle = (Math.PI * 2) - this.angle;
 	}
 	//Collision with right of screen
-	if (this.getRight() > window.innerWidth - 30) {
+	if (this.getRight() > window.innerWidth - 0) {
 		// this.x = window.innerWidth - this.width;
 		this.speed.x = -Math.abs(this.speed.x);
 		this.angle = (Math.PI * 2) - this.angle;
@@ -180,12 +184,9 @@ Projectile.prototype.update = function(data) {
 	this.move();
 	this.moveSpecial();
 	this.draw(data.context);
-	this.drawDebug();
 	
 	//If the projectile doesn't self delete
 	if (!this.delete(data.toolbox, data.entities)) {
-
-		
 		return true;
 	}
 

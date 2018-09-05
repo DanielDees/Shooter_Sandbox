@@ -23,8 +23,26 @@ var obstacle = new Obstacle();
 var shotgun = new Weapon();
 var nuke = new Weapon();
 var laser = new Weapon();
+var debugWeapon = new Weapon;
 
-var weaponsList = [shotgun, nuke, laser];
+var weaponsList = [shotgun, nuke, laser, debugWeapon];
+
+//Initialize laser settings
+debugWeapon.setName("Debug Weapon").
+		setRounds(1).
+		setSpread(0).
+		setMagazineSize(1).
+		setReloadTime(0).
+		setRoundsPerSecond(1).
+		setRange(1000).
+		setDamage(5).
+		setAutoReload(true).
+		setRoundSpeed(5).
+		setRoundWidth(150).
+		setRoundHeight(50).
+		setRoundColor('red').
+		setRoundMoveType("spin").
+		setDebug(true);
 
 //Initialize laser settings
 laser.setName("Laser").
@@ -32,15 +50,15 @@ laser.setName("Laser").
 		setSpread(0).
 		setMagazineSize(1000).
 		setReloadTime(0).
-		setRoundsPerSecond(3).
-		setRange(50).
+		setRoundsPerSecond(60).
+		setRange(6000).
 		setDamage(5).
 		setAutoReload(true).
-		setRoundSpeed(0).
-		setRoundWidth(150).
-		setRoundHeight(50).
+		setRoundSpeed(25).
+		setRoundWidth(25).
+		setRoundHeight(3).
 		setRoundColor('red').
-		setRoundMoveType("spin");
+		setRoundMoveType("bouncy");
 
 //Initialize shotgun settings
 shotgun.setName("Shotgun").
@@ -74,15 +92,15 @@ nuke.setName("Nuke").
 		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(laser).
+player.setWeapon(debugWeapon).
 		setCollision(false);
 
 //Test object.
-obstacle.setWidth(0).
-	setHeight(0);
-	// setX(window.innerWidth / 2 - 50).
-	// setY(window.innerHeight / 2 - 50).
-	// setColor('grey');
+obstacle.setWidth(100).
+	setHeight(100).
+	setX(window.innerWidth / 2 - 50).
+	setY(window.innerHeight / 2 - 50).
+	setColor('grey');
 
 
 var projectileList = [];

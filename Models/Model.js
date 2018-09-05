@@ -5,6 +5,8 @@
  
 function Model()
 {
+	this.debug = false;
+
 	this.x = 0;
 	this.y = 0;
 
@@ -31,13 +33,13 @@ Model.prototype.frame = function() {
 Model.prototype.draw = function() {
 	ctx.fillStyle = this.color;
 	ctx.fillRect(this.x, this.y, this.width, this.height);
+
+	if (this.debug) {
+		this.drawDebug();
+	}
 };
 
 Model.prototype.drawDebug = function() {
-
-	//console.log("Radians: " + this.angle.toFixed(2) + " | Degrees: " + (this.angle * (180 / Math.PI)).toFixed(1));
-	console.log('Left:' + (this.getLeft() - this.x));
-
 
 	var x = 30;
 	var y = parseInt(ctx.font);
@@ -147,13 +149,8 @@ Model.prototype.getTop = function() {
 	var top = this.y + (this.width * Math.sin(this.angle));
 	var bottom = this.y + (this.height * Math.cos(this.angle));
 
-	//Leftmost point
-	var min = Math.min(top, bottom);
-
-	return min;
-
-	//Old
-	// return this.y + (this.width * Math.sin(this.angle));
+	//Top-most point
+	return Math.min(top, bottom);
 };
 
 Model.prototype.getBottom = function() {
@@ -161,13 +158,8 @@ Model.prototype.getBottom = function() {
 	var top = this.y + (this.width * Math.sin(this.angle));
 	var bottom = this.y + (this.height * Math.cos(this.angle));
 
-	//Leftmost point
-	var max = Math.max(top, bottom);
-
-	return max;
-
-	//Old
-	// return this.y + (this.height * Math.cos(this.angle));
+	//Bottom-most point
+	return Math.max(top, bottom);
 };
 
 Model.prototype.getLeft = function() {
@@ -175,11 +167,8 @@ Model.prototype.getLeft = function() {
 	var left = this.x - this.height * Math.sin(this.angle);
 	var right = this.x + this.width * Math.cos(this.angle);
 
-	//Leftmost point
+	//Left-most point
 	return Math.min(left, right);
-
-	//Old
-	//return this.x - (this.height * Math.sin(this.angle));
 };
 
 Model.prototype.getRight = function() {
@@ -187,12 +176,13 @@ Model.prototype.getRight = function() {
 	var left = this.x - this.height * Math.sin(this.angle);
 	var right = this.x + this.width * Math.cos(this.angle);
 
-	//Rightmost point
+	//Right-most point
 	return Math.max(left, right);
-
-	//Old
-	//return this.x + (this.width * Math.cos(this.angle));
 };
+
+Model.prototype.getDebug = function() {
+	return this.debug;
+}
 
 Model.prototype.setX = function(x) {
 	this.x = x;
@@ -242,4 +232,8 @@ Model.prototype.setCollision = function(collidable) {
 Model.prototype.setAngle = function(angle) {
 	this.angle = angle;
 	return this;
+}
+
+Model.prototype.setDebug = function(debug) {
+	this.debug = debug;
 }

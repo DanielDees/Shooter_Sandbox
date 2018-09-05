@@ -199,6 +199,7 @@ Weapon.prototype.getProjectileData = function(entity, angle) {
 		roundWidth: this.roundWidth,
 		roundHeight: this.roundHeight,
 		moveType: this.roundMoveType,
+		debug: this.debug,
 	};
 
 	return data;
