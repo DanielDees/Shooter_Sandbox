@@ -59,7 +59,7 @@ Player.prototype.addWeapon = function(weapon) {
 Player.prototype.switchWeapon = function() {
 	
 	for (var i = 0; i < this.weapons.length; i++) {
-		if (this.weapons[i].name == this.getWeapon().name) {
+		if (this.weapons[i].name == this.weapon.name) {
 			//If using last weapon, switch to first one.
 			if (i == this.weapons.length - 1) {
 				this.setWeapon(this.weapons[0]);

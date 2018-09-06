@@ -25,7 +25,9 @@ var nuke = new Weapon();
 var laser = new Weapon();
 var debugWeapon = new Weapon;
 
-var weaponsList = [shotgun, nuke, laser];
+player.addWeapon(shotgun);
+player.addWeapon(nuke);
+player.addWeapon(laser);
 
 //Initialize laser settings
 debugWeapon.setName("Debug Weapon").

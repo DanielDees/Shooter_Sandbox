@@ -53,11 +53,11 @@ Model.prototype.drawDebug = function() {
 	var top = (this.getTop() - this.y);
 
 	var debugInfo = [
-		["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
-		["Left", (left).toFixed(0)],
-		["Right", (right).toFixed(0)],
-		["Bottom", (bottom).toFixed(0)],
-		["Top", (top).toFixed(0)],
+		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
+		// ["Left", (left).toFixed(0)],
+		// ["Right", (right).toFixed(0)],
+		// ["Bottom", (bottom).toFixed(0)],
+		// ["Top", (top).toFixed(0)],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
@@ -178,9 +178,9 @@ Model.prototype.getRight = function() {
 
 	//Right-most point
 	return Math.max(left, right);
-};
+}
 
-Model.prototype.getColor() {
+Model.prototype.getColor = function() {
 	return this.color;
 }
 
