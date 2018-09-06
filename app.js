@@ -71,7 +71,7 @@ shotgun.setName("Shotgun").
 		setRange(600).
 		setDamage(75).
 		setAutoReload(true).
-		setRoundSpeed(14).
+		setRoundSpeed(12).
 		setRoundWidth(15).
 		setRoundHeight(5).
 		setRoundColor('yellow').

@@ -127,17 +127,17 @@ Projectile.prototype.bounce = function(entity) {
 			this.setTop(entity.getTop());
 		}
 		//Collision with bottom of entity
-		if (this.getBottom() > entity.getBottom()) {
+		else if (this.getBottom() > entity.getBottom()) {
 			this.speed.y = Math.abs(this.speed.y);
 			this.setBottom(entity.getBottom());
 		}
 		//Collision with left of entity
-		if (this.getLeft() < entity.getLeft()) {
+		else if (this.getLeft() < entity.getLeft()) {
 			this.speed.x = -Math.abs(this.speed.x);
 			this.setRight(entity.getLeft());
 		}
 		//Collision with right of entity
-		if (this.getRight() > entity.getRight()) {
+		else if (this.getRight() > entity.getRight()) {
 			this.speed.x = Math.abs(this.speed.x);
 			//Why on earth do you need to add this.width for it to work?
 			this.setLeft(entity.getRight() + this.width);
