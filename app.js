@@ -59,7 +59,7 @@ laser.setName("Laser").
 		setRoundHeight(3).
 		setRoundColor('red').
 		setRoundMoveType("bouncy").
-		setDebug(false);
+		setDebug(true);
 
 //Initialize shotgun settings
 shotgun.setName("Shotgun").

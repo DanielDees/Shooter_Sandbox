@@ -135,13 +135,12 @@ Projectile.prototype.bounce = function(entity) {
 		if (this.getLeft() < entity.getLeft()) {
 			this.speed.x = -Math.abs(this.speed.x);
 			this.setRight(entity.getLeft());
-			console.log('left');
 		}
 		//Collision with right of entity
 		if (this.getRight() > entity.getRight()) {
 			this.speed.x = Math.abs(this.speed.x);
-			this.setLeft(entity.getRight());
-			console.log('right');
+			//Why on earth do you need to add this.width for it to work?
+			this.setLeft(entity.getRight() + this.width);
 		}
 
 		this.angle = flip_angle;
