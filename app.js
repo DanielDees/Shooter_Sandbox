@@ -37,7 +37,7 @@ debugWeapon.setName("Debug Weapon").
 		setRange(1000).
 		setDamage(5).
 		setAutoReload(true).
-		setRoundSpeed(5).
+		setRoundSpeed(0).
 		setRoundWidth(150).
 		setRoundHeight(50).
 		setRoundColor('red').
@@ -51,14 +51,15 @@ laser.setName("Laser").
 		setMagazineSize(1000).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
-		setRange(6000).
+		setRange(600).
 		setDamage(5).
 		setAutoReload(true).
-		setRoundSpeed(25).
+		setRoundSpeed(20).
 		setRoundWidth(25).
 		setRoundHeight(3).
 		setRoundColor('red').
-		setRoundMoveType("bouncy");
+		setRoundMoveType("bouncy").
+		setDebug(true);
 
 //Initialize shotgun settings
 shotgun.setName("Shotgun").
@@ -70,7 +71,7 @@ shotgun.setName("Shotgun").
 		setRange(600).
 		setDamage(75).
 		setAutoReload(true).
-		setRoundSpeed(14).
+		setRoundSpeed(12).
 		setRoundWidth(15).
 		setRoundHeight(5).
 		setRoundColor('yellow').
@@ -92,7 +93,7 @@ nuke.setName("Nuke").
 		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(debugWeapon).
+player.setWeapon(laser).
 		setCollision(false);
 
 //Test object.
@@ -143,7 +144,6 @@ function gameLoop() {
 	for (var i = 0; i < projectileList.length; i++) {
 
 		var data = {
-			context: ctx,
 			entities: obstacleList,
 			toolbox: toolbox,
 		};

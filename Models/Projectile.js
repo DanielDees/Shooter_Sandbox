@@ -78,7 +78,7 @@ Projectile.prototype.delete = function(toolbox, entities) {
 }
 
 //Renders projectile to screen
-Projectile.prototype.draw = function(ctx) {
+Projectile.prototype.draw = function() {
 
 	//Set color
 	ctx.fillStyle = this.getColor();
@@ -116,77 +116,74 @@ Projectile.prototype.spin = function() {
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
+	var flip_angle = (Math.PI * 2) - this.angle;
+
 	//Collision has already been detected
+	//Therefore one of these WILL pass the test
 	if (entity) {
 		//Collision with top of entity
 		if (this.getTop() < entity.getTop()) {
-			// console.log('top');
-			// this.setBottom(entity.getTop());
 			this.speed.y = -Math.abs(this.speed.y);
+			this.setTop(entity.getTop());
 		}
 		//Collision with bottom of entity
 		else if (this.getBottom() > entity.getBottom()) {
-			// console.log('bottom');
-			// this.setTop(entity.getBottom());
 			this.speed.y = Math.abs(this.speed.y);
+			this.setBottom(entity.getBottom());
 		}
 		//Collision with left of entity
 		else if (this.getLeft() < entity.getLeft()) {
-			// console.log('left');
-			// this.setRight(entity.getLeft());
 			this.speed.x = -Math.abs(this.speed.x);
+			this.setRight(entity.getLeft());
 		}
 		//Collision with right of entity
 		else if (this.getRight() > entity.getRight()) {
-			// console.log('right');
-			// this.setLeft(entity.getRight());
 			this.speed.x = Math.abs(this.speed.x);
+			//Why on earth do you need to add this.width for it to work?
+			this.setLeft(entity.getRight() + this.width);
 		}
 
-		this.angle = (Math.PI * 2) - this.angle;
+		this.angle = flip_angle;
 		return true;
 	}
 
 	//Collision with top of screen
 	if (this.getTop() < 0) {
-
-		//Adjust by amoun needed to have bottom where the top collided
-		// this.x = 0;
-		// this.y = 0;
-
 		this.speed.y = Math.abs(this.speed.y);
-		this.angle = (Math.PI * 2) - this.angle;
+		this.angle = flip_angle;
+		this.setTop(1);
 	}
 	//Collision with bottom of screen
-	if (this.getBottom() > window.innerHeight - 0) {
-		// this.y = window.innerHeight - this.height;
+	else if (this.getBottom() > window.innerHeight) {
 		this.speed.y = -Math.abs(this.speed.y);
-		this.angle = (Math.PI * 2) - this.angle;
+		this.angle = flip_angle;
+		this.setBottom(window.innerHeight - 1);
 	}
 	//Collision with left of screen
 	if (this.getLeft() < 0) {
-		// this.x = 0;
 		this.speed.x = Math.abs(this.speed.x);
-		this.angle = (Math.PI * 2) - this.angle;
+		this.angle = flip_angle;
+		//Why on earth do you need to add this.width for it to work?
+		this.setLeft(1 + this.width);
 	}
 	//Collision with right of screen
-	if (this.getRight() > window.innerWidth - 0) {
-		// this.x = window.innerWidth - this.width;
+	else if (this.getRight() > window.innerWidth) {
 		this.speed.x = -Math.abs(this.speed.x);
-		this.angle = (Math.PI * 2) - this.angle;
+		this.angle = flip_angle;
+		this.setRight(window.innerWidth - 1);
 	}
-
-	// this.angle = (Math.PI * 2) - this.angle;
 }
 
 Projectile.prototype.update = function(data) {
 
 	this.move();
-	this.moveSpecial();
-	this.draw(data.context);
 	
 	//If the projectile doesn't self delete
 	if (!this.delete(data.toolbox, data.entities)) {
+		
+		this.moveSpecial();
+		this.draw();
+
 		return true;
 	}
 
