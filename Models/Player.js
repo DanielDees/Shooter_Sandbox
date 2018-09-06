@@ -9,7 +9,7 @@ function Player() {
 	this.width = 30;
 	this.height = 30;
 
-	this.speed = 6;
+	this.speed = 8;
 
 	this.weapon = new Weapon();
 }

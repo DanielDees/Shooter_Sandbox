@@ -77,7 +77,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getLeft(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getBottom());
 	ctx.stroke();
-	ctx.fillText('Left', this.getLeft() - 60, mid_height);
+	// ctx.fillText('Left', this.getLeft() - 60, mid_height);
 	
 	//Bottom
 	ctx.strokeStyle = 'brown';
@@ -85,7 +85,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getLeft(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getBottom());
 	ctx.stroke();
-	ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
+	// ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
 	
 	//Right
 	ctx.strokeStyle = 'red';
@@ -93,7 +93,7 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getRight(), this.getBottom());
 	ctx.lineTo(this.getRight(), this.getTop());
 	ctx.stroke();
-	ctx.fillText('Right', this.getRight() + 5, mid_height);
+	// ctx.fillText('Right', this.getRight() + 5, mid_height);
 
 	//Top
 	ctx.strokeStyle = 'teal';
@@ -101,10 +101,10 @@ Model.prototype.drawDebug = function() {
 	ctx.moveTo(this.getRight(), this.getTop());
 	ctx.lineTo(this.getLeft(), this.getTop());
 	ctx.stroke();
-	ctx.fillText('Top', mid_width, this.getTop() - 10);
+	// ctx.fillText('Top', mid_width, this.getTop() - 10);
 
 	ctx.strokeStyle = 'black';
-	//ctx.strokeRect(this.x, this.y, this.width, this.height);
+	// ctx.strokeRect(this.x, this.y, this.width, this.height);
 }
 
 Model.prototype.move = function() {
