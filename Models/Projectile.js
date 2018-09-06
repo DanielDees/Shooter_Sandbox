@@ -163,7 +163,8 @@ Projectile.prototype.bounce = function(entity) {
 	if (this.getLeft() < 0) {
 		this.speed.x = Math.abs(this.speed.x);
 		this.angle = flip_angle;
-		this.setLeft(1);
+		//Why on earth do you need to add this.width for it to work?
+		this.setLeft(1 + this.width);
 	}
 	//Collision with right of screen
 	else if (this.getRight() > window.innerWidth) {
