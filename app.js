@@ -25,7 +25,7 @@ var nuke = new Weapon();
 var laser = new Weapon();
 var debugWeapon = new Weapon;
 
-var weaponsList = [shotgun, nuke, laser, debugWeapon];
+var weaponsList = [shotgun, nuke, laser];
 
 //Initialize laser settings
 debugWeapon.setName("Debug Weapon").
@@ -71,7 +71,7 @@ shotgun.setName("Shotgun").
 		setRange(600).
 		setDamage(75).
 		setAutoReload(true).
-		setRoundSpeed(12).
+		setRoundSpeed(10).
 		setRoundWidth(15).
 		setRoundHeight(5).
 		setRoundColor('yellow').
@@ -121,21 +121,7 @@ function gameLoop() {
 	obstacle.draw();
 
 	if (keyboard.keys.x) {
-		for (var i = 0; i < weaponsList.length; i++) {
-			if (weaponsList[i].name == player.getWeapon().name) {
-				//If using last weapon, switch to first one.
-				if (i == weaponsList.length - 1) {
-					player.setWeapon(weaponsList[0]);
-					break;
-				}
-				//Switch to next weapon in list if there is one
-				if (i < weaponsList.length - 1) {
-					player.setWeapon(weaponsList[i + 1]);
-					break;
-				}
-			}
-		}
-
+		player.switchWeapon();
 		keyboard.keys.x = false;
 	}
 

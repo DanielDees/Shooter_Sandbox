@@ -39,9 +39,6 @@ Projectile.prototype = Object.create(Model.prototype);
 //Move projectile
 Projectile.prototype.moveSpecial = function() {
 
-	if (this.moveType == 'bouncy') {
-		this.bounce();
-	}
 	if (this.moveType == 'spin') {
 		this.spin();
 	}
@@ -118,76 +115,46 @@ Projectile.prototype.bounce = function(entity) {
 
 	var flip_angle = (Math.PI * 2) - this.angle;
 
-	//Collision has already been detected
-	//Therefore one of these WILL pass the test
-	if (entity) {
-		//Collision with top of entity
-		if (this.getTop() < entity.getTop()) {
-			this.speed.y = -Math.abs(this.speed.y);
-			this.setTop(entity.getTop());
-		}
-		//Collision with bottom of entity
-		else if (this.getBottom() > entity.getBottom()) {
-			this.speed.y = Math.abs(this.speed.y);
-			this.setBottom(entity.getBottom());
-		}
-		//Collision with left of entity
-		else if (this.getLeft() < entity.getLeft()) {
-			this.speed.x = -Math.abs(this.speed.x);
-			this.setRight(entity.getLeft());
-		}
-		//Collision with right of entity
-		else if (this.getRight() > entity.getRight()) {
-			this.speed.x = Math.abs(this.speed.x);
-			//Why on earth do you need to add this.width for it to work?
-			this.setLeft(entity.getRight() + this.width);
-		}
+	this.angle = flip_angle;
 
-		this.angle = flip_angle;
-		return true;
-	}
-
-	//Collision with top of screen
-	if (this.getTop() < 0) {
-		this.speed.y = Math.abs(this.speed.y);
-		this.angle = flip_angle;
-		this.setTop(1);
-	}
-	//Collision with bottom of screen
-	else if (this.getBottom() > window.innerHeight) {
+	//Collision with top of entity
+	if (this.getTop() < entity.getTop()) {
 		this.speed.y = -Math.abs(this.speed.y);
-		this.angle = flip_angle;
-		this.setBottom(window.innerHeight - 1);
+		this.setTop(entity.getTop());
 	}
-	//Collision with left of screen
-	if (this.getLeft() < 0) {
-		this.speed.x = Math.abs(this.speed.x);
-		this.angle = flip_angle;
-		//Why on earth do you need to add this.width for it to work?
-		this.setLeft(1 + this.width);
+	//Collision with bottom of entity
+	else if (this.getBottom() > entity.getBottom()) {
+		this.speed.y = Math.abs(this.speed.y);
+		this.setBottom(entity.getBottom());
 	}
-	//Collision with right of screen
-	else if (this.getRight() > window.innerWidth) {
+	//Collision with left of entity
+	else if (this.getLeft() < entity.getLeft()) {
 		this.speed.x = -Math.abs(this.speed.x);
-		this.angle = flip_angle;
-		this.setRight(window.innerWidth - 1);
+		this.setRight(entity.getLeft());
 	}
+	//Collision with right of entity
+	else if (this.getRight() > entity.getRight()) {
+		this.speed.x = Math.abs(this.speed.x);
+		//Why on earth do you need to add this.width for it to work?
+		this.setLeft(entity.getRight() + this.width);
+	}
+	
+	return true;
 }
 
 Projectile.prototype.update = function(data) {
 
 	this.move();
-	
-	//If the projectile doesn't self delete
-	if (!this.delete(data.toolbox, data.entities)) {
-		
-		this.moveSpecial();
-		this.draw();
+	this.moveSpecial();
 
-		return true;
+	//If the projectile self deletes
+	if (this.delete(data.toolbox, data.entities)) {
+		return false;
 	}
+	
+	this.draw();
 
-	return false;
+	return true;
 }
 
 //Color of the projectile
