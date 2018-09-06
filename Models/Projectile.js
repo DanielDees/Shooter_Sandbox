@@ -138,7 +138,7 @@ Projectile.prototype.bounce = function(entity) {
 		//Why on earth do you need to add this.width for it to work?
 		this.setLeft(entity.getRight() + this.width);
 	}
-	
+
 	return true;
 }
 
@@ -156,9 +156,3 @@ Projectile.prototype.update = function(data) {
 
 	return true;
 }
-
-//Color of the projectile
-Projectile.prototype.getColor = function() {
-	return this.color;
-}
-

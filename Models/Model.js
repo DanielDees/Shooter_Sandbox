@@ -180,6 +180,10 @@ Model.prototype.getRight = function() {
 	return Math.max(left, right);
 };
 
+Model.prototype.getColor() {
+	return this.color;
+}
+
 Model.prototype.getDebug = function() {
 	return this.debug;
 }
@@ -233,6 +237,11 @@ Model.prototype.setAngle = function(angle) {
 	this.angle = angle;
 	return this;
 }
+
+Model.prototype.setColor = function(color) {
+	this.color = color;
+	return this;
+};
 
 Model.prototype.setDebug = function(debug) {
 	this.debug = debug;
