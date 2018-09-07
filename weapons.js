@@ -24,12 +24,12 @@ debugWeapon.setName("Debug Weapon").
 		setDebug(true);
 
 laser.setName("Laser").
-		setRounds(90).
-		setSpread(360).
+		setRounds(1).
+		setSpread(0).
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
-		setRange(120000).
+		setRange(1200).
 		setDamage(5).
 		setRoundSpeed(20).
 		setRoundWidth(25).

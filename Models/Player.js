@@ -37,19 +37,19 @@ Player.prototype.draw = function() {
 Player.prototype.move = function(keyboard) {
 	//Collision with top of screen
 	if (keyboard.keys.w) {
-		this.y = Math.max(this.getY() - this.speed, 0);
+		this.y = this.getY() - this.speed;
 	}
 	//Collision with bottom of screen
 	if (keyboard.keys.s) {
-		this.y = Math.min(this.getY() + this.speed, window.innerHeight - this.height);
+		this.y = this.getY() + this.speed;
 	}
 	//Collision with left of screen
 	if (keyboard.keys.a) {
-		this.x = Math.max(this.getX() - this.speed, 0);
+		this.x = this.getX() - this.speed;
 	}
 	//Collision with right of screen
 	if (keyboard.keys.d) {
-		this.x = Math.min(this.getX() + this.speed, window.innerWidth - this.width);
+		this.x = this.getX() + this.speed;
 	}
 };
 

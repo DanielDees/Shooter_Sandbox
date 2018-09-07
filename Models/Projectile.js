@@ -79,6 +79,15 @@ Projectile.prototype.delete = function(toolbox, entities) {
 //Renders projectile to screen
 Projectile.prototype.draw = function() {
 
+	//Check if within player FOV
+	if (this.getRight() < -player.FOV.x() || 
+		this.getLeft() > -player.FOV.x() + canvas.width ||
+		this.getBottom() < -player.FOV.y() ||
+		this.getTop() > -player.FOV.y() + canvas.height) {
+		return false;
+	}
+
+
 	//Set color
 	ctx.fillStyle = this.getColor();
 

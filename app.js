@@ -14,15 +14,6 @@ function resizeCanvas() {
 	canvas.height = window.innerHeight;
 }
 
-// var player_FOV = {
-// 	x: () => {
-// 		return -(player.getX() - (canvas.width / 2) + (player.getWidth() / 2));
-// 	},
-// 	y: () => {
-// 		return -(player.getY() - (canvas.height / 2) + (player.getHeight() / 2));
-// 	},
-// };
-
 //Game objects
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
