@@ -39,7 +39,7 @@ function Weapon()
 	this.reloadFrame = 0;
 
 	//Distance projectile can travel before disappearing
-	this.range = 600;
+	this.range = 200;
 
 	//Speed projectile moves at
 	this.roundSpeed = 12;

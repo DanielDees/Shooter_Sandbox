@@ -12,9 +12,8 @@ debugWeapon.setName("Debug Weapon").
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(1).
-		setRange(1000).
-		setDamage(5).
-		setAutoReload(true).
+		setRange(1).
+		setDamage(0).
 		setRoundSpeed(0).
 		setRoundWidth(150).
 		setRoundHeight(50).
@@ -25,12 +24,11 @@ debugWeapon.setName("Debug Weapon").
 laser.setName("Laser").
 		setRounds(1).
 		setSpread(0).
-		setMagazineSize(1000).
+		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
 		setRange(1200).
 		setDamage(5).
-		setAutoReload(true).
 		setRoundSpeed(20).
 		setRoundWidth(25).
 		setRoundHeight(3).
@@ -41,60 +39,56 @@ laser.setName("Laser").
 double.setName("Double").
 		setRounds(2).
 		setSpread(35).
-		setMagazineSize(50).
-		setReloadTime(0).
+		setMagazineSize(180).
+		setReloadTime(1).
 		setRoundsPerSecond(30).
 		setRange(700).
 		setDamage(40).
-		setAutoReload(true).
-		setRoundSpeed(10).
-		setRoundWidth(15).
-		setRoundHeight(5).
-		setRoundColor('pink').
+		setRoundSpeed(13).
+		setRoundWidth(20).
+		setRoundHeight(7).
+		setRoundColor('green').
 		setRoundMoveType("normal");
 
 triple.setName("Triple").
 		setRounds(3).
 		setSpread(35).
-		setMagazineSize(50).
-		setReloadTime(0).
-		setRoundsPerSecond(30).
+		setMagazineSize(100).
+		setReloadTime(1).
+		setRoundsPerSecond(20).
 		setRange(600).
 		setDamage(40).
-		setAutoReload(true).
-		setRoundSpeed(10).
+		setRoundSpeed(11).
 		setRoundWidth(15).
-		setRoundHeight(5).
+		setRoundHeight(7).
 		setRoundColor('blue').
 		setRoundMoveType("normal");
 
 quint.setName("Quint").
 		setRounds(5).
 		setSpread(35).
-		setMagazineSize(50).
-		setReloadTime(0).
-		setRoundsPerSecond(30).
+		setMagazineSize(60).
+		setReloadTime(1).
+		setRoundsPerSecond(15).
 		setRange(500).
 		setDamage(40).
-		setAutoReload(true).
 		setRoundSpeed(10).
-		setRoundWidth(15).
-		setRoundHeight(5).
-		setRoundColor('violet').
+		setRoundWidth(12).
+		setRoundHeight(8).
+		setRoundColor('teal').
 		setRoundMoveType("bouncy");
 
 shotgun.setName("Shotgun").
-		setRounds(12).
+		setRounds(10).
 		setSpread(35).
-		setMagazineSize(50).
-		setReloadTime(0).
-		setRoundsPerSecond(30).
+		setMagazineSize(30).
+		setReloadTime(1).
+		setRoundsPerSecond(10).
 		setRange(300).
 		setDamage(75).
-		setAutoReload(true).
 		setRoundSpeed(10).
-		setRoundWidth(15).
-		setRoundHeight(5).
+		setRoundWidth(12).
+		setRoundHeight(9).
 		setRoundColor('yellow').
 		setRoundMoveType("bouncy");
 
@@ -102,11 +96,10 @@ nuke.setName("Nuke").
 		setRounds(90).
 		setSpread(360).
 		setMagazineSize(1).
-		setReloadTime(1).
+		setReloadTime(0).
 		setRoundsPerSecond(1).
 		setRange(2000).
 		setDamage(1000).
-		setAutoReload(true).
 		setRoundSpeed(8).
 		setRoundWidth(15).
 		setRoundHeight(15).

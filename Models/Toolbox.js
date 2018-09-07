@@ -40,15 +40,15 @@ Toolbox.prototype.drawDebug = function() {
 		//["Mouse X", mouse.x],
 		//["Mouse Y", mouse.y],
 		//["Clicked", mouse.clicked],
-		["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
-		["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
+		// ["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
+		// ["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
 		//["Reloading", player.weapon.reloading],
 		["Weapon", player.weapon.name],
 		["Damage", player.weapon.damage],
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
 		["Clip  ", player.weapon.magazine + " / " + player.weapon.magazineSize],
 		//["Firing", player.weapon.firingFrame]
-		['Entities', projectileList.length],
+		// ['Entities', projectileList.length],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
