@@ -28,6 +28,7 @@ var debugWeapon = new Weapon;
 player.addWeapon(shotgun);
 player.addWeapon(nuke);
 player.addWeapon(laser);
+player.addWeapon(debugWeapon);
 
 //Initialize laser settings
 debugWeapon.setName("Debug Weapon").
@@ -68,7 +69,7 @@ shotgun.setName("Shotgun").
 		setRounds(12).
 		setSpread(35).
 		setMagazineSize(50).
-		setReloadTime(1).
+		setReloadTime(0).
 		setRoundsPerSecond(50).
 		setRange(600).
 		setDamage(75).
@@ -95,7 +96,7 @@ nuke.setName("Nuke").
 		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(laser).
+player.setWeapon(debugWeapon).
 		setCollision(false);
 
 //Test object.
@@ -105,11 +106,18 @@ obstacle.setWidth(100).
 	setY(window.innerHeight / 2 - 50).
 	setColor('grey');
 
-
 var projectileList = [];
 var obstacleList = [obstacle];
 
-function gameLoop() {
+function game_update() {
+
+}
+
+function game_render() {
+
+}
+
+function game_loop() {
 	//Clear screen
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -117,7 +125,11 @@ function gameLoop() {
 		player.weapon.beginReloading();
 	}
 
+	//Update
 	player.move(keyboard);
+	player.weapon.frame(game);
+
+	//Render
 	player.draw(ctx);
 
 	obstacle.draw();
@@ -127,7 +139,6 @@ function gameLoop() {
 		keyboard.keys.x = false;
 	}
 
-	player.weapon.frame(game);
 
 	for (var i = 0; i < projectileList.length; i++) {
 
@@ -147,4 +158,4 @@ function gameLoop() {
 }
 
 //Run game
-setInterval(gameLoop, (1000 / game.FPS));
+setInterval(game_loop, (1000 / game.FPS));

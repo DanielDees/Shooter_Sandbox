@@ -102,7 +102,7 @@ Projectile.prototype.draw = function() {
 
 Projectile.prototype.spin = function() {
 
-	this.angle += 0.5 / (180 / Math.PI);
+	this.angle += 1 / (180 / Math.PI);
 
 	//Reset to 0 every rotation
 	if (this.angle >= Math.PI * 2) { 

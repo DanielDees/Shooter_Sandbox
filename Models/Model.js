@@ -47,10 +47,12 @@ Model.prototype.drawDebug = function() {
 	ctx.fillStyle = "blue";
 	ctx.font = "24px Courier New";
 
-	var left = (this.getLeft() - this.x);
-	var right = (this.getRight() - this.x);
-	var bottom = (this.getBottom() - this.y);
-	var top = (this.getTop() - this.y);
+	var left = this.getLeft() - this.x;
+	var right = this.getRight() - this.x;
+	var bottom = this.getBottom() - this.y;
+	var top = this.getTop() - this.y;
+	var rotated_width = this.testWidth();
+	var rotated_height = this.testHeight();
 
 	var debugInfo = [
 		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
@@ -58,6 +60,8 @@ Model.prototype.drawDebug = function() {
 		// ["Right", (right).toFixed(0)],
 		// ["Bottom", (bottom).toFixed(0)],
 		// ["Top", (top).toFixed(0)],
+		// ["Rotated Width", (rotated_width).toFixed(0)],
+		// ["Rotated Height", (rotated_height).toFixed(0)],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
@@ -104,7 +108,11 @@ Model.prototype.drawDebug = function() {
 	// ctx.fillText('Top', mid_width, this.getTop() - 10);
 
 	ctx.strokeStyle = 'black';
-	// ctx.strokeRect(this.x, this.y, this.width, this.height);
+	//Actual projectile size
+	//ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+	//Actual hitbox size
+	//ctx.strokeRect(this.x, this.y + this.height + 10, this.testWidth(), this.testHeight());
 }
 
 Model.prototype.move = function() {
@@ -146,38 +154,108 @@ Model.prototype.getAngle = function() {
 
 Model.prototype.getTop = function() {
 
-	var top = this.y + (this.width * Math.sin(this.angle));
-	var bottom = this.y + (this.height * Math.cos(this.angle));
+	var top = this.width * Math.sin(this.angle);
+	var bottom = this.height * Math.cos(this.angle);
+
+	var min = Math.min(0, top, bottom);
+	var max = Math.max(0, top, bottom);
+
+	//The actual height
+	var height = Math.abs(top) + Math.abs(bottom);
+
+	//The calculated height
+	var total = Math.abs(min) + Math.abs(max);
+
+	if (total != height && min != 0) {
+		return this.y - height;
+	}
 
 	//Top-most point
-	return Math.min(top, bottom);
+	return this.y + min;
 };
 
 Model.prototype.getBottom = function() {
 
-	var top = this.y + (this.width * Math.sin(this.angle));
-	var bottom = this.y + (this.height * Math.cos(this.angle));
+	var top = this.width * Math.sin(this.angle);
+	var bottom = this.height * Math.cos(this.angle);
+
+	var min = Math.min(0, top, bottom);
+	var max = Math.max(0, top, bottom);
+
+	//The actual height
+	var height = Math.abs(top) + Math.abs(bottom);
+
+	//The calculated height
+	var total = Math.abs(min) + Math.abs(max);
+
+	if (total != height && max != 0) {
+		return this.y + height;
+	}
 
 	//Bottom-most point
-	return Math.max(top, bottom);
+	return this.y + max;
 };
 
 Model.prototype.getLeft = function() {
 
-	var left = this.x - this.height * Math.sin(this.angle);
-	var right = this.x + this.width * Math.cos(this.angle);
+	var left = -this.height * Math.sin(this.angle);
+	var right = this.width * Math.cos(this.angle);
+
+	var min = Math.min(0, left, right);
+	var max = Math.max(0, left, right);
+
+	//The actual width
+	var width = Math.abs(left) + Math.abs(right);
+
+	//The calculated width
+	var total = Math.abs(min) + Math.abs(max);
+
+	if (total != width && min != 0) {
+		return this.x - width;
+	}
 
 	//Left-most point
-	return Math.min(left, right);
+	return this.x + min;
 };
 
 Model.prototype.getRight = function() {
 
-	var left = this.x - this.height * Math.sin(this.angle);
-	var right = this.x + this.width * Math.cos(this.angle);
+	var left = -this.height * Math.sin(this.angle);
+	var right = this.width * Math.cos(this.angle);
+
+	var min = Math.min(0, left, right);
+	var max = Math.max(0, left, right);
+
+	//The actual width
+	var width = Math.abs(left) + Math.abs(right);
+
+	//The calculated width
+	var total = Math.abs(min) + Math.abs(max);
+
+	if (total != width && max != 0) {
+		return this.x + width;
+	}
 
 	//Right-most point
-	return Math.max(left, right);
+	return this.x + max;
+}
+
+Model.prototype.testWidth = function() {
+
+	var left = -this.height * Math.sin(this.angle);
+	var right = +this.width * Math.cos(this.angle);
+
+	//Right-most point
+	return (Math.abs(left) + Math.abs(right));
+}
+
+Model.prototype.testHeight = function() {
+
+	var top = this.width * Math.sin(this.angle);
+	var bottom = this.height * Math.cos(this.angle);
+
+	//Bottom-most point
+	return (Math.abs(top) + Math.abs(bottom));
 }
 
 Model.prototype.getColor = function() {
