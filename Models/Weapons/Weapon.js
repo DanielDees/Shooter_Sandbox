@@ -1,3 +1,5 @@
+;"use strict";
+
 /*
  * The base weapon class.
  */

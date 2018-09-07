@@ -1,3 +1,5 @@
+;"use strict";
+
 /*
  * The player class.
  */
@@ -9,6 +11,15 @@ function Player() {
 	this.width = 30;
 	this.height = 30;
 
+	this.FOV = {
+		x: () => {
+			return -(this.getX() - (canvas.width / 2) + (this.getWidth() / 2));
+		},
+		y: () => {
+			return -(this.getY() - (canvas.height / 2) + (this.getHeight() / 2));
+		},
+	};	
+
 	this.speed = 8;
 
 	this.weapon = new Weapon();
@@ -18,8 +29,8 @@ function Player() {
 
 Player.prototype = Object.create(Model.prototype);
 
-Player.prototype.draw = function(ctx) {
-	ctx.fillStyle = "blue";
+Player.prototype.draw = function() {
+	ctx.fillStyle = this.getColor();
 	ctx.fillRect(this.getX(), this.getY(), this.width, this.height);
 };
 

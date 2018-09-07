@@ -1,3 +1,5 @@
+;"use strict";
+
 /*
  * The model class is the base class for all models which
  * can be drawn to the canvas.

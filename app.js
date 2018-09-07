@@ -14,6 +14,15 @@ function resizeCanvas() {
 	canvas.height = window.innerHeight;
 }
 
+// var player_FOV = {
+// 	x: () => {
+// 		return -(player.getX() - (canvas.width / 2) + (player.getWidth() / 2));
+// 	},
+// 	y: () => {
+// 		return -(player.getY() - (canvas.height / 2) + (player.getHeight() / 2));
+// 	},
+// };
+
 //Game objects
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
@@ -29,6 +38,7 @@ player.addWeapon(nuke);
 // player.addWeapon(debugWeapon);
 
 player.setWeapon(laser).
+		setColor('blue').
 		setCollision(false);
 
 //Test object.
@@ -42,17 +52,6 @@ var projectileList = [];
 var obstacleList = [obstacle];
 
 function game_update() {
-
-}
-
-function game_render() {
-
-}
-
-function game_loop() {
-	//Clear screen
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-
 	if (keyboard.keys.r && player.weapon.magazine < player.weapon.magazineSize) {
 		player.weapon.beginReloading();
 	}
@@ -60,17 +59,6 @@ function game_loop() {
 	//Update
 	player.move(keyboard);
 	player.weapon.frame(game);
-
-	//Render
-	player.draw(ctx);
-
-	obstacle.draw();
-
-	if (keyboard.keys.x) {
-		player.switchWeapon();
-		keyboard.keys.x = false;
-	}
-
 
 	for (var i = 0; i < projectileList.length; i++) {
 
@@ -86,7 +74,39 @@ function game_loop() {
 		}
 	}
 
+	if (keyboard.keys.x) {
+		player.switchWeapon();
+		keyboard.keys.x = false;
+	}
+}
+
+function game_render() {
+
+	//Clear screen
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+
+	//Move to player
+	ctx.save();
+
+	ctx.translate(player.FOV.x(), player.FOV.y());
+
+	//Render
+	player.draw();
+	obstacle.draw();
+
+	for (var i = 0; i < projectileList.length; i++) {
+		projectileList[i].draw();
+	}
+
 	toolbox.drawDebug();
+
+	//Restore
+	ctx.restore();
+}
+
+function game_loop() {
+	game_update();
+	game_render();
 }
 
 //Run game

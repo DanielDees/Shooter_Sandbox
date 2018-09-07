@@ -1,3 +1,5 @@
+;"use strict";
+
 var shotgun = new Weapon();
 var nuke = new Weapon();
 var laser = new Weapon();
@@ -22,12 +24,12 @@ debugWeapon.setName("Debug Weapon").
 		setDebug(true);
 
 laser.setName("Laser").
-		setRounds(1).
-		setSpread(0).
+		setRounds(90).
+		setSpread(360).
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
-		setRange(1200).
+		setRange(120000).
 		setDamage(5).
 		setRoundSpeed(20).
 		setRoundWidth(25).

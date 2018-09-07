@@ -1,14 +1,26 @@
+;"use strict";
+
 //Mouse Events ==================
 document.onmousemove = mousePos;
 document.onmousedown = function() { mouse.clicked = true; };
 document.onmouseup = function() { mouse.clicked = false; };
 
 //MOUSE 
-var mouse = {
-  x: 0,
-  y: 0,
+var mouse = new Mouse();
 
-  clicked: false
+function Mouse() {
+
+	this.x = 0;
+	this.y = 0;
+
+	this.getX = function() {
+		return -player.FOV.x() + this.x;
+	};
+	this.getY = function() {
+		return -player.FOV.y() + this.y;
+	};
+
+	this.clicked = false;
 };
 
 function mousePos (e) {

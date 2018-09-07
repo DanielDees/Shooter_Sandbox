@@ -1,3 +1,5 @@
+;"use strict";
+
 /*
  * The Toolbox contains misc. functions that can be used for
  * calculations.
@@ -8,8 +10,8 @@ function Toolbox() {}
 Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
 	
 	//Calculate center of player.
-	var dx = entityFrom.x + (entityFrom.width / 2) - entityTo.x;
-	var dy = entityFrom.y + (entityFrom.height / 2) - entityTo.y;
+	var dx = entityFrom.getX() + (entityFrom.width / 2) - entityTo.getX();
+	var dy = entityFrom.getY() + (entityFrom.height / 2) - entityTo.getY();
 
 	//Find angle in Rad
 	var angle = Math.atan2(dy, dx);
@@ -30,17 +32,18 @@ Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
 //Shows debug information on the game screen.
 Toolbox.prototype.drawDebug = function() {
 
-	var x = 30;
-	var y = parseInt(ctx.font);
-
 	ctx.fillStyle = "blue";
 	ctx.font = "24px Courier New";
+
+	var x = -player.FOV.x() + 30;
+	var y = -player.FOV.y() + 40;
+	var rowHeight = parseInt(ctx.font);
 
 	var debugInfo = [
 		//["Mouse X", mouse.x],
 		//["Mouse Y", mouse.y],
 		//["Clicked", mouse.clicked],
-		// ["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
+		["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
 		// ["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
 		//["Reloading", player.weapon.reloading],
 		["Weapon", player.weapon.name],
@@ -48,11 +51,11 @@ Toolbox.prototype.drawDebug = function() {
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
 		["Clip  ", player.weapon.magazine + " / " + player.weapon.magazineSize],
 		//["Firing", player.weapon.firingFrame]
-		// ['Entities', projectileList.length],
+		['Entities', projectileList.length],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
-		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 40 + y * i);
+		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, y + (rowHeight * i));
 	}	
 }
 

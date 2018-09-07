@@ -1,3 +1,5 @@
+;"use strict";
+
 /*
  * The projectile class
  */
@@ -149,8 +151,6 @@ Projectile.prototype.update = function(data) {
 	if (this.delete(data.toolbox, data.entities)) {
 		return false;
 	}
-	
-	this.draw();
 
 	return true;
 }
