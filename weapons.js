@@ -29,14 +29,14 @@ laser.setName("Laser").
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
-		setRange(1200).
+		setRange(12000).
 		setDamage(5).
 		setRoundSpeed(20).
 		setRoundWidth(25).
 		setRoundHeight(3).
 		setRoundColor('red').
 		setRoundMoveType("bouncy").
-		setDebug(true);
+		setDebug(false);
 
 double.setName("Double").
 		setRounds(2).

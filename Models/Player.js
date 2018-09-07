@@ -34,23 +34,47 @@ Player.prototype.draw = function() {
 	ctx.fillRect(this.getX(), this.getY(), this.width, this.height);
 };
 
-Player.prototype.move = function(keyboard) {
-	//Collision with top of screen
+Player.prototype.move = function(entity) {
+	
+	//!PROJECT_ISSUE
+	//For some reason you have to have one pixel space between you and the entity.
+	//Not sure why the collision is occuring when there isn't the extra pixel
+	if (entity) {
+		//Collision with top of entity
+		if (this.getTop() < entity.getTop() && keyboard.keys.s) {
+			this.setBottom(entity.getTop() - 1);
+		}
+		//Collision with left of entity
+		else if (this.getLeft() < entity.getLeft() && keyboard.keys.d) {
+			this.setRight(entity.getLeft() - 1);
+		}
+		//Collision with bottom of entity
+		else if (this.getBottom() > entity.getBottom() && keyboard.keys.w) {
+			this.setTop(entity.getBottom() + 1);
+		}
+		//Collision with right of entity
+		else if (this.getRight() > entity.getRight() && keyboard.keys.a) {
+			//Why on earth do you need to add this.width for it to work?
+			this.setLeft(entity.getRight() + 1);
+		}
+
+		return true;
+	}
+
 	if (keyboard.keys.w) {
-		this.y = this.getY() - this.speed;
+		this.setY(this.getY() - this.speed);
 	}
-	//Collision with bottom of screen
 	if (keyboard.keys.s) {
-		this.y = this.getY() + this.speed;
+		this.setY(this.getY() + this.speed);
 	}
-	//Collision with left of screen
 	if (keyboard.keys.a) {
-		this.x = this.getX() - this.speed;
+		this.setX(this.getX() - this.speed);
 	}
-	//Collision with right of screen
 	if (keyboard.keys.d) {
-		this.x = this.getX() + this.speed;
+		this.setX(this.getX() + this.speed);
 	}
+
+
 };
 
 Player.prototype.getWeapon = function() {

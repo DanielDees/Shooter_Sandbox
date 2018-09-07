@@ -16,7 +16,7 @@ function Projectile(data) {
 	this.width = data.roundWidth || 5;
 	this.height = data.roundHeight || 5;
 
-	//x and y speeds are adjusted for angle fired
+	//Speed is adjusted for angle fired
 	this.speed = {
 		x: (data.speed * Math.cos(data.angle)), 
 		y: (data.speed * Math.sin(data.angle))
@@ -47,7 +47,7 @@ Projectile.prototype.moveSpecial = function() {
 }
 
 //Deletes self from projectileList
-Projectile.prototype.delete = function(toolbox, entities) {
+Projectile.prototype.delete = function(entities) {
 
 	if (this.distanceTraveled > this.range) {
 		return true;
@@ -87,7 +87,6 @@ Projectile.prototype.draw = function() {
 		return false;
 	}
 
-
 	//Set color
 	ctx.fillStyle = this.getColor();
 
@@ -124,26 +123,28 @@ Projectile.prototype.spin = function() {
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
-	this.angle = (Math.PI * 2) - this.angle;
-
 	//Collision with top of entity
-	if (this.getTop() < entity.getTop()) {
+	if (this.getTop() < entity.getTop() && this.speed.y > 0) {
 		this.speed.y = -Math.abs(this.speed.y);
+		this.angle = (Math.PI * 2) - this.angle;
 		this.setTop(entity.getTop());
 	}
 	//Collision with left of entity
-	else if (this.getLeft() < entity.getLeft()) {
+	if (this.getLeft() < entity.getLeft() && this.speed.x > 0) {
 		this.speed.x = -Math.abs(this.speed.x);
+		this.angle = (Math.PI * 2) - this.angle;
 		this.setRight(entity.getLeft());
 	}
 	//Collision with bottom of entity
-	else if (this.getBottom() > entity.getBottom()) {
+	if (this.getBottom() > entity.getBottom() && this.speed.y < 0) {
 		this.speed.y = Math.abs(this.speed.y);
+		this.angle = (Math.PI * 2) - this.angle;
 		this.setTop(entity.getBottom());
 	}
 	//Collision with right of entity
-	else if (this.getRight() > entity.getRight()) {
+	if (this.getRight() > entity.getRight() && this.speed.x < 0) {
 		this.speed.x = Math.abs(this.speed.x);
+		this.angle = (Math.PI * 2) - this.angle;
 		//Why on earth do you need to add this.width for it to work?
 		this.setLeft(entity.getRight() + this.width);
 	}
@@ -157,7 +158,7 @@ Projectile.prototype.update = function(data) {
 	this.moveSpecial();
 
 	//If the projectile self deletes
-	if (this.delete(data.toolbox, data.entities)) {
+	if (this.delete(data.entities)) {
 		return false;
 	}
 

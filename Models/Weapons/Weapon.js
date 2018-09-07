@@ -149,12 +149,15 @@ Weapon.prototype.frame = function(game) {
 };
 
 //Fire single projectile
-Weapon.prototype.shoot = function(type) {
+Weapon.prototype.shoot = function(angle) {
 
-	//Get center of player.
-	var angle = toolbox.getAngleBetween(this, mouse, "radians");
-	  
-	projectileList.push(new Projectile(this.getProjectileData(player, angle)));
+	var data = this.getProjectileData(player, angle);
+	 
+	var projectile = new Projectile(data);
+
+	projectile.setHitboxBounds();
+
+	projectileList.push(projectile);
 };
 
 //Fire any number of rounds in desired spread
@@ -184,7 +187,7 @@ Weapon.prototype.shoot2 = function() {
 		
 		var roundAngle = angle - splitAt + (roundSpread * i);
 
-		projectileList.push(new Projectile(this.getProjectileData(player, roundAngle)));
+		this.shoot(roundAngle);
 	}
 };
 

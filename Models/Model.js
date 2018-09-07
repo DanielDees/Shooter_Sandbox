@@ -15,6 +15,13 @@ function Model()
 	this.width = 0;
 	this.height = 0;
 
+	this.hitbox = {
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+	};
+
 	this.speed = 0;
 	this.angle = 0;
 
@@ -122,6 +129,23 @@ Model.prototype.getHitboxWidth = function() {
 	return (Math.abs(top) + Math.abs(bottom));	
 }
 
+Model.prototype.getHitboxBounds = function() {
+
+	var hitbox = {
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+	};
+
+	hitbox.top = this.getHitboxBound( this.width, this.height, 'min');
+	hitbox.bottom = this.getHitboxBound( this.width, this.height, 'max');
+	hitbox.left = this.getHitboxBound(-this.height, this.width, 'min');
+	hitbox.right = this.getHitboxBound(-this.height, this.width, 'max');
+
+	return hitbox;
+}
+
 Model.prototype.getCollision = function() {
 	return this.collidable;
 }
@@ -130,7 +154,7 @@ Model.prototype.getAngle = function() {
 	return this.angle;
 }
 
-Model.prototype.getHitboxBound = function(start, size_a, size_b, min_max) {
+Model.prototype.getHitboxBound = function(size_a, size_b, min_max) {
 
 	var side_a = size_a * Math.sin(this.angle);
 	var side_b = size_b * Math.cos(this.angle);
@@ -146,35 +170,40 @@ Model.prototype.getHitboxBound = function(start, size_a, size_b, min_max) {
 
 	if (calculated != actual) {
 		if (min_max == "max" && max != 0) {
-			return actual + start;
+			return actual;
 		}
 		if (min_max == "min" && min != 0) {
-			return -actual + start;
+			return -actual;
 		}
 	}
 
 	if (min_max == "max") {
-		return max + start;
+		return max;
 	}
 	if (min_max == "min") {
-		return min + start;
+		return min;
 	}
 }
 
+Model.prototype.setHitboxBounds = function() {
+	this.hitbox = this.getHitboxBounds();
+	return this;
+}
+
 Model.prototype.getTop = function() {
-	return this.getHitboxBound(this.y, this.width, this.height, 'min');
+	return this.y + this.hitbox.top;
 };
 
 Model.prototype.getBottom = function() {
-	return this.getHitboxBound(this.y, this.width, this.height, 'max');
+	return this.y + this.hitbox.bottom;
 };
 
 Model.prototype.getLeft = function() {
-	return this.getHitboxBound(this.x, -this.height, this.width, 'min');
+	return this.x + this.hitbox.left;
 };
 
 Model.prototype.getRight = function() {
-	return this.getHitboxBound(this.x, -this.height, this.width, 'max');
+	return this.x + this.hitbox.right;
 }
 
 Model.prototype.getColor = function() {

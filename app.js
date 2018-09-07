@@ -6,6 +6,9 @@ var ctx = canvas.getContext("2d");
 var game = {};
 game.FPS = 60;
 
+var projectileList = [];
+var obstacleList = [];
+
 window.onload = resizeCanvas;
 window.onresize = resizeCanvas;
 
@@ -18,7 +21,31 @@ function resizeCanvas() {
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
 var player = new Player();
-var obstacle = new Obstacle();
+
+//Test function.
+function createRandomObstacles(count) {
+
+	var min = -2000;
+	var max = 2000;
+
+	for (var i = 0; i < count; i++) {
+		
+		var obstacle = new Obstacle();
+
+		//Test object.
+		obstacle.setWidth(70).
+			setHeight(70).
+			setX(Math.random() * (max - min) + min).
+			setY(Math.random() * (max - min) + min).
+			setColor('violet').
+			setHitboxBounds();
+
+		obstacleList.push(obstacle);
+	}
+}
+
+//Test
+createRandomObstacles(200);
 
 player.addWeapon(laser);
 player.addWeapon(double);
@@ -30,17 +57,8 @@ player.addWeapon(nuke);
 
 player.setWeapon(laser).
 		setColor('blue').
-		setCollision(false);
-
-//Test object.
-obstacle.setWidth(100).
-	setHeight(100).
-	setX(window.innerWidth / 2 - 50).
-	setY(window.innerHeight / 2 - 50).
-	setColor('grey');
-
-var projectileList = [];
-var obstacleList = [obstacle];
+		setCollision(true).
+		setHitboxBounds();
 
 function game_update() {
 	if (keyboard.keys.r && player.weapon.magazine < player.weapon.magazineSize) {
@@ -48,14 +66,21 @@ function game_update() {
 	}
 
 	//Update
-	player.move(keyboard);
+	player.move();
+
+	//Can probably be pulled out of the projectile class to save memory.
+	for (var i = 0; i < obstacleList.length; i++) {
+		if (toolbox.collision(player, obstacleList[i])) {
+			player.move(obstacleList[i]);
+		}
+	}
+
 	player.weapon.frame(game);
 
 	for (var i = 0; i < projectileList.length; i++) {
 
 		var data = {
 			entities: obstacleList,
-			toolbox: toolbox,
 		};
 
 		//If the projectile self deletes, stay on current index
@@ -83,11 +108,15 @@ function game_render() {
 
 	//Render
 	player.draw();
-	obstacle.draw();
+
+	for (var i = 0; i < obstacleList.length; i++) {
+		obstacleList[i].draw();
+	}
 
 	for (var i = 0; i < projectileList.length; i++) {
 		projectileList[i].draw();
 	}
+
 
 	toolbox.drawDebug();
 
