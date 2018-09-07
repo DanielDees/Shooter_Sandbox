@@ -28,7 +28,7 @@ var debugWeapon = new Weapon;
 player.addWeapon(shotgun);
 player.addWeapon(nuke);
 player.addWeapon(laser);
-player.addWeapon(debugWeapon);
+// player.addWeapon(debugWeapon);
 
 //Initialize laser settings
 debugWeapon.setName("Debug Weapon").
@@ -70,7 +70,7 @@ shotgun.setName("Shotgun").
 		setSpread(35).
 		setMagazineSize(50).
 		setReloadTime(0).
-		setRoundsPerSecond(50).
+		setRoundsPerSecond(60).
 		setRange(600).
 		setDamage(75).
 		setAutoReload(true).
@@ -96,7 +96,7 @@ nuke.setName("Nuke").
 		setRoundColor('orange').
 		setRoundMoveType("normal");
 
-player.setWeapon(debugWeapon).
+player.setWeapon(shotgun).
 		setCollision(false);
 
 //Test object.

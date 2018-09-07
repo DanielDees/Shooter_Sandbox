@@ -47,17 +47,12 @@ Model.prototype.drawDebug = function() {
 	ctx.fillStyle = "blue";
 	ctx.font = "24px Courier New";
 
-	var left = this.getLeft() - this.x;
-	var right = this.getRight() - this.x;
-	var bottom = this.getBottom() - this.y;
-	var top = this.getTop() - this.y;
-
 	var debugInfo = [
 		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
-		// ["Left", (left).toFixed(0)],
-		// ["Right", (right).toFixed(0)],
-		// ["Bottom", (bottom).toFixed(0)],
-		// ["Top", (top).toFixed(0)],
+		// ["Left", (this.getLeft() - this.x).toFixed(0)],
+		// ["Right", (this.getRight() - this.x).toFixed(0)],
+		// ["Bottom", (this.getBottom() - this.y).toFixed(0)],
+		// ["Top", (this.getTop() - this.y).toFixed(0)],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
@@ -71,44 +66,16 @@ Model.prototype.drawDebug = function() {
 	//Top/Bottom text position
 	var mid_width = this.getLeft() + ((this.getRight() - this.getLeft())  / 4);
 
-	//Left
-	ctx.strokeStyle = 'green';
-	ctx.beginPath();
-	ctx.moveTo(this.getLeft(), this.getTop());
-	ctx.lineTo(this.getLeft(), this.getBottom());
-	ctx.stroke();
-	// ctx.fillText('Left', this.getLeft() - 60, mid_height);
-	
-	//Bottom
-	ctx.strokeStyle = 'brown';
-	ctx.beginPath();
-	ctx.moveTo(this.getLeft(), this.getBottom());
-	ctx.lineTo(this.getRight(), this.getBottom());
-	ctx.stroke();
-	// ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
-	
-	//Right
-	ctx.strokeStyle = 'red';
-	ctx.beginPath();
-	ctx.moveTo(this.getRight(), this.getBottom());
-	ctx.lineTo(this.getRight(), this.getTop());
-	ctx.stroke();
-	// ctx.fillText('Right', this.getRight() + 5, mid_height);
-
-	//Top
-	ctx.strokeStyle = 'teal';
-	ctx.beginPath();
-	ctx.moveTo(this.getRight(), this.getTop());
-	ctx.lineTo(this.getLeft(), this.getTop());
-	ctx.stroke();
-	// ctx.fillText('Top', mid_width, this.getTop() - 10);
-
 	ctx.strokeStyle = 'black';
 	//Actual projectile size
-	//ctx.strokeRect(this.x, this.y, this.width, this.height);
+	// ctx.strokeRect(this.x, this.y, this.width, this.height);
 
-	//Actual hitbox size
-	//ctx.strokeRect(this.x, this.y + this.height + 10, this.testWidth(), this.testHeight());
+	// Hitbox
+	ctx.strokeRect(this.getLeft(), this.getTop(), this.getHitboxWidth(), this.getHitboxHeight());
+	// ctx.fillText('Left', this.getLeft() - 60, mid_height);
+	// ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
+	// ctx.fillText('Right', this.getRight() + 5, mid_height);
+	// ctx.fillText('Top', mid_width, this.getTop() - 10);
 }
 
 Model.prototype.move = function() {
@@ -139,6 +106,19 @@ Model.prototype.getWidth = function() {
 Model.prototype.getHeight = function() {
 	return this.height;
 };
+
+Model.prototype.getHitboxWidth = function() {	
+ 	var left = -this.height * Math.sin(this.angle);	
+	var right = +this.width * Math.cos(this.angle);	
+
+	return (Math.abs(left) + Math.abs(right));	
+}	
+ Model.prototype.getHitboxHeight = function() {	
+ 	var top = this.width * Math.sin(this.angle);	
+	var bottom = this.height * Math.cos(this.angle);	
+
+	return (Math.abs(top) + Math.abs(bottom));	
+}
 
 Model.prototype.getCollision = function() {
 	return this.collidable;

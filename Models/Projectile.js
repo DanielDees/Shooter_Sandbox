@@ -113,24 +113,22 @@ Projectile.prototype.spin = function() {
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
-	var flip_angle = (Math.PI * 2) - this.angle;
-
-	this.angle = flip_angle;
+	this.angle = (Math.PI * 2) - this.angle;
 
 	//Collision with top of entity
 	if (this.getTop() < entity.getTop()) {
 		this.speed.y = -Math.abs(this.speed.y);
 		this.setTop(entity.getTop());
 	}
-	//Collision with bottom of entity
-	else if (this.getBottom() > entity.getBottom()) {
-		this.speed.y = Math.abs(this.speed.y);
-		this.setBottom(entity.getBottom());
-	}
 	//Collision with left of entity
 	else if (this.getLeft() < entity.getLeft()) {
 		this.speed.x = -Math.abs(this.speed.x);
 		this.setRight(entity.getLeft());
+	}
+	//Collision with bottom of entity
+	else if (this.getBottom() > entity.getBottom()) {
+		this.speed.y = Math.abs(this.speed.y);
+		this.setTop(entity.getBottom());
 	}
 	//Collision with right of entity
 	else if (this.getRight() > entity.getRight()) {
