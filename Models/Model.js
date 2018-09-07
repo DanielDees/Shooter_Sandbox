@@ -51,8 +51,6 @@ Model.prototype.drawDebug = function() {
 	var right = this.getRight() - this.x;
 	var bottom = this.getBottom() - this.y;
 	var top = this.getTop() - this.y;
-	var rotated_width = this.testWidth();
-	var rotated_height = this.testHeight();
 
 	var debugInfo = [
 		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
@@ -60,8 +58,6 @@ Model.prototype.drawDebug = function() {
 		// ["Right", (right).toFixed(0)],
 		// ["Bottom", (bottom).toFixed(0)],
 		// ["Top", (top).toFixed(0)],
-		// ["Rotated Width", (rotated_width).toFixed(0)],
-		// ["Rotated Height", (rotated_height).toFixed(0)],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {
@@ -152,110 +148,51 @@ Model.prototype.getAngle = function() {
 	return this.angle;
 }
 
-Model.prototype.getTop = function() {
+Model.prototype.getHitboxBound = function(start, size_a, size_b, min_max) {
 
-	var top = this.width * Math.sin(this.angle);
-	var bottom = this.height * Math.cos(this.angle);
+	var side_a = size_a * Math.sin(this.angle);
+	var side_b = size_b * Math.cos(this.angle);
 
-	var min = Math.min(0, top, bottom);
-	var max = Math.max(0, top, bottom);
+	var min = Math.min(0, side_a, side_b);
+	var max = Math.max(0, side_a, side_b);
 
-	//The actual height
-	var height = Math.abs(top) + Math.abs(bottom);
+	//The calculated measurement
+	var calculated = Math.abs(min) + Math.abs(max);
 
-	//The calculated height
-	var total = Math.abs(min) + Math.abs(max);
+	//Actual measurement
+	var actual = Math.abs(side_a) + Math.abs(side_b);
 
-	if (total != height && min != 0) {
-		return this.y - height;
+	if (calculated != actual) {
+		if (min_max == "max" && max != 0) {
+			return actual + start;
+		}
+		if (min_max == "min" && min != 0) {
+			return -actual + start;
+		}
 	}
 
-	//Top-most point
-	return this.y + min;
+	if (min_max == "max") {
+		return max + start;
+	}
+	if (min_max == "min") {
+		return min + start;
+	}
+}
+
+Model.prototype.getTop = function() {
+	return this.getHitboxBound(this.y, this.width, this.height, 'min');
 };
 
 Model.prototype.getBottom = function() {
-
-	var top = this.width * Math.sin(this.angle);
-	var bottom = this.height * Math.cos(this.angle);
-
-	var min = Math.min(0, top, bottom);
-	var max = Math.max(0, top, bottom);
-
-	//The actual height
-	var height = Math.abs(top) + Math.abs(bottom);
-
-	//The calculated height
-	var total = Math.abs(min) + Math.abs(max);
-
-	if (total != height && max != 0) {
-		return this.y + height;
-	}
-
-	//Bottom-most point
-	return this.y + max;
+	return this.getHitboxBound(this.y, this.width, this.height, 'max');
 };
 
 Model.prototype.getLeft = function() {
-
-	var left = -this.height * Math.sin(this.angle);
-	var right = this.width * Math.cos(this.angle);
-
-	var min = Math.min(0, left, right);
-	var max = Math.max(0, left, right);
-
-	//The actual width
-	var width = Math.abs(left) + Math.abs(right);
-
-	//The calculated width
-	var total = Math.abs(min) + Math.abs(max);
-
-	if (total != width && min != 0) {
-		return this.x - width;
-	}
-
-	//Left-most point
-	return this.x + min;
+	return this.getHitboxBound(this.x, -this.height, this.width, 'min');
 };
 
 Model.prototype.getRight = function() {
-
-	var left = -this.height * Math.sin(this.angle);
-	var right = this.width * Math.cos(this.angle);
-
-	var min = Math.min(0, left, right);
-	var max = Math.max(0, left, right);
-
-	//The actual width
-	var width = Math.abs(left) + Math.abs(right);
-
-	//The calculated width
-	var total = Math.abs(min) + Math.abs(max);
-
-	if (total != width && max != 0) {
-		return this.x + width;
-	}
-
-	//Right-most point
-	return this.x + max;
-}
-
-Model.prototype.testWidth = function() {
-
-	var left = -this.height * Math.sin(this.angle);
-	var right = +this.width * Math.cos(this.angle);
-
-	//Right-most point
-	return (Math.abs(left) + Math.abs(right));
-}
-
-Model.prototype.testHeight = function() {
-
-	var top = this.width * Math.sin(this.angle);
-	var bottom = this.height * Math.cos(this.angle);
-
-	//Bottom-most point
-	return (Math.abs(top) + Math.abs(bottom));
+	return this.getHitboxBound(this.x, -this.height, this.width, 'max');
 }
 
 Model.prototype.getColor = function() {
