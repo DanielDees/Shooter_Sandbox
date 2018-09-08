@@ -40,12 +40,23 @@ Model.prototype.frame = function() {
 };
 
 Model.prototype.draw = function() {
+
+	//Check if within player FOV
+	if (this.getRight() < player.FOV.x() || 
+		this.getLeft() > player.FOV.x() + canvas.width ||
+		this.getBottom() < player.FOV.y() ||
+		this.getTop() > player.FOV.y() + canvas.height) {
+		return false;
+	}
+
 	ctx.fillStyle = this.color;
 	ctx.fillRect(this.x, this.y, this.width, this.height);
 
 	if (this.debug) {
 		this.drawDebug();
 	}
+
+	return true;
 };
 
 Model.prototype.drawDebug = function() {
@@ -58,10 +69,6 @@ Model.prototype.drawDebug = function() {
 
 	var debugInfo = [
 		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
-		// ["Left", (this.getLeft() - this.x).toFixed(0)],
-		// ["Right", (this.getRight() - this.x).toFixed(0)],
-		// ["Bottom", (this.getBottom() - this.y).toFixed(0)],
-		// ["Top", (this.getTop() - this.y).toFixed(0)],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {

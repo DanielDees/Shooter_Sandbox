@@ -14,10 +14,10 @@ function Mouse() {
 	this.y = 0;
 
 	this.getX = function() {
-		return -player.FOV.x() + this.x;
+		return player.FOV.x() + this.x;
 	};
 	this.getY = function() {
-		return -player.FOV.y() + this.y;
+		return player.FOV.y() + this.y;
 	};
 
 	this.clicked = false;

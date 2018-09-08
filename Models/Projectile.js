@@ -76,10 +76,10 @@ Projectile.prototype.delete = function(entities) {
 Projectile.prototype.draw = function() {
 
 	//Check if within player FOV
-	if (this.getRight() < -player.FOV.x() || 
-		this.getLeft() > -player.FOV.x() + canvas.width ||
-		this.getBottom() < -player.FOV.y() ||
-		this.getTop() > -player.FOV.y() + canvas.height) {
+	if (this.getRight() < player.FOV.x() || 
+		this.getLeft() > player.FOV.x() + canvas.width ||
+		this.getBottom() < player.FOV.y() ||
+		this.getTop() > player.FOV.y() + canvas.height) {
 		return false;
 	}
 
@@ -121,82 +121,71 @@ Projectile.prototype.spin = function() {
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
-	var bounces = 0;
-
 	var collision = {
-		top: false,
-		bottom: false,
-		right: false,
-		left: false,
+		top: {
+			detected: false, 
+			degree: entity.getTop() - this.getTop(), 
+		},
+		left: {
+			detected: false, 
+			degree: entity.getLeft() - this.getLeft(),
+		},
+		bottom: {
+			detected: false, 
+			degree: this.getBottom() - entity.getBottom(),
+		},
+		right: {
+			detected: false, 
+			degree: this.getRight() - entity.getRight(),
+		},
 	};
 
-	//Collision with top of entity
-	if (this.getTop() < entity.getTop() && this.speed.y > 0) {
-		collision.top = true;
-		bounces++;
+	if (collision.top.degree > 0 && this.speed.y > 0) {
+		collision.top.detected = true;
 	}
-	//Collision with left of entity
-	if (this.getLeft() < entity.getLeft() && this.speed.x > 0) {
-		collision.left = true;
-		bounces++;
+	if (collision.left.degree > 0 && this.speed.x > 0) {
+		collision.left.detected = true;
 	}
-	//Collision with bottom of entity
-	if (this.getBottom() > entity.getBottom() && this.speed.y < 0) {
-		collision.bottom = true;
-		bounces++;
+	if (collision.bottom.degree > 0 && this.speed.y < 0) {
+		collision.bottom.detected = true;
 	}
-	//Collision with right of entity
-	if (this.getRight() > entity.getRight() && this.speed.x < 0) {
-		collision.right = true;
-		bounces++;
+	if (collision.right.degree > 0 && this.speed.x < 0) {
+		collision.right.detected = true;
 	}
 
-	if (bounces % 2 == 1) {
-		this.angle = (Math.PI * 2) - this.angle;
+	//Find side projectile hit the hardest
+	var max = Math.max(collision.top.degree, 
+					collision.bottom.degree, 
+					collision.left.degree, 
+					collision.right.degree);
 
-		//Collision with top of entity
-		if (collision.top) {
+	if (max > 0) {	
+		if (collision.top.detected && collision.top.degree == max) {
 			this.speed.y = -Math.abs(this.speed.y);
+			this.angle = (Math.PI * 2) - this.angle;
+			this.setHitboxBounds();
 			this.setBottom(entity.getTop());
 		}
-		//Collision with left of entity
-		if (collision.left) {
-			this.speed.x = -Math.abs(this.speed.x);
-			this.setRight(entity.getLeft());
-		}
-		//Collision with bottom of entity
-		if (collision.bottom) {
+		if (collision.bottom.detected && collision.bottom.degree == max) {
 			this.speed.y = Math.abs(this.speed.y);
+			this.angle = (Math.PI * 2) - this.angle;
+			this.setHitboxBounds();
 			this.setTop(entity.getBottom());
 		}
-		//Collision with right of entity
-		if (collision.right) {
+		if (collision.left.detected && collision.left.degree == max) {
+			this.speed.x = -Math.abs(this.speed.x);
+			this.angle = (Math.PI * 2) - this.angle;
+			this.setHitboxBounds();
+			this.setRight(entity.getLeft());
+		}
+		if (collision.right.detected && collision.right.degree == max) {
 			this.speed.x = Math.abs(this.speed.x);
+			this.angle = (Math.PI * 2) - this.angle;
+			this.setHitboxBounds();
 			//Why on earth do you need to add this.width for it to work?
 			this.setLeft(entity.getRight() + this.width);
 		}
 	}
-	if (bounces % 2 == 0) {
-		//Collision with top of entity
-		if (collision.top) {
-			this.speed.y = -Math.abs(this.speed.y);
-		}
-		//Collision with left of entity
-		if (collision.left) {
-			this.speed.x = -Math.abs(this.speed.x);
-		}
-		//Collision with bottom of entity
-		if (collision.bottom) {
-			this.speed.y = Math.abs(this.speed.y);
-		}
-		//Collision with right of entity
-		if (collision.right) {
-			this.speed.x = Math.abs(this.speed.x);
-		}
-	}
-
-	//Update hitbox for new angle
-	this.setHitboxBounds();
 
 	return true;
 }

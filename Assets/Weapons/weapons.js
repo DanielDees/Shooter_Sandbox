@@ -12,14 +12,14 @@ var debugWeapon1 = new Weapon();
 var debugWeapon2 = new Weapon();
 
 debugWeapon1.setName("Debug Weapon (Bounce)").
-		setRounds(90).
+		setRounds(30).
 		setSpread(360).
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(20).
-		setRange(1000).
+		setRange(800).
 		setDamage(5).
-		setRoundSpeed(20).
+		setRoundSpeed(10).
 		setRoundWidth(25).
 		setRoundHeight(3).
 		setRoundColor('red').

@@ -35,8 +35,8 @@ Toolbox.prototype.drawDebug = function() {
 	ctx.fillStyle = "blue";
 	ctx.font = "24px Courier New";
 
-	var x = -player.FOV.x() + 30;
-	var y = -player.FOV.y() + 40;
+	var x = player.FOV.x() + 30;
+	var y = player.FOV.y() + 40;
 	var rowHeight = parseInt(ctx.font);
 
 	var debugInfo = [

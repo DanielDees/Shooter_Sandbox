@@ -109,19 +109,18 @@ function game_render() {
 	//Move to player
 	ctx.save();
 
-	ctx.translate(player.FOV.x(), player.FOV.y());
+	ctx.translate(-player.FOV.x(), -player.FOV.y());
 
 	//Render
 	player.draw();
-
-	for (var i = 0; i < obstacleList.length; i++) {
-		obstacleList[i].draw();
-	}
 
 	for (var i = 0; i < projectileList.length; i++) {
 		projectileList[i].draw();
 	}
 
+	for (var i = 0; i < obstacleList.length; i++) {
+		obstacleList[i].draw();
+	}
 
 	toolbox.drawDebug();
 

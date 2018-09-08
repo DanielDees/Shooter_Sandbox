@@ -13,10 +13,10 @@ function Player() {
 
 	this.FOV = {
 		x: () => {
-			return -(this.getX() - (canvas.width / 2) + (this.getWidth() / 2));
+			return this.getX() - (canvas.width / 2) + (this.getWidth() / 2);
 		},
 		y: () => {
-			return -(this.getY() - (canvas.height / 2) + (this.getHeight() / 2));
+			return this.getY() - (canvas.height / 2) + (this.getHeight() / 2);
 		},
 	};	
 
