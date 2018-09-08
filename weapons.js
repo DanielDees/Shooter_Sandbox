@@ -3,12 +3,30 @@
 var shotgun = new Weapon();
 var nuke = new Weapon();
 var laser = new Weapon();
-var debugWeapon = new Weapon();
 var double = new Weapon();
 var triple = new Weapon();
 var quint = new Weapon();
 
-debugWeapon.setName("Debug Weapon").
+//Debug
+var debugWeapon1 = new Weapon();
+var debugWeapon2 = new Weapon();
+
+debugWeapon1.setName("Debug Weapon (Bounce)").
+		setRounds(90).
+		setSpread(360).
+		setMagazineSize(1).
+		setReloadTime(0).
+		setRoundsPerSecond(20).
+		setRange(1000).
+		setDamage(5).
+		setRoundSpeed(20).
+		setRoundWidth(25).
+		setRoundHeight(3).
+		setRoundColor('red').
+		setRoundMoveType("bouncy").
+		setDebug(false);
+
+debugWeapon2.setName("Debug Weapon (Spin)").
 		setRounds(1).
 		setSpread(0).
 		setMagazineSize(1).
@@ -29,7 +47,7 @@ laser.setName("Laser").
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(60).
-		setRange(12000).
+		setRange(1800).
 		setDamage(5).
 		setRoundSpeed(20).
 		setRoundWidth(25).

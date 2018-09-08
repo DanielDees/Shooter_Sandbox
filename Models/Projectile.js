@@ -39,10 +39,17 @@ function Projectile(data) {
 Projectile.prototype = Object.create(Model.prototype);
 
 //Move projectile
-Projectile.prototype.moveSpecial = function() {
+Projectile.prototype.moveSpecial = function(entities) {
 
 	if (this.moveType == 'spin') {
 		this.spin();
+	}
+
+	if (this.moveType == 'bouncy') {}
+	for (var i = 0; i < entities.length; i++) {
+		if (toolbox.collision(this, entities[i])) {
+			this.bounce(entities[i]);
+		}
 	}
 }
 
@@ -53,22 +60,10 @@ Projectile.prototype.delete = function(entities) {
 		return true;
 	}
 
-	var that = this;
-
 	if (this.moveType != 'bouncy') {
-		//Can probably be pulled out of the projectile class to save memory.
 		for (var i = 0; i < entities.length; i++) {
-			if (toolbox.collision(that, entities[i])) {
+			if (toolbox.collision(this, entities[i])) {
 				return true;
-			}
-		}
-	}
-
-	if (this.moveType == 'bouncy') {
-		//Can probably be pulled out of the projectile class to save memory.
-		for (var i = 0; i < entities.length; i++) {
-			if (toolbox.collision(that, entities[i])) {
-				that.bounce(entities[i]);
 			}
 		}
 	}
@@ -118,36 +113,89 @@ Projectile.prototype.spin = function() {
 	if (this.angle >= Math.PI * 2) { 
 		this.angle -= Math.PI * 2; 
 	}
+
+	this.setHitboxBounds();
 }
 
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
 
+	var bounces = 0;
+
+	var collision = {
+		top: false,
+		bottom: false,
+		right: false,
+		left: false,
+	};
+
 	//Collision with top of entity
 	if (this.getTop() < entity.getTop() && this.speed.y > 0) {
-		this.speed.y = -Math.abs(this.speed.y);
-		this.angle = (Math.PI * 2) - this.angle;
-		this.setTop(entity.getTop());
+		collision.top = true;
+		bounces++;
 	}
 	//Collision with left of entity
 	if (this.getLeft() < entity.getLeft() && this.speed.x > 0) {
-		this.speed.x = -Math.abs(this.speed.x);
-		this.angle = (Math.PI * 2) - this.angle;
-		this.setRight(entity.getLeft());
+		collision.left = true;
+		bounces++;
 	}
 	//Collision with bottom of entity
 	if (this.getBottom() > entity.getBottom() && this.speed.y < 0) {
-		this.speed.y = Math.abs(this.speed.y);
-		this.angle = (Math.PI * 2) - this.angle;
-		this.setTop(entity.getBottom());
+		collision.bottom = true;
+		bounces++;
 	}
 	//Collision with right of entity
 	if (this.getRight() > entity.getRight() && this.speed.x < 0) {
-		this.speed.x = Math.abs(this.speed.x);
-		this.angle = (Math.PI * 2) - this.angle;
-		//Why on earth do you need to add this.width for it to work?
-		this.setLeft(entity.getRight() + this.width);
+		collision.right = true;
+		bounces++;
 	}
+
+	if (bounces % 2 == 1) {
+		this.angle = (Math.PI * 2) - this.angle;
+
+		//Collision with top of entity
+		if (collision.top) {
+			this.speed.y = -Math.abs(this.speed.y);
+			this.setBottom(entity.getTop());
+		}
+		//Collision with left of entity
+		if (collision.left) {
+			this.speed.x = -Math.abs(this.speed.x);
+			this.setRight(entity.getLeft());
+		}
+		//Collision with bottom of entity
+		if (collision.bottom) {
+			this.speed.y = Math.abs(this.speed.y);
+			this.setTop(entity.getBottom());
+		}
+		//Collision with right of entity
+		if (collision.right) {
+			this.speed.x = Math.abs(this.speed.x);
+			//Why on earth do you need to add this.width for it to work?
+			this.setLeft(entity.getRight() + this.width);
+		}
+	}
+	if (bounces % 2 == 0) {
+		//Collision with top of entity
+		if (collision.top) {
+			this.speed.y = -Math.abs(this.speed.y);
+		}
+		//Collision with left of entity
+		if (collision.left) {
+			this.speed.x = -Math.abs(this.speed.x);
+		}
+		//Collision with bottom of entity
+		if (collision.bottom) {
+			this.speed.y = Math.abs(this.speed.y);
+		}
+		//Collision with right of entity
+		if (collision.right) {
+			this.speed.x = Math.abs(this.speed.x);
+		}
+	}
+
+	//Update hitbox for new angle
+	this.setHitboxBounds();
 
 	return true;
 }
@@ -155,7 +203,7 @@ Projectile.prototype.bounce = function(entity) {
 Projectile.prototype.update = function(data) {
 
 	this.move();
-	this.moveSpecial();
+	this.moveSpecial(data.entities);
 
 	//If the projectile self deletes
 	if (this.delete(data.entities)) {

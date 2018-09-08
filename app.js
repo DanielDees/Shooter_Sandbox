@@ -44,7 +44,7 @@ function createRandomObstacles(count) {
 	}
 }
 
-//Test
+//Random Obtacles
 createRandomObstacles(200);
 
 player.addWeapon(laser);
@@ -53,7 +53,12 @@ player.addWeapon(triple);
 player.addWeapon(quint);
 player.addWeapon(shotgun);
 player.addWeapon(nuke);
-// player.addWeapon(debugWeapon);
+
+//Debug
+//Collision
+player.addWeapon(debugWeapon1);
+//Spin
+player.addWeapon(debugWeapon2);
 
 player.setWeapon(laser).
 		setColor('blue').

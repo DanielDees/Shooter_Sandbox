@@ -81,10 +81,10 @@ Model.prototype.drawDebug = function() {
 
 	// Hitbox
 	ctx.strokeRect(this.getLeft(), this.getTop(), this.getHitboxWidth(), this.getHitboxHeight());
-	// ctx.fillText('Left', this.getLeft() - 60, mid_height);
-	// ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
-	// ctx.fillText('Right', this.getRight() + 5, mid_height);
-	// ctx.fillText('Top', mid_width, this.getTop() - 10);
+	ctx.fillText('Left', this.getLeft() - 60, mid_height);
+	ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
+	ctx.fillText('Right', this.getRight() + 5, mid_height);
+	ctx.fillText('Top', mid_width, this.getTop() - 10);
 }
 
 Model.prototype.move = function() {
