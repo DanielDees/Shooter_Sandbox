@@ -45,10 +45,11 @@ Projectile.prototype.moveSpecial = function(entities) {
 		this.spin();
 	}
 
-	if (this.moveType == 'bouncy') {}
-	for (var i = 0; i < entities.length; i++) {
-		if (toolbox.collision(this, entities[i])) {
-			this.bounce(entities[i]);
+	if (this.moveType == 'bouncy') {
+		for (var i = 0; i < entities.length; i++) {
+			if (toolbox.collision(this, entities[i])) {
+				this.bounce(entities[i]);
+			}
 		}
 	}
 }

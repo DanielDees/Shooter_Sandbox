@@ -68,7 +68,7 @@ double.setName("Double").
 		setRoundWidth(20).
 		setRoundHeight(7).
 		setRoundColor('green').
-		setRoundMoveType("normal");
+		setRoundMoveType("bouncy");
 
 triple.setName("Triple").
 		setRounds(3).
@@ -82,7 +82,7 @@ triple.setName("Triple").
 		setRoundWidth(15).
 		setRoundHeight(7).
 		setRoundColor('blue').
-		setRoundMoveType("normal");
+		setRoundMoveType("bouncy");
 
 quint.setName("Quint").
 		setRounds(5).
