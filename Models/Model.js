@@ -137,7 +137,6 @@ Model.prototype.getHitboxWidth = function() {
 }
 
 Model.prototype.getHitboxBounds = function() {
-
 	var hitbox = {
 		top: 0,
 		bottom: 0,
@@ -155,6 +154,47 @@ Model.prototype.getHitboxBounds = function() {
 
 	return hitbox;
 }
+
+Model.prototype.debugHitBox = function(){
+	//Hitbox for rectangles which rotate on top-right corner
+	var hit_box = [
+		//Top left
+		{x:0, y:0},
+		{x:0, y:0},
+		{x:0, y:0},
+		{x:0, y:0}
+	];
+
+	var angle_offset;
+	var distance;
+
+	//Top right
+	angle_offset = 0;
+	distance = this.width;
+	hit_box[1].x = Math.cos(this.angle + angle_offset) * distance;
+	hit_box[1].y = Math.sin(this.angle + angle_offset) * distance;
+
+	//Bottom right
+	distance = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2));
+	angle_offset = Math.asin(this.height / distance);
+	hit_box[2].x = Math.cos(this.angle + angle_offset) * distance;
+	hit_box[2].y = Math.sin(this.angle + angle_offset) * distance;
+
+	//Bottom left
+	angle_offset = 0.5 * Math.PI;
+	distance = this.height;
+	hit_box[3].x = Math.cos(this.angle + angle_offset) * distance;
+	hit_box[3].y = Math.sin(this.angle + angle_offset) * distance;
+
+	//Draw a rect for each coordinate
+	for(var i=0; i<4; i++)
+	{
+		var xy = hit_box[i];
+
+		ctx.fillStyle = "purple";
+		ctx.fillRect(this.x + xy.x, this.y + xy.y, 5, 5);
+	}
+};
 
 Model.prototype.getCollision = function() {
 	return this.collidable;

@@ -24,7 +24,7 @@ var player = new Player();
 
 //Test function.
 function createRandomObstacles(count) {
-
+	return;
 	var min = -2000;
 	var max = 2000;
 
@@ -64,6 +64,8 @@ player.setWeapon(laser).
 		setColor('blue').
 		setCollision(true).
 		setHitboxBounds();
+
+player.setWeapon(debugWeapon2);
 
 function game_update() {
 	if (keyboard.keys.r && player.weapon.magazine < player.weapon.magazineSize) {
@@ -116,6 +118,7 @@ function game_render() {
 
 	for (var i = 0; i < projectileList.length; i++) {
 		projectileList[i].draw();
+		projectileList[i].debugHitBox();
 	}
 
 	for (var i = 0; i < obstacleList.length; i++) {
