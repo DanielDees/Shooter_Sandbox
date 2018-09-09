@@ -145,10 +145,13 @@ Model.prototype.getHitboxBounds = function() {
 		right: 0,
 	};
 
-	hitbox.top = this.getHitboxBound( this.width, this.height, 'min');
-	hitbox.bottom = this.getHitboxBound( this.width, this.height, 'max');
-	hitbox.left = this.getHitboxBound(-this.height, this.width, 'min');
-	hitbox.right = this.getHitboxBound(-this.height, this.width, 'max');
+	var y = this.getHitboxBound( this.width, this.height);
+	var x = this.getHitboxBound(-this.height, this.width);
+
+	hitbox.top = y.min;
+	hitbox.bottom = y.max;
+	hitbox.left = x.min;
+	hitbox.right = x.max;
 
 	return hitbox;
 }
@@ -161,13 +164,18 @@ Model.prototype.getAngle = function() {
 	return this.angle;
 }
 
-Model.prototype.getHitboxBound = function(size_a, size_b, min_max) {
+Model.prototype.getHitboxBound = function(size_a, size_b) {
 
 	var side_a = size_a * Math.sin(this.angle);
 	var side_b = size_b * Math.cos(this.angle);
 
 	var min = Math.min(0, side_a, side_b);
 	var max = Math.max(0, side_a, side_b);
+
+	var min_max_result = {
+		min: min,
+		max: max
+	};
 
 	//The calculated measurement
 	var calculated = Math.abs(min) + Math.abs(max);
@@ -176,20 +184,16 @@ Model.prototype.getHitboxBound = function(size_a, size_b, min_max) {
 	var actual = Math.abs(side_a) + Math.abs(side_b);
 
 	if (calculated != actual) {
-		if (min_max == "max" && max != 0) {
-			return actual;
+		if(max != 0) {
+			min_max_result.max = actual;
 		}
-		if (min_max == "min" && min != 0) {
-			return -actual;
+
+		if(min != 0) {
+			min_max_result.min = -actual;
 		}
 	}
 
-	if (min_max == "max") {
-		return max;
-	}
-	if (min_max == "min") {
-		return min;
-	}
+	return min_max_result;
 }
 
 Model.prototype.setHitboxBounds = function() {

@@ -43,7 +43,7 @@ Toolbox.prototype.drawDebug = function() {
 		//["Mouse X", mouse.x],
 		//["Mouse Y", mouse.y],
 		//["Clicked", mouse.clicked],
-		// ["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
+		["Degrees", toolbox.getAngleBetween(player, mouse).toFixed(1)],
 		// ["Radians", toolbox.getAngleBetween(player, mouse, "radians").toFixed(1)],
 		//["Reloading", player.weapon.reloading],
 		["Weapon", player.weapon.name],
