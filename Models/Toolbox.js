@@ -51,8 +51,8 @@ Toolbox.prototype.drawDebug = function() {
 		["Reload", (player.weapon.reloadFrame / game.FPS).toFixed(1) + "s / " + player.weapon.reloadTime + "s"],
 		["Clip  ", player.weapon.magazine + " / " + player.weapon.magazineSize],
 		//["Firing", player.weapon.firingFrame]
-		['Entities', projectileList.length],
 		["Player Zone", player.map_zone],
+		['Entities', Game_Entities],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {

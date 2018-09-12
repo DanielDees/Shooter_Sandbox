@@ -339,7 +339,6 @@ Model.prototype.setCollision = function(collidable) {
 
 Model.prototype.setMapZone = function() {
 
-	//Test removing the toFixed(0). It may not be necessary anymore
 	//Get GAME_MAP zone
 	row = Math.floor((this.getTop() / GAME_MAP.zoneSize));
 	col = Math.floor((this.getLeft() / GAME_MAP.zoneSize));

@@ -54,7 +54,7 @@ Projectile.prototype.moveSpecial = function(entities) {
 	}
 };
 
-//Deletes self from projectileList
+//Returns true if deletion is needed
 Projectile.prototype.delete = function(entities) {
 
 	//Projectile range exceeded

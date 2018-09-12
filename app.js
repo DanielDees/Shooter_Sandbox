@@ -6,8 +6,7 @@ var ctx = canvas.getContext("2d");
 var game = {};
 game.FPS = 60;
 
-var projectileList = [];
-var obstacleList = [];
+var Game_Entities = 0;
 
 window.onload = resizeCanvas;
 window.onresize = resizeCanvas;
@@ -33,8 +32,8 @@ function createRandomObstacles(count) {
 		var obstacle = new Obstacle();
 
 		//Test object.
-		obstacle.setWidth(50).
-			setHeight(50).
+		obstacle.setWidth(70).
+			setHeight(70).
 			setColor('violet').
 			setX(Math.random() * GAME_MAP.size).
 			setY(Math.random() * GAME_MAP.size).
@@ -51,7 +50,7 @@ function createRandomObstacles(count) {
 }
 
 //Random Obtacles
-createRandomObstacles(2000);
+createRandomObstacles(1000);
 
 player.addWeapon(laser);
 player.addWeapon(double);
@@ -108,10 +107,16 @@ function game_update() {
 	//Fire weapon
 	player.weapon.frame(game);
 
+	//Reset count
+	Game_Entities = 0;
+
 	//Map Projectiles Loop
 	for (var row = 0; row < GAME_MAP.zones.length; row++) {
 		for (var col = 0; col < GAME_MAP.zones[row].length; col++) {
 			for (var i = 0; i < GAME_MAP.zones[row][col].projectiles.length; i++) {
+
+				//Count projectiles
+				Game_Entities++;
 
 				var data = {
 					entities: GAME_MAP.zones[row][col].obstacles,
