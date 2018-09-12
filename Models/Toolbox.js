@@ -52,6 +52,7 @@ Toolbox.prototype.drawDebug = function() {
 		["Clip  ", player.weapon.magazine + " / " + player.weapon.magazineSize],
 		//["Firing", player.weapon.firingFrame]
 		['Entities', projectileList.length],
+		["Player Zone", player.map_zone],
 	];
 	
 	for (var i = 0; i < debugInfo.length; i++) {

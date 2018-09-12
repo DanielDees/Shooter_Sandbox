@@ -9,6 +9,9 @@ function Model()
 {
 	this.id = Math.random();
 
+	//For fast index finding
+	this.zone_index = 0;
+
 	this.debug = false;
 
 	this.x = 0;
@@ -35,7 +38,7 @@ function Model()
 	this.distanceTraveled = 0;
 
 	this.color = 'black';
-}
+};
 
 /*
  * Called every frame of the game.
@@ -97,7 +100,7 @@ Model.prototype.drawDebug = function() {
 	ctx.fillText('Bottom', mid_width, this.getBottom() + 25);
 	ctx.fillText('Right', this.getRight() + 5, mid_height);
 	ctx.fillText('Top', mid_width, this.getTop() - 10);
-}
+};
 
 Model.prototype.move = function() {
 
@@ -110,7 +113,7 @@ Model.prototype.move = function() {
 	var distance = Math.sqrt(x + y);
 
 	this.distanceTraveled += distance;
-}
+};
 
 Model.prototype.getX = function() {
 	return this.x;
@@ -133,13 +136,14 @@ Model.prototype.getHitboxWidth = function() {
 	var right = +this.width * Math.cos(this.angle);	
 
 	return (Math.abs(left) + Math.abs(right));	
-}	
- Model.prototype.getHitboxHeight = function() {	
+};	
+
+Model.prototype.getHitboxHeight = function() {	
  	var top = this.width * Math.sin(this.angle);	
 	var bottom = this.height * Math.cos(this.angle);	
 
 	return (Math.abs(top) + Math.abs(bottom));	
-}
+};
 
 Model.prototype.getHitboxBounds = function() {
 	var hitbox = {
@@ -158,7 +162,7 @@ Model.prototype.getHitboxBounds = function() {
 	hitbox.right = x.max;
 
 	return hitbox;
-}
+};
 
 Model.prototype.debugHitBox = function(){
 	//Hitbox for rectangles which rotate on top-right corner
@@ -203,21 +207,24 @@ Model.prototype.debugHitBox = function(){
 
 Model.prototype.getCollision = function() {
 	return this.collidable;
-}
+};
 
 Model.prototype.getMapZone = function() {
 
 	//If model is outside of the map
-	if (this.map_zone[0] < 0 || this.map_zone[1] < 0) {
+	if (this.map_zone[0] < 0 || 
+		this.map_zone[1] < 0 ||
+		this.map_zone[0] == GAME_MAP.zones.length ||
+		this.map_zone[1] == GAME_MAP.zones[this.map_zone[0]].length) {
 		return false;
 	}
 
 	return this.map_zone;
-}
+};
 
 Model.prototype.getAngle = function() {
 	return this.angle;
-}
+};
 
 Model.prototype.getHitboxBound = function(size_a, size_b) {
 
@@ -249,12 +256,12 @@ Model.prototype.getHitboxBound = function(size_a, size_b) {
 	}
 
 	return min_max_result;
-}
+};
 
 Model.prototype.setHitboxBounds = function() {
 	this.hitbox = this.getHitboxBounds();
 	return this;
-}
+};
 
 Model.prototype.getTop = function() {
 	return this.y + this.hitbox.top;
@@ -270,15 +277,15 @@ Model.prototype.getLeft = function() {
 
 Model.prototype.getRight = function() {
 	return this.x + this.hitbox.right;
-}
+};
 
 Model.prototype.getColor = function() {
 	return this.color;
-}
+};
 
 Model.prototype.getDebug = function() {
 	return this.debug;
-}
+};
 
 Model.prototype.setX = function(x) {
 	this.x = x;
@@ -323,7 +330,7 @@ Model.prototype.setHeight = function(height) {
 Model.prototype.setCollision = function(collidable) {
 	this.collidable = collidable;
 	return this;
-}
+};
 
 Model.prototype.setMapZone = function() {
 
@@ -334,12 +341,12 @@ Model.prototype.setMapZone = function() {
 
 	this.map_zone = [row, col];
 	return this;
-}
+};
 
 Model.prototype.setAngle = function(angle) {
 	this.angle = angle;
 	return this;
-}
+};
 
 Model.prototype.setColor = function(color) {
 	this.color = color;
@@ -348,4 +355,4 @@ Model.prototype.setColor = function(color) {
 
 Model.prototype.setDebug = function(debug) {
 	this.debug = debug;
-}
+};

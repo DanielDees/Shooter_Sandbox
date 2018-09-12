@@ -203,34 +203,32 @@ Projectile.prototype.bounce = function(entity) {
 Projectile.prototype.updateZone = function() {
 
 	//Zone projectile is in prior to move() call
-	var currentZone = this.getMapZone();
+	var newZone = this.getMapZone();
 
-	if (!currentZone) {
+	//Update Zone
+	this.setMapZone();
+
+	//Zone projectile has moved to
+	var oldZone = this.getMapZone();
+
+	//If in or moving to an invalid zone
+	if (!oldZone || !newZone) {
 		return false;
 	}
 
-	//Zone projectile has moved to
-	var moveZone = this.setMapZone();
-
-	// console.log("Zone: " + currentZone);
-	// console.log(GAME_MAP.zones[currentZone[0]][currentZone[1]]);
-	return;
+	//For the callback on findIndex
+	var that = this;
 
 	//Get index of current model
-	var index = GAME_MAP.zones[currentZone[0]][currentZone[1]].projectiles.findIndex(function(i) {
-		return i.id == this.id;
+	var index = GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.findIndex(function(i) {
+		return i.id == that.id;
 	});
 
-	console.log('index: ' + index);
-
 	//Update model zone location
-	if (currentZone != moveZone) {
-			GAME_MAP.zones[currentZone[0], currentZone[1]].projectiles.splice(index, 1);
-			GAME_MAP.zones[moveZone[0], moveZone[1]].projectiles.push(this);
+	if (oldZone != newZone) {
+		GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.splice(index, 1);
+		GAME_MAP.zones[newZone[0]][newZone[1]].projectiles.push(this);
 	}
-
-	//Update map zone of Model
-	this.setMapZone();
 }
 
 Projectile.prototype.update = function(data) {

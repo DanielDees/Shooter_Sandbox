@@ -111,4 +111,15 @@ Player.prototype.switchWeapon = function() {
 	return false;
 };
 
+Player.prototype.update = function() {
+
+	//Default movement
+	this.move();
+
+	//Switch to correct zone for collisions
+	this.updateZone();
+
+	return true;
+}
+
 
