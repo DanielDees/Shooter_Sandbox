@@ -71,13 +71,21 @@ player.setColor('blue').
 		setHitboxBounds().
 		setWeapon(debugWeapon1);
 
+//If in valid map zone
+if (player.getMapZone()) {
+
+	var zone = player.getMapZone();
+
+	GAME_MAP.zones[zone[0]][zone[1]].players.push(player);
+}
+
 function game_update() {
 	if (keyboard.keys.r && player.weapon.magazine < player.weapon.magazineSize) {
 		player.weapon.beginReloading();
 	}
 
 	//Update
-	player.move();
+	player.update();
 
 	//Map Loop
 	for (var row = 0; row < GAME_MAP.zones.length; row++) {

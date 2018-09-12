@@ -162,10 +162,7 @@ Weapon.prototype.shoot = function(angle) {
 
 	//If in valid map zone
 	if (projectile.getMapZone()) {
-		
 		GAME_MAP.zones[zone[0]][zone[1]].projectiles.push(projectile);
-		// console.log(GAME_MAP.zones[zone[0]][zone[1]].projectiles);
-
 		return true;
 	}
 

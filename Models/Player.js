@@ -73,8 +73,6 @@ Player.prototype.move = function(entity) {
 	if (keyboard.keys.d) {
 		this.setX(this.getX() + this.speed);
 	}
-
-
 };
 
 Player.prototype.getWeapon = function() {
@@ -109,6 +107,47 @@ Player.prototype.switchWeapon = function() {
 	}
 
 	return false;
+};
+
+Player.prototype.updateZone = function() {
+
+	//Zone projectile is in prior to move() call
+	var oldZone = this.getMapZone();
+
+	//Update Zone
+	this.setMapZone();
+
+	//Zone projectile has moved to
+	var newZone = this.getMapZone();
+
+	//If in or moving to an invalid zone
+	if (!oldZone || !newZone) {
+		return false;
+	}
+
+	//No zone change
+	if (oldZone[0] == newZone[0] && oldZone[1] == newZone[1]) {
+		return false;
+	}
+
+	//For the callback on findIndex
+	var that = this;
+
+	//Get index of current model
+	var index = GAME_MAP.zones[oldZone[0]][oldZone[1]].players.findIndex(function(i) {
+		return i.id == that.id;
+	});
+
+	/*
+		ISSUE: When the following code executes, it causes a graphical bug with
+		the projectiles as they get deleted and re-rendered on the next map zone loop.
+	*/
+
+	//Update model zone location
+	GAME_MAP.zones[oldZone[0]][oldZone[1]].players.splice(index, 1);
+	GAME_MAP.zones[newZone[0]][newZone[1]].players.push(this);
+
+	return true;
 };
 
 Player.prototype.update = function() {

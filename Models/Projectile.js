@@ -231,7 +231,7 @@ Projectile.prototype.updateZone = function() {
 
 	/*
 		ISSUE: When the following code executes, it causes a graphical bug with
-		the projectiles as they get deleted and re-rendered repeatedly.
+		the projectiles as they get deleted and re-rendered on the next map zone loop.
 	*/
 
 	//Update model zone location
