@@ -51,7 +51,7 @@ function createRandomObstacles(count) {
 }
 
 //Random Obtacles
-createRandomObstacles(15);
+createRandomObstacles(2000);
 
 player.addWeapon(laser);
 player.addWeapon(double);

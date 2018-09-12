@@ -77,12 +77,17 @@ Model.prototype.drawDebug = function() {
 
 	var debugInfo = [
 		// ["Angle (Degrees)", (this.angle * (180 / Math.PI)).toFixed(0)],
+		["Model Zone", this.map_zone]
 	];
 	
+	//Move to player view
+	ctx.translate(player.FOV.x(), player.FOV.y());
 	for (var i = 0; i < debugInfo.length; i++) {
 		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, 400 + y * i);
 	}	
-	
+	//Restore old view
+	ctx.translate(-player.FOV.x(), -player.FOV.y());
+
 	ctx.lineWidth = 3;
 
 	//Left/Right text position

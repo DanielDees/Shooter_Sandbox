@@ -9,7 +9,7 @@ function Game_Map() {
 	Model.call(this);
 
 	//Map Dimensions
-	this.size = 1000;
+	this.size = 10000;
 
 	/*
 		A zone is an object with lists of: 
