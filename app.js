@@ -21,31 +21,37 @@ function resizeCanvas() {
 var keyboard = new Keyboard();
 var toolbox = new Toolbox();
 var player = new Player();
+var GAME_MAP = new Game_Map();
+
+GAME_MAP.init();
 
 //Test function.
 function createRandomObstacles(count) {
-	return;
-	var min = -2000;
-	var max = 2000;
 
 	for (var i = 0; i < count; i++) {
-		
+
 		var obstacle = new Obstacle();
 
 		//Test object.
-		obstacle.setWidth(70).
-			setHeight(70).
-			setX(Math.random() * (max - min) + min).
-			setY(Math.random() * (max - min) + min).
+		obstacle.setWidth(50).
+			setHeight(50).
 			setColor('violet').
-			setHitboxBounds();
+			setX(Math.random() * GAME_MAP.size).
+			setY(Math.random() * GAME_MAP.size).
+			setHitboxBounds().
+			setMapZone();
 
-		obstacleList.push(obstacle);
+		var zone = obstacle.getMapZone();
+
+		//If obstacle is in valid map zone
+		if (obstacle.getMapZone()) {
+			GAME_MAP.zones[zone[0]][zone[1]].obstacles.push(obstacle);
+		}
 	}
 }
 
 //Random Obtacles
-createRandomObstacles(200);
+createRandomObstacles(15);
 
 player.addWeapon(laser);
 player.addWeapon(double);
@@ -60,12 +66,10 @@ player.addWeapon(debugWeapon1);
 //Spin
 player.addWeapon(debugWeapon2);
 
-player.setWeapon(laser).
-		setColor('blue').
+player.setColor('blue').
 		setCollision(true).
-		setHitboxBounds();
-
-player.setWeapon(debugWeapon2);
+		setHitboxBounds().
+		setWeapon(debugWeapon1);
 
 function game_update() {
 	if (keyboard.keys.r && player.weapon.magazine < player.weapon.magazineSize) {
@@ -75,25 +79,42 @@ function game_update() {
 	//Update
 	player.move();
 
-	//Can probably be pulled out of the projectile class to save memory.
-	for (var i = 0; i < obstacleList.length; i++) {
-		if (toolbox.collision(player, obstacleList[i])) {
-			player.move(obstacleList[i]);
+	//Map Loop
+	for (var row = 0; row < GAME_MAP.zones.length; row++) {
+		for (var col = 0; col < GAME_MAP.zones[row].length; col++) {
+			
+			//Projectiles
+			for (var i = 0; i < GAME_MAP.zones[row][col].projectiles.length; i++) {
+				// GAME_MAP.zones[row][col].projectiles[i].draw();
+			}
+
+			//Player Obstacle Collisions
+			for (var i = 0; i < GAME_MAP.zones[row][col].obstacles.length; i++) {
+				if (toolbox.collision(player, GAME_MAP.zones[row][col].obstacles[i])) {
+					player.move(GAME_MAP.zones[row][col].obstacles[i]);
+				}
+			}
 		}
 	}
 
+	//Fire weapon
 	player.weapon.frame(game);
 
-	for (var i = 0; i < projectileList.length; i++) {
+	//Map Projectiles Loop
+	for (var row = 0; row < GAME_MAP.zones.length; row++) {
+		for (var col = 0; col < GAME_MAP.zones[row].length; col++) {
+			for (var i = 0; i < GAME_MAP.zones[row][col].projectiles.length; i++) {
 
-		var data = {
-			entities: obstacleList,
-		};
+				var data = {
+					entities: GAME_MAP.zones[row][col].obstacles,
+				};
 
-		//If the projectile self deletes, stay on current index
-		if (!projectileList[i].update(data)) {
-			projectileList.splice(i, 1);
-			i--;
+				//If the projectile self deletes, stay on current index
+				if (!GAME_MAP.zones[row][col].projectiles[i].update(data)) {
+					GAME_MAP.zones[row][col].projectiles.splice(i, 1);
+					i--;
+				}
+			}
 		}
 	}
 
@@ -108,24 +129,37 @@ function game_render() {
 	//Clear screen
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
-	//Move to player
+	//Save current canvas state
 	ctx.save();
-
+	
+	//Move to player
 	ctx.translate(-player.FOV.x(), -player.FOV.y());
 
 	//Render
 	player.draw();
 
-	for (var i = 0; i < projectileList.length; i++) {
-		projectileList[i].draw();
-		projectileList[i].debugHitBox();
-	}
+	//Map Loop
+	for (var row = 0; row < GAME_MAP.zones.length; row++) {
+		for (var col = 0; col < GAME_MAP.zones[row].length; col++) {
+			
+			//Projectiles
+			for (var i = 0; i < GAME_MAP.zones[row][col].projectiles.length; i++) {
+				GAME_MAP.zones[row][col].projectiles[i].draw();
+			}
 
-	for (var i = 0; i < obstacleList.length; i++) {
-		obstacleList[i].draw();
+			//Obstacles
+			for (var i = 0; i < GAME_MAP.zones[row][col].obstacles.length; i++) {
+				GAME_MAP.zones[row][col].obstacles[i].draw();
+			}
+		}
 	}
 
 	toolbox.drawDebug();
+
+	ctx.lineWidth = 2;
+	ctx.strokeRect(0, 0, GAME_MAP.size, GAME_MAP.size);
+
+	GAME_MAP.debugZones();
 
 	//Restore
 	ctx.restore();

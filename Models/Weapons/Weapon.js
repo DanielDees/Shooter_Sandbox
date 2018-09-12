@@ -156,8 +156,20 @@ Weapon.prototype.shoot = function(angle) {
 	var projectile = new Projectile(data);
 
 	projectile.setHitboxBounds();
+	projectile.setMapZone();
 
-	projectileList.push(projectile);
+	var zone = projectile.getMapZone();
+
+	//If in valid map zone
+	if (projectile.getMapZone()) {
+		
+		GAME_MAP.zones[zone[0]][zone[1]].projectiles.push(projectile);
+		// console.log(GAME_MAP.zones[zone[0]][zone[1]].projectiles);
+
+		return true;
+	}
+
+	return false;
 };
 
 //Fire any number of rounds in desired spread

@@ -10,12 +10,3 @@ function Obstacle() {
 }
 
 Obstacle.prototype = Object.create(Model.prototype);
-
-Obstacle.prototype.getColor = function() {
-	return this.color;
-}
-
-Obstacle.prototype.setColor = function(color) {
-	this.color = color;
-	return this;
-}

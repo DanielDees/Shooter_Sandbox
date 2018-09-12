@@ -57,10 +57,20 @@ Projectile.prototype.moveSpecial = function(entities) {
 //Deletes self from projectileList
 Projectile.prototype.delete = function(entities) {
 
+	//Projectile range exceeded
 	if (this.distanceTraveled > this.range) {
 		return true;
 	}
 
+	//Outside of map boundaries
+	if (this.getRight() < 0 || 
+		this.getBottom() < 0 || 
+		this.getTop() > GAME_MAP.size || 
+		this.getLeft() > GAME_MAP.size) {
+		return true;
+	}
+
+	//Collision with an entity
 	if (this.moveType != 'bouncy') {
 		for (var i = 0; i < entities.length; i++) {
 			if (toolbox.collision(this, entities[i])) {
@@ -190,9 +200,48 @@ Projectile.prototype.bounce = function(entity) {
 	return true;
 }
 
+Projectile.prototype.updateZone = function() {
+
+	//Zone projectile is in prior to move() call
+	var currentZone = this.getMapZone();
+
+	if (!currentZone) {
+		return false;
+	}
+
+	//Zone projectile has moved to
+	var moveZone = this.setMapZone();
+
+	// console.log("Zone: " + currentZone);
+	// console.log(GAME_MAP.zones[currentZone[0]][currentZone[1]]);
+	return;
+
+	//Get index of current model
+	var index = GAME_MAP.zones[currentZone[0]][currentZone[1]].projectiles.findIndex(function(i) {
+		return i.id == this.id;
+	});
+
+	console.log('index: ' + index);
+
+	//Update model zone location
+	if (currentZone != moveZone) {
+			GAME_MAP.zones[currentZone[0], currentZone[1]].projectiles.splice(index, 1);
+			GAME_MAP.zones[moveZone[0], moveZone[1]].projectiles.push(this);
+	}
+
+	//Update map zone of Model
+	this.setMapZone();
+}
+
 Projectile.prototype.update = function(data) {
 
+	//Default movement
 	this.move();
+
+	//Switch to correct zone for collisions
+	this.updateZone();
+
+	//Apply any special movements
 	this.moveSpecial(data.entities);
 
 	//If the projectile self deletes

@@ -7,6 +7,8 @@
  
 function Model()
 {
+	this.id = Math.random();
+
 	this.debug = false;
 
 	this.x = 0;
@@ -26,6 +28,9 @@ function Model()
 	this.angle = 0;
 
 	this.collidable = true;
+
+	//Which zone of the GAME_MAP projectile is in
+	this.map_zone = [0,0];
 
 	this.distanceTraveled = 0;
 
@@ -200,6 +205,16 @@ Model.prototype.getCollision = function() {
 	return this.collidable;
 }
 
+Model.prototype.getMapZone = function() {
+
+	//If model is outside of the map
+	if (this.map_zone[0] < 0 || this.map_zone[1] < 0) {
+		return false;
+	}
+
+	return this.map_zone;
+}
+
 Model.prototype.getAngle = function() {
 	return this.angle;
 }
@@ -307,6 +322,17 @@ Model.prototype.setHeight = function(height) {
 
 Model.prototype.setCollision = function(collidable) {
 	this.collidable = collidable;
+	return this;
+}
+
+Model.prototype.setMapZone = function() {
+
+	//Test removing the toFixed(0). It may not be necessary anymore
+	//Get GAME_MAP zone
+	row = Math.floor((this.getTop() / GAME_MAP.zoneSize));
+	col = Math.floor((this.getLeft() / GAME_MAP.zoneSize));
+
+	this.map_zone = [row, col];
 	return this;
 }
 

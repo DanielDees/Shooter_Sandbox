@@ -17,7 +17,7 @@ debugWeapon1.setName("Debug Weapon (Bounce)").
 		setMagazineSize(1).
 		setReloadTime(0).
 		setRoundsPerSecond(20).
-		setRange(800).
+		setRange(8000).
 		setDamage(5).
 		setRoundSpeed(10).
 		setRoundWidth(25).
