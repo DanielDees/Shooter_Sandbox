@@ -58,8 +58,7 @@ Game_Map.prototype.init = function() {
 			this.zones[row][col] = zone;
 		}
 	}
-
-}
+};
 
 Game_Map.prototype.debugZones = function() {
 	for (var row = 0; row < this.zones.length; row++) {
@@ -71,7 +70,7 @@ Game_Map.prototype.debugZones = function() {
 
 		}
 	}
-}
+};
 
 Game_Map.prototype.getZoneCollisions = function() {
 
@@ -82,5 +81,4 @@ Game_Map.prototype.getZoneCollisions = function() {
 
 		}
 	}
-
-}
+};

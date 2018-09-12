@@ -34,7 +34,7 @@ function Projectile(data) {
 	this.moveType = data.moveType || "bouncy";
 
 	this.color = data.color || 'black';
-}
+};
 
 Projectile.prototype = Object.create(Model.prototype);
 
@@ -52,7 +52,7 @@ Projectile.prototype.moveSpecial = function(entities) {
 			}
 		}
 	}
-}
+};
 
 //Deletes self from projectileList
 Projectile.prototype.delete = function(entities) {
@@ -80,7 +80,7 @@ Projectile.prototype.delete = function(entities) {
 	}
 
 	return false;
-}
+};
 
 //Renders projectile to screen
 Projectile.prototype.draw = function() {
@@ -126,7 +126,7 @@ Projectile.prototype.spin = function() {
 	}
 
 	this.setHitboxBounds();
-}
+};
 
 //Bouncy movement special
 Projectile.prototype.bounce = function(entity) {
@@ -198,21 +198,26 @@ Projectile.prototype.bounce = function(entity) {
 	}
 
 	return true;
-}
+};
 
 Projectile.prototype.updateZone = function() {
 
 	//Zone projectile is in prior to move() call
-	var newZone = this.getMapZone();
+	var oldZone = this.getMapZone();
 
 	//Update Zone
 	this.setMapZone();
 
 	//Zone projectile has moved to
-	var oldZone = this.getMapZone();
+	var newZone = this.getMapZone();
 
 	//If in or moving to an invalid zone
 	if (!oldZone || !newZone) {
+		return false;
+	}
+
+	//No zone change
+	if (oldZone[0] == newZone[0] && oldZone[1] == newZone[1]) {
 		return false;
 	}
 
@@ -224,12 +229,17 @@ Projectile.prototype.updateZone = function() {
 		return i.id == that.id;
 	});
 
+	/*
+		ISSUE: When the following code executes, it causes a graphical bug with
+		the projectiles as they get deleted and re-rendered repeatedly.
+	*/
+
 	//Update model zone location
-	if (oldZone != newZone) {
-		GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.splice(index, 1);
-		GAME_MAP.zones[newZone[0]][newZone[1]].projectiles.push(this);
-	}
-}
+	GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.splice(index, 1);
+	GAME_MAP.zones[newZone[0]][newZone[1]].projectiles.push(this);
+
+	return true;
+};
 
 Projectile.prototype.update = function(data) {
 
@@ -248,4 +258,4 @@ Projectile.prototype.update = function(data) {
 	}
 
 	return true;
-}
+};

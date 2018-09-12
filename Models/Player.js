@@ -25,7 +25,7 @@ function Player() {
 	this.weapon = new Weapon();
 
 	this.weapons = [];
-}
+};
 
 Player.prototype = Object.create(Model.prototype);
 
@@ -79,12 +79,12 @@ Player.prototype.move = function(entity) {
 
 Player.prototype.getWeapon = function() {
 	return this.weapon;
-}
+};
 
 Player.prototype.setWeapon = function(weapon) {
 	this.weapon = weapon;
 	return this;
-}
+};
 
 Player.prototype.addWeapon = function(weapon) {
 	this.weapons.push(weapon);
@@ -120,6 +120,4 @@ Player.prototype.update = function() {
 	this.updateZone();
 
 	return true;
-}
-
-
+};

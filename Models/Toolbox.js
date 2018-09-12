@@ -27,7 +27,7 @@ Toolbox.prototype.getAngleBetween = function(entityFrom, entityTo, radians) {
 
 	//Return angle in Degrees
 	return angle;
-}
+};
 
 //Shows debug information on the game screen.
 Toolbox.prototype.drawDebug = function() {
@@ -58,7 +58,7 @@ Toolbox.prototype.drawDebug = function() {
 	for (var i = 0; i < debugInfo.length; i++) {
 		ctx.fillText(debugInfo[i][0] + ": " + debugInfo[i][1], x, y + (rowHeight * i));
 	}	
-}
+};
 
 Toolbox.prototype.collision = function (a, b) {
 
@@ -76,4 +76,4 @@ Toolbox.prototype.collision = function (a, b) {
 	//Perhaps return object with collision info?
 	//X/Y of collision, which side, etc?
 	return true;
-}
+};
