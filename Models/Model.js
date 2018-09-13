@@ -137,34 +137,32 @@ Model.prototype.getHeight = function() {
 };
 
 Model.prototype.getHitboxWidth = function() {	
+ 	
  	var left = -this.height * Math.sin(this.angle);	
 	var right = +this.width * Math.cos(this.angle);	
 
-	return (Math.abs(left) + Math.abs(right));	
+	return Math.abs(left) + Math.abs(right);	
 };	
 
 Model.prototype.getHitboxHeight = function() {	
+ 	
  	var top = this.width * Math.sin(this.angle);	
 	var bottom = this.height * Math.cos(this.angle);	
 
-	return (Math.abs(top) + Math.abs(bottom));	
+	return Math.abs(top) + Math.abs(bottom);	
 };
 
 Model.prototype.getHitboxBounds = function() {
-	var hitbox = {
-		top: 0,
-		bottom: 0,
-		left: 0,
-		right: 0,
-	};
-
-	var y = this.getHitboxBound( this.width, this.height);
+	
 	var x = this.getHitboxBound(-this.height, this.width);
-
-	hitbox.top = y.min;
-	hitbox.bottom = y.max;
-	hitbox.left = x.min;
-	hitbox.right = x.max;
+	var y = this.getHitboxBound( this.width, this.height);
+	
+	var hitbox = {
+		top: y.min,
+		bottom: y.max,
+		left: x.min,
+		right: x.max,
+	};
 
 	return hitbox;
 };
@@ -233,30 +231,60 @@ Model.prototype.getAngle = function() {
 
 Model.prototype.getHitboxBound = function(size_a, size_b) {
 
+	/*
+		Fancy trigonometry functions mean that the 
+		size of the angles is measured when taking the 
+		angle of the side into account.
+	*/
 	var side_a = size_a * Math.sin(this.angle);
 	var side_b = size_b * Math.cos(this.angle);
 
+	/* 
+		The min value caps at 0 and max does not go below 0.
+		This prevents the Left/Right or Top/Bottom of the hitbox
+		from being swapped in the result.
+	*/
 	var min = Math.min(0, side_a, side_b);
 	var max = Math.max(0, side_a, side_b);
 
+	//The return variable for the function
 	var min_max_result = {
 		min: min,
 		max: max
 	};
 
-	//The calculated measurement
+	/* 
+		The calculated measurement will add the values as they are.
+		If one of the values is negative, the result will
+		be less than the actual.
+
+		A negative value on one of the variable would indicate one
+		side of the hitbox passing by the opposite side; A flip of the hitbox
+	*/
 	var calculated = Math.abs(min) + Math.abs(max);
 
-	//Actual measurement
+	/* 
+		The actual measurement will add the ABSOLUTE values.
+		If one of the values is negative, the result will
+		be converted to positive, then added. 
+
+		This gives the max possible distance between side_a and side_b
+	*/
 	var actual = Math.abs(side_a) + Math.abs(side_b);
 
-	if (calculated != actual) {
-		if(max != 0) {
-			min_max_result.max = actual;
-		}
+	/* 
+		If the calculated had a negative value (side swapping),
+		then use the actual (absoulute value) measurement.
 
-		if(min != 0) {
+		If min != 0, the hitbox is facing to the negative direction
+		If max != 0, the hitbox is facing to the positive direction
+	*/
+	if (calculated != actual) {
+		if (min != 0) {
 			min_max_result.min = -actual;
+		}
+		if (max != 0) {
+			min_max_result.max = actual;
 		}
 	}
 
@@ -339,9 +367,8 @@ Model.prototype.setCollision = function(collidable) {
 
 Model.prototype.setMapZone = function() {
 
-	//Get GAME_MAP zone
-	row = Math.floor((this.getTop() / GAME_MAP.zoneSize));
-	col = Math.floor((this.getLeft() / GAME_MAP.zoneSize));
+	var row = Math.floor((this.getTop() / GAME_MAP.zoneSize));
+	var col = Math.floor((this.getLeft() / GAME_MAP.zoneSize));
 
 	this.map_zone = [row, col];
 	return this;
