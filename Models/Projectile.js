@@ -221,12 +221,9 @@ Projectile.prototype.updateZone = function() {
 		return false;
 	}
 
-	//For the callback on findIndex
-	var that = this;
-
 	//Get index of current model
-	var index = GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.findIndex(function(i) {
-		return i.id == that.id;
+	var index = GAME_MAP.zones[oldZone[0]][oldZone[1]].projectiles.findIndex((i) => {
+		return i.id == this.id;
 	});
 
 	/*
